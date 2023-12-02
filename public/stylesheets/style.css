@@ -1,0 +1,1154 @@
+html {
+  scroll-behavior: smooth;
+}
+
+:root {
+  --bg: rgb(0, 0, 0);
+  --primary: white;
+  --secondary: #dbf72c;
+}
+
+body {
+  background-color: var(--bg);
+  color: var(--primary);
+}
+a {
+  text-decoration: none;
+  color: var(--primary);
+}
+
+a:hover {
+  color: var(--primary);
+}
+
+/* Navbar Section */
+
+/* navbar-1 */
+.nav1 {
+  background-color: rgba(0, 0, 0, 0.358);
+  position: fixed;
+  top: 0px;
+  left: 0px;
+  z-index: 100;
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.logo {
+  font-family: "Saira Stencil One", sans-serif;
+  padding: 10px;
+}
+.links {
+  list-style-type: none;
+  display: flex;
+  justify-content: space-around;
+}
+.links > li {
+  margin: 30px;
+  font-family: "Unica One", sans-serif;
+  font-size: 20px;
+}
+
+.li:hover {
+  border: 1px solid var(--secondary);
+  padding: 2px 10px;
+  border-radius: 10px;
+  transition: 0.3s padding ease-in-out;
+}
+
+.login-btn {
+  border: 1px solid var(--primary);
+  padding: 7px;
+  border-radius: 10px;
+}
+
+h3 {
+  color: var(--primary);
+}
+
+span {
+  color: var(--secondary);
+}
+
+/* Navbar-2 */
+
+.nav2 {
+  background-color: rgba(0, 0, 0, 0.295);
+  display: none;
+  z-index: 100;
+  top: -1.5px;
+}
+
+.navbar-nav > .links {
+  display: inline;
+}
+
+.navbar-nav > .links > .li {
+  width: max-content;
+}
+
+/* Banner Section */
+
+.banner {
+  background-image: url("../images/banner.jpg");
+  height: 98vh;
+  width: 100%;
+  background-size: cover;
+  background-repeat: no-repeat;
+  filter: blur(7px);
+  position: relative;
+}
+
+.intro {
+  width: 100%;
+  font-size: 30px;
+  position: absolute;
+  top: 20%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+.intro > h1 {
+  font-family: "Saira Stencil One", sans-serif;
+  text-align: center;
+  line-height: 50px;
+  text-shadow: 2px 1px 20px black;
+  font-size: 60px;
+}
+.intro > p {
+  text-align: center;
+  font-family: "Ubuntu Condensed", sans-serif;
+}
+.intro > .btn {
+  background-color: var(--secondary);
+  font-size: 40px;
+  font-family: "Ubuntu Condensed", sans-serif;
+  padding: 10px 60px;
+  border: none;
+  border-radius: 10px;
+  box-shadow: 0px 0px 60px var(--secondary);
+  animation: btn 3.5s infinite;
+}
+
+/* Image Section */
+
+.img-container {
+  margin-top: 100px;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: space-around;
+}
+
+.img {
+  width: 400px;
+  height: auto;
+  margin: 20px;
+  border-radius: 15px;
+}
+
+.img1 {
+  box-shadow: 0px 0px 10px rgb(28, 28, 191);
+  transition: 2s box-shadow ease-in-out;
+  animation: img 4s infinite;
+}
+.img2 {
+  box-shadow: 0px 0px 10px rgb(148, 148, 148);
+  transition: 2s box-shadow ease-in-out;
+  animation: img 5s infinite;
+}
+.img3 {
+  box-shadow: 0px 0px 10px rgb(85, 85, 85);
+  transition: 2s box-shadow ease-in-out;
+  animation: img 6s infinite;
+}
+
+/* about section */
+
+.about {
+  margin-top: 50px;
+  background-image: url("../images/img4.png");
+  background-size: cover;
+  height: auto;
+  padding: 20px;
+}
+
+.about-container {
+  position: relative;
+  top: 2%;
+}
+
+.about-container > h1 {
+  font-size: 70px;
+  font-family: "Rubik Glitch", sans-serif;
+  letter-spacing: 3px;
+}
+
+.about-container > p {
+  font-size: 30px;
+  font-family: "Ubuntu Condensed", sans-serif;
+  line-height: 40px;
+  width: auto;
+}
+
+/* participation section */
+
+.participation {
+  margin-top: 300px;
+  text-align: center;
+}
+.participation > .item1,
+.participation > .item2,
+.participation > .item3 {
+  line-height: 10px;
+  font-family: "Russo One", sans-serif;
+  margin: 100px;
+}
+
+.participation > .item1 > h1 {
+  font-size: 120px;
+  color: var(--secondary);
+}
+.participation > .item2 > h1 {
+  font-size: 100px;
+  color: var(--secondary);
+}
+.participation > .item3 > h1 {
+  font-size: 80px;
+  color: var(--secondary);
+}
+
+.participation > .item1 > h4 {
+  font-size: 35px;
+  color: var(--primary);
+}
+.participation > .item2 > h4 {
+  font-size: 35px;
+  color: var(--primary);
+}
+.participation > .item3 > h4 {
+  font-size: 35px;
+  color: var(--primary);
+}
+
+/* FAQ section */
+
+.faq {
+  margin-top: 50px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.faq > p {
+  font-family: "Ubuntu Condensed", sans-serif;
+  font-size: 60px;
+  margin-left: 100px;
+}
+
+.bubbles {
+  display: flex;
+}
+
+.faq > .bubbles > .bubble1 {
+  height: 100px;
+  width: 100px;
+  background-color: rgb(209, 209, 209);
+  border-radius: 50%;
+}
+
+.faq > .bubbles > .bubble2 {
+  height: 200px;
+  width: 200px;
+  background-color: var(--secondary);
+  border-radius: 50%;
+  position: relative;
+  left: -30px;
+}
+
+.faq > .bubbles > .bubble3 {
+  height: 50px;
+  width: 50px;
+  background-color: rgb(209, 209, 209);
+  border-radius: 50%;
+  position: relative;
+  left: -100px;
+  top: -25px;
+  z-index: -1;
+}
+
+/* Question section */
+
+.question1,
+.question2,
+.question3,
+.question4 {
+  font-family: "Ubuntu Condensed", sans-serif;
+  background-color: var(--primary);
+  border: 1px solid var(--primary);
+  border-radius: 50px;
+  color: var(--bg);
+  margin: 50px;
+  text-align: center;
+  padding: 20px;
+}
+
+.question1 > button,
+.question2 > button,
+.question3 > button,
+.question4 > button {
+  font-size: 30px;
+}
+
+.question1:hover,
+.question2:hover,
+.question3:hover,
+.question4:hover {
+  border: 1px solid var(--secondary);
+  box-shadow: 0px 0px 5px var(--secondary);
+  transition: 1s box-shadow, border ease-in-out;
+}
+
+.accordion-body > p {
+  font-family: "Ubuntu Condensed", sans-serif;
+  font-size: 20px;
+  margin-left: 50px;
+  margin-right: 50px;
+}
+
+/* footer Section */
+
+footer {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  background-color: rgba(52, 52, 52, 0.295);
+}
+
+/* Animation Part */
+
+/* button animation */
+
+@keyframes btn {
+  0% {
+    scale: 1;
+  }
+  50% {
+    scale: 1.1;
+  }
+}
+
+/* image animation */
+@keyframes img {
+  0% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(10px);
+  }
+}
+
+/* Responsive Part */
+
+@media screen and (max-width: 900px) {
+  /* body {
+    background-color: red;
+    color: var(--primary);
+  } */
+
+  /* Navbar Section */
+
+  /* navbar-1 */
+  .nav1 {
+    display: none;
+  }
+
+  .logo {
+    font-family: "Saira Stencil One", sans-serif;
+    padding: 10px;
+  }
+  .links {
+    list-style-type: none;
+    display: flex;
+    justify-content: space-around;
+  }
+  .links > li {
+    margin: 30px;
+    font-family: "Unica One", sans-serif;
+    font-size: 20px;
+  }
+
+  .li:hover {
+    border: 1px solid var(--secondary);
+    padding: 2px 10px;
+    border-radius: 10px;
+    transition: 0.3s padding ease-in-out;
+  }
+
+  .login-btn {
+    border: 1px solid var(--primary);
+    padding: 7px;
+    border-radius: 10px;
+  }
+
+  h3 {
+    color: var(--primary);
+  }
+
+  span {
+    color: var(--secondary);
+  }
+
+  /* navbar-2 */
+  .nav2 {
+    display: flex;
+  }
+
+  /* Banner Section */
+
+  .banner {
+    background-image: url("../images/banner.jpg");
+    height: 98vh;
+    width: 100%;
+    background-size: cover;
+    background-repeat: no-repeat;
+    filter: blur(7px);
+    position: relative;
+  }
+
+  .intro {
+    width: 100%;
+    font-size: 30px;
+    position: absolute;
+    top: 20%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+  .intro > h1 {
+    font-family: "Saira Stencil One", sans-serif;
+    text-align: center;
+    line-height: 50px;
+    text-shadow: 2px 1px 20px black;
+    font-size: 50px;
+  }
+  .intro > p {
+    text-align: center;
+    font-family: "Ubuntu Condensed", sans-serif;
+    font-size: 30px;
+  }
+  .intro > .btn {
+    background-color: var(--secondary);
+    font-size: 30px;
+    font-family: "Ubuntu Condensed", sans-serif;
+    padding: 10px 60px;
+    border: none;
+    border-radius: 10px;
+    box-shadow: 0px 0px 60px var(--secondary);
+    animation: btn 3.5s infinite;
+  }
+
+  /* Image Section */
+
+  .img-container {
+    margin-top: 100px;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: space-around;
+  }
+
+  .img {
+    width: 400px;
+    height: auto;
+    margin: 20px;
+    border-radius: 15px;
+  }
+
+  .img1 {
+    box-shadow: 0px 0px 10px rgb(28, 28, 191);
+    transition: 2s box-shadow ease-in-out;
+    animation: img 4s infinite;
+  }
+  .img2 {
+    box-shadow: 0px 0px 10px rgb(148, 148, 148);
+    transition: 2s box-shadow ease-in-out;
+    animation: img 5s infinite;
+  }
+  .img3 {
+    box-shadow: 0px 0px 10px rgb(85, 85, 85);
+    transition: 2s box-shadow ease-in-out;
+    animation: img 6s infinite;
+  }
+
+  /* about section */
+
+  .about {
+    margin-top: 50px;
+    background-image: url("../images/img4.png");
+    background-size: cover;
+    height: auto;
+    padding: 20px;
+  }
+
+  .about-container {
+    position: relative;
+    top: 2%;
+  }
+
+  .about-container > h1 {
+    font-size: 50px;
+    font-family: "Rubik Glitch", sans-serif;
+    letter-spacing: 3px;
+  }
+
+  .about-container > p {
+    font-size: 20px;
+    font-family: "Ubuntu Condensed", sans-serif;
+    line-height: 40px;
+    width: auto;
+  }
+
+  /* participation section */
+
+  .participation {
+    margin-top: 300px;
+    text-align: center;
+  }
+  .participation > .item1,
+  .participation > .item2,
+  .participation > .item3 {
+    line-height: 10px;
+    font-family: "Russo One", sans-serif;
+    margin: 100px;
+  }
+
+  .participation > .item1 > h1 {
+    font-size: 120px;
+    color: var(--secondary);
+  }
+  .participation > .item2 > h1 {
+    font-size: 100px;
+    color: var(--secondary);
+  }
+  .participation > .item3 > h1 {
+    font-size: 80px;
+    color: var(--secondary);
+  }
+
+  .participation > .item1 > h4 {
+    font-size: 35px;
+    color: var(--primary);
+  }
+  .participation > .item2 > h4 {
+    font-size: 35px;
+    color: var(--primary);
+  }
+  .participation > .item3 > h4 {
+    font-size: 35px;
+    color: var(--primary);
+  }
+
+  /* FAQ section */
+
+  .faq {
+    margin-top: 50px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .faq > p {
+    font-family: "Ubuntu Condensed", sans-serif;
+    font-size: 50px;
+    margin-left: 50px;
+  }
+
+  .bubbles {
+    display: flex;
+  }
+
+  .faq > .bubbles > .bubble1 {
+    height: 80px;
+    width: 80px;
+    background-color: rgb(209, 209, 209);
+    border-radius: 50%;
+  }
+
+  .faq > .bubbles > .bubble2 {
+    height: 150px;
+    width: 150px;
+    background-color: var(--secondary);
+    border-radius: 50%;
+    position: relative;
+    left: -30px;
+  }
+
+  .faq > .bubbles > .bubble3 {
+    height: 40px;
+    width: 40px;
+    background-color: rgb(209, 209, 209);
+    border-radius: 50%;
+    position: relative;
+    left: -100px;
+    top: -25px;
+    z-index: -1;
+  }
+
+  /* Question section */
+
+  .question1,
+  .question2,
+  .question3,
+  .question4 {
+    font-family: "Ubuntu Condensed", sans-serif;
+    background-color: var(--primary);
+    border: 1px solid var(--primary);
+    border-radius: 50px;
+    color: var(--bg);
+    margin: 50px;
+    text-align: center;
+    padding: 20px;
+  }
+
+  .question1 > button,
+  .question2 > button,
+  .question3 > button,
+  .question4 > button {
+    font-size: 30px;
+  }
+
+  .question1:hover,
+  .question2:hover,
+  .question3:hover,
+  .question4:hover {
+    border: 1px solid var(--secondary);
+    box-shadow: 0px 0px 5px var(--secondary);
+    transition: 1s box-shadow, border ease-in-out;
+  }
+
+  .accordion-body > p {
+    font-family: "Ubuntu Condensed", sans-serif;
+    font-size: 20px;
+    margin-left: 50px;
+    margin-right: 50px;
+  }
+
+  /* footer Section */
+
+  footer {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    background-color: rgba(52, 52, 52, 0.295);
+  }
+}
+
+@media screen and (max-width: 700px) {
+  /* Navbar Section */
+
+  /* navbar-1 */
+  .nav1 {
+    display: none;
+  }
+
+  .logo {
+    font-family: "Saira Stencil One", sans-serif;
+    padding: 10px;
+  }
+  .links {
+    list-style-type: none;
+    display: flex;
+    justify-content: space-around;
+  }
+  .links > li {
+    margin: 30px;
+    font-family: "Unica One", sans-serif;
+    font-size: 20px;
+  }
+
+  .li:hover {
+    border: 1px solid var(--secondary);
+    padding: 2px 10px;
+    border-radius: 10px;
+    transition: 0.3s padding ease-in-out;
+  }
+
+  .login-btn {
+    border: 1px solid var(--primary);
+    padding: 7px;
+    border-radius: 10px;
+  }
+
+  h3 {
+    color: var(--primary);
+  }
+
+  span {
+    color: var(--secondary);
+  }
+
+  /* navbar-2 */
+  .nav2 {
+    display: flex;
+  }
+
+  /* Banner Section */
+
+  .banner {
+    background-image: url("../images/banner.jpg");
+    height: 98vh;
+    width: 100%;
+    background-size: cover;
+    background-repeat: no-repeat;
+    filter: blur(7px);
+    position: relative;
+  }
+
+  .intro {
+    width: 100%;
+    font-size: 30px;
+    position: absolute;
+    top: 20%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+  .intro > h1 {
+    font-family: "Saira Stencil One", sans-serif;
+    text-align: center;
+    line-height: 50px;
+    text-shadow: 2px 1px 20px black;
+    font-size: 50px;
+  }
+  .intro > p {
+    text-align: center;
+    font-family: "Ubuntu Condensed", sans-serif;
+    font-size: 25px;
+  }
+  .intro > .btn {
+    background-color: var(--secondary);
+    font-size: 25px;
+    font-family: "Ubuntu Condensed", sans-serif;
+    padding: 10px 60px;
+    border: none;
+    border-radius: 10px;
+    box-shadow: 0px 0px 60px var(--secondary);
+    animation: btn 3.5s infinite;
+  }
+
+  /* Image Section */
+
+  .img-container {
+    margin-top: 100px;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: space-around;
+  }
+
+  .img {
+    width: 300px;
+    height: auto;
+    margin: 20px;
+    border-radius: 15px;
+  }
+
+  .img1 {
+    box-shadow: 0px 0px 10px rgb(28, 28, 191);
+    transition: 2s box-shadow ease-in-out;
+    animation: img 4s infinite;
+  }
+  .img2 {
+    box-shadow: 0px 0px 10px rgb(148, 148, 148);
+    transition: 2s box-shadow ease-in-out;
+    animation: img 5s infinite;
+  }
+  .img3 {
+    box-shadow: 0px 0px 10px rgb(85, 85, 85);
+    transition: 2s box-shadow ease-in-out;
+    animation: img 6s infinite;
+  }
+
+  /* about section */
+
+  .about {
+    margin-top: 50px;
+    background-image: url("../images/img4.png");
+    background-size: cover;
+    height: auto;
+    padding: 20px;
+  }
+
+  .about-container {
+    position: relative;
+    top: 2%;
+  }
+
+  .about-container > h1 {
+    font-size: 40px;
+    font-family: "Rubik Glitch", sans-serif;
+  }
+
+  .about-container > p {
+    font-size: 20px;
+    font-family: "Ubuntu Condensed", sans-serif;
+    line-height: 40px;
+    width: auto;
+  }
+
+  /* participation section */
+
+  .participation {
+    margin-top: 300px;
+    text-align: center;
+  }
+  .participation > .item1,
+  .participation > .item2,
+  .participation > .item3 {
+    line-height: 10px;
+    font-family: "Russo One", sans-serif;
+    margin: 100px;
+  }
+
+  .participation > .item1 > h1 {
+    font-size: 80px;
+    color: var(--secondary);
+  }
+  .participation > .item2 > h1 {
+    font-size: 60px;
+    color: var(--secondary);
+  }
+  .participation > .item3 > h1 {
+    font-size: 40px;
+    color: var(--secondary);
+  }
+
+  .participation > .item1 > h4 {
+    font-size: 35px;
+    color: var(--primary);
+  }
+  .participation > .item2 > h4 {
+    font-size: 35px;
+    color: var(--primary);
+  }
+  .participation > .item3 > h4 {
+    font-size: 35px;
+    color: var(--primary);
+  }
+
+  /* FAQ section */
+
+  .faq {
+    margin-top: 50px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .faq > p {
+    font-family: "Ubuntu Condensed", sans-serif;
+    font-size: 40px;
+    margin-left: 50px;
+  }
+
+  .bubbles {
+    display: flex;
+  }
+
+  .faq > .bubbles > .bubble1 {
+    height: 70px;
+    width: 70px;
+    background-color: rgb(209, 209, 209);
+    border-radius: 50%;
+  }
+
+  .faq > .bubbles > .bubble2 {
+    height: 130px;
+    width: 130px;
+    background-color: var(--secondary);
+    border-radius: 50%;
+    position: relative;
+    left: -30px;
+  }
+
+  .faq > .bubbles > .bubble3 {
+    height: 40px;
+    width: 40px;
+    background-color: rgb(209, 209, 209);
+    border-radius: 50%;
+    position: relative;
+    left: -100px;
+    top: -25px;
+    z-index: -1;
+  }
+
+
+  /* Question section */
+
+  .question1,
+  .question2,
+  .question3,
+  .question4 {
+    font-family: "Ubuntu Condensed", sans-serif;
+    background-color: var(--primary);
+    border: 1px solid var(--primary);
+    border-radius: 50px;
+    color: var(--bg);
+    margin: 50px;
+    text-align: center;
+    padding: 20px;
+  }
+
+  .question1 > button,
+  .question2 > button,
+  .question3 > button,
+  .question4 > button {
+    font-size: 30px;
+  }
+
+  .question1:hover,
+  .question2:hover,
+  .question3:hover,
+  .question4:hover {
+    border: 1px solid var(--secondary);
+    box-shadow: 0px 0px 5px var(--secondary);
+    transition: 1s box-shadow, border ease-in-out;
+  }
+
+  .accordion-body > p {
+    font-family: "Ubuntu Condensed", sans-serif;
+    font-size: 20px;
+    margin-left: 50px;
+    margin-right: 50px;
+  }
+
+  /* footer Section */
+
+  footer {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    background-color: rgba(52, 52, 52, 0.295);
+  }
+
+  footer > .links {
+    display: block;
+  }
+}
+
+@media screen and (max-width: 500px) {
+  .banner {
+    background-image: url("../images/banner.jpg");
+    height: 70vh;
+    width: 100%;
+    background-size: cover;
+    background-repeat: no-repeat;
+    filter: blur(7px);
+    position: relative;
+  }
+
+  .intro {
+    width: 100%;
+    font-size: 30px;
+    position: absolute;
+    top: 20%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+  .intro > h1 {
+    font-family: "Saira Stencil One", sans-serif;
+    text-align: center;
+    line-height: 50px;
+    text-shadow: 2px 1px 20px black;
+    font-size: 40px;
+  }
+  .intro > p {
+    text-align: center;
+    font-family: "Ubuntu Condensed", sans-serif;
+    font-size: 20px;
+  }
+  .intro > .btn {
+    background-color: var(--secondary);
+    font-size: 25px;
+    font-family: "Ubuntu Condensed", sans-serif;
+    padding: 10px 60px;
+    border: none;
+    border-radius: 10px;
+    box-shadow: 0px 0px 60px var(--secondary);
+    animation: btn 3.5s infinite;
+  }
+}
+
+@media screen and (max-width: 400px) {
+  .banner {
+    background-image: url("../images/banner.jpg");
+    height: 70vh;
+    width: 100%;
+    background-size: cover;
+    background-repeat: no-repeat;
+    filter: blur(7px);
+    position: relative;
+  }
+
+  .intro {
+    width: 100%;
+    font-size: 30px;
+    position: absolute;
+    top: 20%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+  .intro > h1 {
+    font-family: "Saira Stencil One", sans-serif;
+    text-align: center;
+    line-height: 30px;
+    text-shadow: 2px 1px 20px black;
+    font-size: 30px;
+  }
+  .intro > p {
+    text-align: center;
+    font-family: "Ubuntu Condensed", sans-serif;
+    font-size: 15px;
+  }
+  .intro > .btn {
+    background-color: var(--secondary);
+    font-size: 20px;
+    font-family: "Ubuntu Condensed", sans-serif;
+    padding: 10px 60px;
+    border: none;
+    border-radius: 10px;
+    box-shadow: 0px 0px 60px var(--secondary);
+    animation: btn 3.5s infinite;
+  }
+
+  /* about section */
+
+  .about {
+    margin-top: 50px;
+    background-image: url("../images/img4.png");
+    background-size: cover;
+    height: auto;
+    padding: 20px;
+  }
+
+  .about-container {
+    position: relative;
+    top: 2%;
+  }
+
+  .about-container > h1 {
+    font-size: 30px;
+    font-family: "Rubik Glitch", sans-serif;
+  }
+
+  .about-container > p {
+    font-size: 18px;
+    font-family: "Ubuntu Condensed", sans-serif;
+    line-height: 25px;
+    width: auto;
+  }
+
+  /* participation section */
+
+  .participation {
+    margin-top: 50px;
+    text-align: center;
+  }
+  .participation > .item1,
+  .participation > .item2,
+  .participation > .item3 {
+    line-height: 10px;
+    font-family: "Russo One", sans-serif;
+    margin: 100px;
+  }
+
+  .participation > .item1 > h1 {
+    font-size: 60px;
+    color: var(--secondary);
+  }
+  .participation > .item2 > h1 {
+    font-size: 50px;
+    color: var(--secondary);
+  }
+  .participation > .item3 > h1 {
+    font-size: 30px;
+    color: var(--secondary);
+  }
+
+  .participation > .item1 > h4 {
+    font-size: 20px;
+    color: var(--primary);
+  }
+  .participation > .item2 > h4 {
+    font-size: 20px;
+    color: var(--primary);
+  }
+  .participation > .item3 > h4 {
+    font-size: 20px;
+    color: var(--primary);
+  }
+
+
+
+  /* FAQ section */
+
+  .faq {
+    margin-top: 200px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .faq > p {
+    font-family: "Ubuntu Condensed", sans-serif;
+    font-size: 30px;
+    margin-left: 50px;
+  }
+
+  .bubbles {
+    display: flex;
+  }
+
+  .faq > .bubbles > .bubble1 {
+    height: 60px;
+    width: 60px;
+    background-color: rgb(209, 209, 209);
+    border-radius: 50%;
+  }
+
+  .faq > .bubbles > .bubble2 {
+    height: 110px;
+    width: 110px;
+    background-color: var(--secondary);
+    border-radius: 50%;
+    position: relative;
+    left: -30px;
+  }
+
+  .faq > .bubbles > .bubble3 {
+    height: 30px;
+    width: 30px;
+    background-color: rgb(209, 209, 209);
+    border-radius: 50%;
+    position: relative;
+    left: -100px;
+    top: -20px;
+    z-index: -1;
+  }
+}
