@@ -94,7 +94,7 @@ span {
 
 .banner {
   background-image: url("../images/banner.jpg");
-  height: 98vh;
+  height: 100dvh;
   width: 100%;
   background-size: cover;
   background-repeat: no-repeat;
@@ -173,7 +173,7 @@ span {
   margin-top: 50px;
   background-image: url("../images/img4.png");
   background-size: cover;
-  height: auto;
+  height: 100dvh;
   padding: 20px;
 }
 
@@ -426,7 +426,7 @@ footer {
     width: 100%;
     font-size: 30px;
     position: absolute;
-    top: 20%;
+    top: 30%;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -494,13 +494,13 @@ footer {
     margin-top: 50px;
     background-image: url("../images/img4.png");
     background-size: cover;
-    height: auto;
+    height: 100dvh;
     padding: 20px;
   }
 
   .about-container {
     position: relative;
-    top: 2%;
+    top: 15%;
   }
 
   .about-container > h1 {
@@ -510,7 +510,7 @@ footer {
   }
 
   .about-container > p {
-    font-size: 20px;
+    font-size: 25px;
     font-family: "Ubuntu Condensed", sans-serif;
     line-height: 40px;
     width: auto;
@@ -785,7 +785,7 @@ footer {
     margin-top: 50px;
     background-image: url("../images/img4.png");
     background-size: cover;
-    height: auto;
+    height: 100dvh;
     padding: 20px;
   }
 
@@ -893,7 +893,6 @@ footer {
     z-index: -1;
   }
 
-
   /* Question section */
 
   .question1,
@@ -950,7 +949,7 @@ footer {
 @media screen and (max-width: 500px) {
   .banner {
     background-image: url("../images/banner.jpg");
-    height: 70vh;
+    height: 100dvh;
     width: 100%;
     background-size: cover;
     background-repeat: no-repeat;
@@ -995,7 +994,7 @@ footer {
 @media screen and (max-width: 400px) {
   .banner {
     background-image: url("../images/banner.jpg");
-    height: 70vh;
+    height: 100dvh;
     width: 100%;
     background-size: cover;
     background-repeat: no-repeat;
@@ -1007,7 +1006,7 @@ footer {
     width: 100%;
     font-size: 30px;
     position: absolute;
-    top: 20%;
+    top: 40%;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -1042,13 +1041,13 @@ footer {
     margin-top: 50px;
     background-image: url("../images/img4.png");
     background-size: cover;
-    height: auto;
+    height: 100dvh;
     padding: 20px;
   }
 
   .about-container {
     position: relative;
-    top: 2%;
+    top: 10%;
   }
 
   .about-container > h1 {
@@ -1102,8 +1101,6 @@ footer {
     font-size: 20px;
     color: var(--primary);
   }
-
-
 
   /* FAQ section */
 
