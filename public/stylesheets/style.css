@@ -1,12 +1,9 @@
+@import './variables.css';
+
 html {
   scroll-behavior: smooth;
 }
 
-:root {
-  --bg: rgb(0, 0, 0);
-  --primary: white;
-  --secondary: #dbf72c;
-}
 
 body {
   background-color: var(--bg);

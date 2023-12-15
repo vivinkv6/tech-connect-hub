@@ -1,0 +1,58 @@
+@import "./variables.css";
+
+body {
+  background-color: var(--bg);
+  color: var(--primary);
+}
+
+.main {
+  width: 100%;
+  height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.role {
+  text-align: center;
+  font-size: 55px;
+  color: var(--primary);
+  font-family: "Ubuntu Condensed", sans-serif;
+  font-weight: 900;
+  margin-top: 8rem;
+}
+
+.user-container {
+  width: 100%;
+  height: 100dvh;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: space-around;
+  align-items: center;
+  gap: 20px;
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
+.user-item {
+  width: 18rem;
+  height: 10rem;
+  border: 2px solid var(--secondary);
+  border-radius: 10px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px;
+}
+
+.user-item > .user-img {
+  width: 70px;
+  height: 70px;
+}
+
+.user-item > .user-name {
+  font-size: 25px;
+}
