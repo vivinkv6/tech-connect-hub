@@ -20,17 +20,19 @@ body {
   color: var(--primary);
   font-family: "Ubuntu Condensed", sans-serif;
   font-weight: 900;
-  margin-top: 8rem;
+  margin-top: 5rem;
+  margin-bottom: 5rem;
+  text-transform: uppercase;
 }
 
 .user-container {
   width: 100%;
-  height: 100dvh;
+  height: 500px;
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
   justify-content: space-around;
-  align-items: center;
+  align-items: flex-start;
   gap: 20px;
   margin-top: 10px;
   margin-bottom: 10px;
@@ -55,4 +57,11 @@ body {
 
 .user-item > .user-name {
   font-size: 25px;
+}
+
+@media screen and (max-width: 900px) {
+  .user-container {
+    height: 50dvh;
+    align-items: center;
+  }
 }
