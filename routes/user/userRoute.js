@@ -1,5 +1,9 @@
 const express=require('express');
 const router=express.Router();
+const bycrypt=require('bcrypt');
+
+const userlogin=require('../../models/user/loginModel');
+
 
 //user all routes
 
@@ -7,8 +11,44 @@ const router=express.Router();
 router.get('/login',(req,res)=>{
     res.render('../views/user/login')
 })
-router.post('/login',(req,res)=>{
-    res.json({msg:"POST LOGIN"});
+
+router.post('/login',async(req,res)=>{
+
+    console.log("start");
+   
+try{
+
+    const {email,password}=req.body;
+    
+   const result= await userlogin.findOne({
+        where:{
+            email:email
+        }
+    })
+
+    if(!result){
+        res.redirect('/user/login')
+    }
+    else{
+       bycrypt.compare(password,result.password,(err,data)=>{
+        if(err){
+            res.json({err:err.message})
+        }
+        else{
+            if(data){
+                res.redirect('/')
+            }
+            else{
+                res.redirect('/user/login')
+            }
+        }
+       })
+    }
+
+}catch(err){
+    res.json({err:err.message})
+}
+
 })
 
 //signup routes

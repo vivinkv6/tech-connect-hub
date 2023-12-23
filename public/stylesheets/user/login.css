@@ -6,6 +6,11 @@ body {
   color: var(--primary);
 }
 .container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100dvh;
   padding: 1rem;
   @media (min-width: 768px) {
     padding: 2.5rem;
@@ -29,6 +34,8 @@ body {
   flex-direction: column;
   gap: 1.5rem;
   padding: 1.5rem;
+  width: 100%; /* Make sure the content takes full width */
+  box-sizing: border-box;
 }
 
 /* Heading styling */
