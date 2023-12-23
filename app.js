@@ -59,9 +59,7 @@ app.use(function (err, req, res, next) {
       .catch((error) => {
         console.error("Error creating table:", error);
       });
-    
-    const data=await userlogin.findAll({});
-    console.log(data[0]);
+
     console.log("Model synchronized with the database.");
   } catch (error) {
     console.error("Unable to connect to the database:", error);
