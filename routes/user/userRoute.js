@@ -9,39 +9,52 @@ const usernameExtractor = require("../../utils/usernameExtractor");
 
 //login routes
 router.get("/login", (req, res) => {
-  res.render("../views/user/login");
+  res.render("../views/user/login", {
+    emailExist: true,
+    passwordError: false,
+    email: "",
+    password: "",
+  });
 });
 
 router.post("/login", async (req, res) => {
   try {
     const { email, password } = req.body;
-    console.log(email);
-    console.log(password);
 
-    const hashPassword = await userlogin
-      .findOne({
-        where: {
-          email: email,
-        },
-      })
-      .then((user) => {
-        if (user) {
-          return user?.dataValues?.password;
-        } else {
-          console.log("Result not found");
-        }
-      })
-      .catch((err) => {
-        res.json({ err: err.message });
-      });
-
-    bycrypt.compare(password, hashPassword, (err, data) => {
-      if (err) {
-        res.json({ err: err.message });
-      } else {
-        res.redirect("/");
-      }
+    const hashPassword = await userlogin.findOne({
+      where: {
+        email: email,
+      },
     });
+
+    if (!hashPassword) {
+      res.render("../views/user/login", {
+        emailExist: false,
+        passwordError: false,
+        email: email,
+        password: password,
+      });
+    } else {
+      bycrypt.compare(
+        password,
+        hashPassword?.dataValues?.password,
+        (err, data) => {
+          if (err) {
+            res.json({ err: err });
+          }
+          if (data) {
+            res.redirect("/");
+          } else {
+            res.render("../views/user/login", {
+              emailExist: true,
+              passwordError: true,
+              email: email,
+              password: password,
+            });
+          }
+        }
+      );
+    }
   } catch (err) {
     res.json({ err: err.message });
   }
@@ -49,16 +62,27 @@ router.post("/login", async (req, res) => {
 
 //signup routes
 router.get("/signup", (req, res) => {
-  res.render("../views/user/signup");
+  res.render("../views/user/signup", {
+    emailExist: false,
+    passwordError: false,
+    email: "",
+    password: "",
+    confirm: "",
+  });
 });
 
 router.post("/signup", async (req, res) => {
   const { email, password, confirm } = req.body;
   const username = usernameExtractor(email);
-  const userDetails = { email, password, confirm, alert: "Wrong Password" };
 
-  if (!password == confirm) {
-    res.render("../../views/user/signup", userDetails);
+  if (password !== confirm) {
+    res.render("../views/user/signup", {
+      emailExist: false,
+      passwordError: true,
+      email: email,
+      password: password,
+      confirm: confirm,
+    });
   } else {
     const result = await userlogin.findOne({
       where: {
@@ -67,21 +91,26 @@ router.post("/signup", async (req, res) => {
     });
 
     if (result) {
-      res.json({ msg: "Email already exist" });
+      res.render("../views/user/signup", {
+        emailExist: true,
+        passwordError: false,
+        email: email,
+        password: password,
+        confirm: confirm,
+      });
     } else {
       bycrypt.hash(password, 12, async (err, hashedPassword) => {
         if (err) {
           res.json({ err: err.message });
         } else {
-          const data = userlogin
+          const data = await userlogin
             .create({
               username: username,
               email: email,
               password: hashedPassword,
             })
-            .then((res) => res.json())
             .then((data) => {
-              res.json({ data: data });
+              res.redirect("/");
             });
         }
       });

@@ -42,22 +42,34 @@
                 class="form-input"
                 name="email"
                 id="email"
+                value="<%= email %>"
                 required=""
                 type="email"
                 pattern="[^\s@]+@[^\s@]+\.[^\s@]+"
               />
             </div>
+            <% if (!emailExist) { %>
+              <div class="msg">
+                <p class="text-danger">Email Doesn't Exist</p>
+              </div>
+            <% } %>
             <div class="form-group">
               <label class="form-label" for="password">Password</label>
               <input
                 class="form-input"
                 name="password"
                 id="password"
+                value="<%= password %>"
                 required=""
                 type="password"
                 minlength="6"
               />
             </div>
+            <% if (passwordError) { %>
+              <div class="msg">
+                <p class="text-danger">Wrong Password</p>
+              </div>
+            <% } %>
             <button class="button">Login</button>
             <p class="text">
               Don't have an account?
