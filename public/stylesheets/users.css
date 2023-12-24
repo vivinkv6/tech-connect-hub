@@ -4,6 +4,14 @@ body {
   background-color: var(--bg);
   color: var(--primary);
 }
+a{
+  text-decoration: none;
+  color: var(--primary);
+}
+
+a:hover{
+  color: antiquewhite;
+}
 
 .main {
   width: 100%;
@@ -49,13 +57,12 @@ body {
   align-items: center;
   padding: 20px;
 }
-
-.user-item > .user-img {
+ .user-img {
   width: 70px;
   height: 70px;
 }
 
-.user-item > .user-name {
+.user-name {
   font-size: 25px;
 }
 

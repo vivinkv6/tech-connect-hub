@@ -43,7 +43,7 @@ router.post("/login", async (req, res) => {
             res.json({ err: err });
           }
           if (data) {
-            res.redirect("/");
+            res.redirect("dashboard");
           } else {
             res.render("../views/user/login", {
               emailExist: true,
@@ -110,7 +110,7 @@ router.post("/signup", async (req, res) => {
               password: hashedPassword,
             })
             .then((data) => {
-              res.redirect("/");
+              res.redirect("dashboard");
             });
         }
       });
