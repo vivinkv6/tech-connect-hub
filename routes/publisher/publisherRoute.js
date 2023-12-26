@@ -2,8 +2,10 @@ const express = require("express");
 const router = express.Router();
 const bycrypt = require("bcrypt");
 
+//models
 const publisherLogin = require("../../models/publisher/registrationModel");
 const verificationModel = require("../../models/verifier/verification");
+const communityModel = require("../../models/publisher/communityRegistrationModel");
 
 const cloudinaryConfig = require("../../config/cloudinary.config");
 const multer = require("multer");
@@ -228,9 +230,81 @@ router.post("/register", upload.single("file"), async (req, res) => {
   }
 });
 
-//user dashboard
+//publisher dashboard
 router.get("/dashboard", (req, res) => {
   res.json({ msg: "Publisher Dashboard" });
+});
+
+router.get("/dashboard/community", (req, res) => {
+  res.render("../views/publisher/community", {
+    emailExist: false,
+    name: "",
+    email: "",
+    description: "",
+    place: "",
+    location: "",
+    social: "",
+    mobile: "",
+  });
+  // res.json({msg:"community"})
+});
+
+router.post("/dashboard/community", upload.single("logo"), async (req, res) => {
+  const { name, description, email, place, location, mobile, social } =
+    req.body;
+
+  try {
+    //check if the community already registered or not
+
+    const result = await communityModel.findOne({
+      where: {
+        email: email,
+      },
+    });
+
+    if (result) {
+      res.render("../views/publisher/community", {
+        emailExist: true,
+        name: name,
+        email: email,
+        description: description,
+        place: place,
+        location: location,
+        social: social,
+        mobile: mobile,
+      });
+    } else {
+      const logoBuffer = req.file.buffer.toString("base64");
+      const fileUpload = await cloudinaryConfig.uploader.upload(
+        `data:image/png;base64,${logoBuffer}`,
+        {
+          folder: "community",
+          public_id: Date.now() + "-" + req.file.originalname,
+          encoding: "base64",
+        }
+      );
+
+      //store data to the community table
+
+      const storeData = await communityModel
+        .create({
+          name: name,
+          description: description,
+          email: email,
+          location: location,
+          place: place,
+          mobile: mobile,
+          social: social,
+          logo: fileUpload.secure_url,
+        })
+        .then((data) => {
+          //after data store to the table naviagate to dashboard
+          res.redirect("../dashboard");
+        });
+    }
+  } catch (error) {
+    res.json({ err: error.message });
+  }
 });
 
 module.exports = router;

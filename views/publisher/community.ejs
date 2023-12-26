@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <!-- Google fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Rubik+Glitch&family=Russo+One&family=Saira+Stencil+One&family=Ubuntu+Condensed&family=Unica+One&display=swap"
+      rel="stylesheet"
+    />
+
+    <!-- AOS  -->
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet" />
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC"
+      crossorigin="anonymous"
+    />
+    <link rel="stylesheet" href="/stylesheets/publisher/community.css" />
+
+    <title>Community Registration</title>
+  </head>
+  <body>
+    <div
+      class="max-width-container"
+      data-aos="fade-in"
+      data-aos-duration="2000"
+      data-aos-delay="500"
+    >
+      <div class="form-header">
+        <h2 class="form-title">Community Registration</h2>
+        <p class="form-description">
+          Enter your community information to create a profile
+        </p>
+      </div>
+      <form action="community" method="post" enctype="multipart/form-data" class="card-container">
+        <div class="form-body">
+          <div class="form-group">
+            <label for="community-name">Community Name</label>
+            <input
+              class="input-field"
+              id="community-name"
+              type="text"
+              value="<%= name %>"
+              name="name"
+              placeholder="Enter community name"
+              required
+            />
+          </div>
+          <div class="form-group">
+            <label for="community-description">Short Description</label>
+            <textarea
+              class="textarea"
+              id="community-description"
+              placeholder="Enter short description about your community"
+              required
+              name="description"
+              value="<%= description %>"
+              cols="30"
+              rows="10"
+            ></textarea>
+          </div>
+          <div class="form-group">
+            <label for="email">Email</label>
+            <input
+              class="input-field"
+              id="email"
+              type="email"
+              name="email"
+              value="<%= email %>"
+              placeholder="Enter email"
+              required
+            />
+            <% if (emailExist) { %>
+                <div class="msg">
+                  <p class="text-danger">This community already registered!</p>
+                </div>
+              <% } %>
+          </div>
+          <div class="form-group">
+            <label for="place">Place</label>
+            <input
+              class="input-field"
+              id="place"
+              type="text"
+              name="place"
+              value="<%= place %>"
+              placeholder="Enter place"
+              required
+            />
+          </div>
+          <div class="form-group">
+            <label for="location">Location</label>
+            <input
+              class="input-field"
+              id="location"
+              name="location"
+              value="<%= location %>"
+              type="text"
+              placeholder="Enter google map url"
+              required
+            />
+          </div>
+          <div class="form-group">
+            <label for="social-links">Social Links</label>
+            <input
+              class="input-field"
+              id="social-links"
+              name="social"
+              value="<%= social %>"
+              type="text"
+              placeholder="Enter social links"
+              required
+            />
+          </div>
+          <div class="form-group">
+            <label for="mobile-number">Mobile Number</label>
+            <input
+              class="input-field"
+              id="mobile-number"
+              name="mobile"
+              value="<%= mobile %>"
+              type="tel"
+              placeholder="Enter mobile number"
+              required
+            />
+          </div>
+          <div class="form-group">
+            <label for="logo-upload">Logo</label>
+            <input
+              class="input-field"
+              id="logo-upload"
+              name="logo"
+              type="file"
+              required
+            />
+          </div>
+        </div>
+        <div class="form-footer">
+          <button class="submit-button" type="submit">
+            Community Registration
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script>
+      AOS.init();
+    </script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+      crossorigin="anonymous"
+    ></script>
+  </body>
+</html>
