@@ -36,7 +36,7 @@
           Please fill out the form to register
         </p>
       </div>
-      <form class="registration-card" action="register" method="post">
+      <form class="registration-card" action="register" method="post" enctype="multipart/form-data">
         <div class="registration-section">
           <h2 class="registration-section-title">Personal Information</h2>
         </div>
@@ -47,6 +47,7 @@
               type="text"
               id="name"
               name="name"
+              value="<%= name %>"
               class="form-input"
               placeholder="John Doe"
               required
@@ -58,10 +59,16 @@
               type="email"
               id="email"
               name="email"
+              value="<%= email %>"
               class="form-input"
               placeholder="john@example.com"
               required
             />
+            <% if (emailExist) { %>
+              <div class="msg">
+                <p class="text-danger">Email Already Exist</p>
+              </div>
+              <% } %>
           </div>
           <div class="form-group">
             <label for="password" class="form-label">Password</label>
@@ -69,9 +76,15 @@
               type="password"
               id="password"
               name="password"
+              value="<%= password %>"
               class="form-input"
               required
             />
+            <% if (passwordError) { %>
+              <div class="msg">
+                <p class="text-danger">Wrong Password</p>
+              </div>
+              <% } %>
           </div>
           <div class="form-group">
             <label for="confirm-password" class="form-label"
@@ -81,6 +94,7 @@
               type="password"
               id="confirm-password"
               name="confirm"
+              value="<%= confirm %>"
               class="form-input"
               required
             />
@@ -91,6 +105,7 @@
               type="text"
               id="role"
               name="role"
+              value="<%= role %>"
               class="form-input"
               placeholder="Developer"
               required
@@ -102,6 +117,7 @@
               type="text"
               id="community"
               name="community"
+              value="<%= community %>"
               class="form-input"
               placeholder="OpenAI"
               required
@@ -113,6 +129,7 @@
               type="url"
               id="social"
               name="social"
+              value="<%= social %>"
               class="form-input"
               placeholder="OpenAI"
               required
@@ -124,6 +141,7 @@
               type="text"
               id="place"
               name="place"
+              value="<%= place %>"
               class="form-input"
               placeholder="San Francisco"
               required
@@ -135,6 +153,7 @@
               type="tel"
               id="mobile"
               name="mobile"
+              value="<%= mobile %>"
               class="form-input"
               placeholder="1234567890"
               required

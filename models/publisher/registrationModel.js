@@ -8,6 +8,10 @@ const publisherRegistration = sequelizeConfig.define("publisherdetails", {
     allowNull: false,
     defaultValue: DataTypes.UUIDV4,
   },
+  name:{
+    type: DataTypes.STRING,
+    allowNull: false,
+  },
   email: {
     type: DataTypes.STRING,
     allowNull: false,
@@ -33,7 +37,7 @@ const publisherRegistration = sequelizeConfig.define("publisherdetails", {
     type: DataTypes.STRING,
     allowNull: false,
   },
-  mob: {
+  mobile: {
     type: DataTypes.STRING,
     allowNull: false,
   },

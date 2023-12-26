@@ -8,6 +8,10 @@ const verification = sequelizeConfig.define("publisherdetails", {
     allowNull: false,
     defaultValue: DataTypes.UUIDV4,
   },
+  name:{
+    type: DataTypes.STRING,
+    allowNull: false,
+  },
   email: {
     type: DataTypes.STRING,
     allowNull: false,
