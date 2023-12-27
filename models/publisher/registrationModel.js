@@ -1,12 +1,13 @@
 const { DataTypes } = require("sequelize");
 const sequelizeConfig = require("../../config/sequelize.config");
 
-const publisherRegistration = sequelizeConfig.define("publisherdetails", {
+const publisherRegistration = sequelizeConfig.define("publisherlogin", {
   id: {
     type: DataTypes.STRING,
     primaryKey: true,
     allowNull: false,
     defaultValue: DataTypes.UUIDV4,
+    autoIncrement:true
   },
   name:{
     type: DataTypes.STRING,

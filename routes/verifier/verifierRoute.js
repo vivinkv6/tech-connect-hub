@@ -3,6 +3,10 @@ const router = express.Router();
 const bycrypt = require("bcrypt");
 
 const verfierLogin = require("../../models/verifier/loginModel");
+const publisherRegistration = require("../../models/publisher/registrationModel");
+const communityRegistration = require("../../models/publisher/communityRegistrationModel");
+const verification = require("../../models/verifier/verification");
+
 const usernameExtractor = require("../../utils/usernameExtractor");
 
 //user all routes
@@ -83,7 +87,7 @@ router.post("/signup", async (req, res) => {
     //   password: password,
     //   confirm: confirm,
     // });
-    res.json({msg:"Wrong Password"});
+    res.json({ msg: "Wrong Password" });
   } else {
     const result = await verfierLogin.findOne({
       where: {
@@ -99,7 +103,7 @@ router.post("/signup", async (req, res) => {
       //   password: password,
       //   confirm: confirm,
       // });
-      res.json({msg:"Email Already Exists"});
+      res.json({ msg: "Email Already Exists" });
     } else {
       bycrypt.hash(password, 12, async (err, hashedPassword) => {
         if (err) {
@@ -113,7 +117,7 @@ router.post("/signup", async (req, res) => {
             })
             .then((data) => {
               // res.redirect("dashboard");
-              res.json({msg:"Dashboard"})
+              res.json({ msg: "Dashboard" });
             });
         }
       });
@@ -122,8 +126,89 @@ router.post("/signup", async (req, res) => {
 });
 
 //user dashboard
-router.get("/dashboard", (req, res) => {
-  res.json({ msg: "Verifier Dashboard" });
+router.get("/dashboard", async (req, res) => {
+  const verificationDetails = await verification.findAll({});
+  const verificationCount = await verification.count();
+
+  const communityCount = await communityRegistration.count();
+
+  res.render("../views/verifier/dashboard", {
+    profileCount: verificationCount,
+    profileDetails: verificationDetails,
+    communityCount: communityCount,
+  });
+});
+
+router.get("/dashboard/profile/:id", async (req, res) => {
+  const { id } = req.params;
+
+  const profile = await verification.findOne({
+    where: {
+      id: id,
+    },
+  });
+
+  res.render("../views/verifier/modal", { profile: profile });
+});
+
+router.get("/dashboard/profile/:id/accept", async (req, res) => {
+  const { id } = req.params;
+  const moveData = await verification.findByPk(id).then((data) => {
+    publisherRegistration.create({
+      id: data.dataValues.id,
+      name: data.dataValues.name,
+      email: data.dataValues.email,
+      password: data.dataValues.password,
+      community: data.dataValues.community,
+      role: data.dataValues.role,
+      mobile: data.dataValues.mobile,
+      place: data.dataValues.place,
+      socialmedia: data.dataValues.socialmedia,
+      proof: data.dataValues.proof,
+    });
+
+    data.destroy();
+  });
+
+  res.redirect("/verifier/dashboard");
+});
+
+router.get("/dashboard/profile/:id/reject", async (req, res) => {
+  const { id } = req.params;
+  const moveData = await verification.findByPk(id);
+
+  if (moveData) {
+    moveData.destroy();
+  }
+  res.redirect("/verifier/dashboard");
+});
+
+router.get("/dashboard/community", async (req, res) => {
+  const verificationCount = await verification.count();
+  const communityDetails = await communityRegistration.findAll({});
+  const communityCount = await communityRegistration.count();
+
+  res.render("../views/verifier/community", {
+    profileCount: verificationCount,
+    community: communityDetails,
+    communityCount: communityCount,
+  });
+});
+
+router.get("/dashboard/community/:id", async (req, res) => {
+  const { id } = req.params;
+
+  const community = await communityRegistration.findOne({
+    where: {
+      id: id,
+    },
+  });
+  console.log(community);
+  res.render("../views/verifier/communityModal", { community: community });
+});
+
+router.get("/dashboard/logout", (req, res) => {
+  res.redirect("/verifier/login");
 });
 
 module.exports = router;
