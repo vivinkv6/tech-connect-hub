@@ -100,8 +100,18 @@
                   community.dataValues.place %>
                 </p>
                 <div class="button-container">
-                  <button class="accept-btn">Accept</button>
-                  <button class="reject-btn">Reject</button>
+                  <button class="accept-btn">
+                    <a
+                      href="/verifier/dashboard/community/<%=  community.dataValues.id %>/accept"
+                      >Accept</a
+                    >
+                  </button>
+                  <button class="reject-btn">
+                    <a
+                      href="/verifier/dashboard/community/<%= community.dataValues.id %>/reject"
+                      >Reject</a
+                    >
+                  </button>
                 </div>
               </div>
             </div>

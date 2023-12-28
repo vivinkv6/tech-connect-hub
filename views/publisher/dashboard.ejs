@@ -25,9 +25,9 @@
       rel="stylesheet"
       href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.2/font/bootstrap-icons.min.css"
     />
-    <link rel="stylesheet" href="/stylesheets/verifier/dashboard.css" />
+    <link rel="stylesheet" href="/stylesheets/publisher/dashboard.css" />
 
-    <title>Verifier - Dashboard</title>
+    <title>Publisher - Dashboard</title>
   </head>
   <body>
     <div class="grid-container">
@@ -36,7 +36,8 @@
         <div class="sidebar-header">
           <a href="#" class="sidebar-logo">
             <span class="text-xs sm:text-sm md:text-base"
-              >Verifier Dashboard</span
+              ><img src="/images/dashboard.png" height="30" width="30" alt="" />
+              Publisher Dashboard</span
             >
           </a>
         </div>
@@ -45,15 +46,22 @@
               <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></svg>
               Home
             </a> -->
-          <a href="/verifier/dashboard" class="bg-gray-100">
+          <a
+            href="/publisher/<%= dashboard.dataValues.id %>/dashboard/profile"
+            class="bg-gray-100"
+          >
             <i class="bi bi-person-circle" style="font-size: 20px"></i>
-            Profiles
-            <div class="badge bg-primary"><%=profileCount %></div>
+            Profile
+          </a>
+          <a href="/verifier/dashboard/community">
+            <i class="bi bi-building" style="font-size: 20px"></i>
+            Post
+            <div class="badge bg-primary">0</div>
           </a>
           <a href="/verifier/dashboard/community">
             <i class="bi bi-building" style="font-size: 20px"></i>
             Community
-            <div class="badge bg-primary"><%=communityCount %></div>
+            <div class="badge bg-primary">0</div>
           </a>
           <a href="/verifier/dashboard/logout">
             <i class="bi bi-box-arrow-left" style="font-size: 20px"></i>
@@ -64,11 +72,12 @@
 
       <!-- Nav2 -->
 
-      <nav class="navbar nav2 bg-body-tertiary fixed-top bg-dark">
+      <nav class="navbar nav2 bg-body-tertiary fixed-top bg-secondary">
         <div class="container-fluid">
           <a href="#" class="sidebar-logo">
-            <span class="text-xs sm:text-sm md:text-base text-light"
-              >Verifier Dashboard</span
+            <span class="text-light text-xs sm:text-sm md:text-base"
+              ><img src="/images/dashboard.png" height="30" width="30" alt="" />
+              Publisher Dashboard</span
             >
           </a>
           <button
@@ -89,8 +98,14 @@
           >
             <div class="offcanvas-header">
               <a href="#" class="sidebar-logo">
-                <span class="text-xs sm:text-sm md:text-base text-dark"
-                  >Verifier Dashboard</span
+                <span class="text-dark text-xs sm:text-sm md:text-base"
+                  ><img
+                    src="/images/dashboard.png"
+                    height="30"
+                    width="30"
+                    alt=""
+                  />
+                  Publisher Dashboard</span
                 >
               </a>
               <button
@@ -116,7 +131,9 @@
                   >
                 </li>
                 <li class="nav-item">
-                  <a class="nav-link" href="/verifier/dashboard/logout"
+                  <a
+                    class="nav-link"
+                    href="/publisher/dashboard/<%=dashboard.dataValues.id  %>/logout"
                     >Logout</a
                   >
                 </li>
@@ -129,54 +146,58 @@
       <!-- Main Content -->
       <div class="main-content mt-5" style="overflow: scroll">
         <div class="container mt-5">
-          <h2>Recent Communities</h2>
+          <h2>Recent Post</h2>
           <hr />
           <div class="table-responsive">
-            <% if (community.length==0) { %>
-            <h2 class="mt-5">No Communities Found</h2>
-            <% }else{ %>
+            <%# if (profileDetails.length==0) { %>
+            <h2 class="mt-5">No Profiles Found</h2>
+            <%# }else{ %>
             <table class="table table-striped table-bordered">
               <thead>
                 <tr>
-                  <th>Logo</th>
-                  <th>name</th>
-                  <th>Email</th>
-                  <th>place</th>
-                  <th>mobile</th>
+                  <th>Banner</th>
+                  <th>Type</th>
+                  <th>Community</th>
+                  <th>Fee</th>
+                  <th>Mode</th>
                   <th>Action</th>
                 </tr>
               </thead>
               <tbody>
-                <% for( let i = 0; i < community.length; i++ ) { %>
+                <%# for( let i = 0; i < profileDetails.length; i++ ) { %>
                 <tr>
                   <td>
                     <img
-                      src="<%= community[i].dataValues.logo %>"
-                      height="100"
-                      width="100"
+                      src="<%#= profileDetails[i].dataValues.proof %>"
+                      height="200"
+                      width="200"
+                      style="object-fit: contain"
                       alt=""
                     />
                   </td>
-                  <td><%= community[i].dataValues.name %></td>
-                  <td><%= community[i].dataValues.email%></td>
-                  <td><%= community[i].dataValues.place%></td>
-                  <td><%= community[i].dataValues.mobile %></td>
+                  <td><%#= profileDetails[i].dataValues.name %></td>
+                  <td><%#= profileDetails[i].dataValues.email%></td>
+                  <td><%#= profileDetails[i].dataValues.role%></td>
+                  <td><%#= profileDetails[i].dataValues.community %></td>
                   <th>
                     <button class="btn btn-dark text-light">
                       <a
-                        href="/verifier/dashboard/community/<%=community[i].dataValues.id  %>"
-                        >View Profille</a
+                        href="/verifier/dashboard/profile/<%#=profileDetails[i].dataValues.id  %>"
+                        >View Post</a
                       >
                     </button>
                   </th>
                 </tr>
-                <% } %>
+                <%# } %>
               </tbody>
             </table>
-            <% } %>
+            <%# } %>
           </div>
         </div>
       </div>
+    </div>
+    <div class="add-container">
+      <img src="/images/plus.png" class="add" alt="" />
     </div>
 
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>

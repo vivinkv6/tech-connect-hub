@@ -20,9 +20,12 @@
       integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC"
       crossorigin="anonymous"
     />
-    <link rel="stylesheet" href="/stylesheets/verifier/modal.css" />
-
-    <title>Verifier - Dashboard</title>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"
+    />
+    <link rel="stylesheet" href="/stylesheets/publisher/profile.css" />
+   
   </head>
   <body>
     <div class="grid-container">
@@ -30,7 +33,6 @@
       <div class="main-container">
         <main class="content-container"></main>
         <div class="modal-container">
-          <% if (profile) { %>
           <div
             class="modal-box"
             data-aos="zoom-in"
@@ -38,8 +40,9 @@
             data-aos-duration="1000"
           >
             <div class="modal-header">
-              <h2 class="modal-title">Profile Information</h2>
-              <a href="/verifier/dashboard">
+            
+              <h2 class="modal-title">Your Profile</h2>
+              <a href="/publisher/<%=profile.id %>/dashboard">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   viewBox="0 0 24 24"
@@ -70,70 +73,50 @@
             </div>
             <div class="modal-body">
               <div class="profile-pic-container">
-                <a href="<%= profile.dataValues.proof %>" target="_blank">
-                  <img
-                    alt="Profile Pic"
-                    class="profile-pic"
-                    src="<%= profile.dataValues.proof %>"
-                  />
-                </a>
+                <center>
+          <img src="/images/user.png" height="100" width="100" alt="">
+        </center>
               </div>
               <div class="profile-details">
                 <p class="detail-item">
-                  <span class="detail-label">Name:</span> <%=
-                  profile.dataValues.name %>
+                  <span class="detail-label">Name:</span>
+                  <%=profile.name %>
                 </p>
                 <p class="detail-item">
-                  <span class="detail-label">Email:</span> <%=
-                  profile.dataValues.email %>
+                  <span class="detail-label">Email:</span>
+                  <%=profile.email %>
                 </p>
                 <p class="detail-item">
                   <span class="detail-label">Social Media:</span>
                   <a
-                    href="<%= profile.dataValues.socialmedia %>"
-                    style="color: blue; text-decoration: underline"
+                    href="<%=profile.socialmedia %>"
                     target="_blank"
-                    ><%= profile.dataValues.socialmedia %></a
+                    style="color: blue; text-decoration: underline"
+                    ><%=profile.socialmedia %></a
                   >
                 </p>
                 <p class="detail-item">
-                  <span class="detail-label">Role:</span> <%=
-                  profile.dataValues.role %>
+                  <span class="detail-label">Role:</span>
+                  <%=profile.role %>
                 </p>
                 <p class="detail-item">
-                  <span class="detail-label">Community:</span> <%=
-                  profile.dataValues.community %>
+                  <span class="detail-label">Community:</span>
+                  <%=profile.community %>
                 </p>
                 <p class="detail-item">
-                  <span class="detail-label">Mobile:</span> <%=
-                  profile.dataValues.mobile %>
+                  <span class="detail-label">Mobile:</span>
+                  <%=profile.mobile %>
                 </p>
                 <p class="detail-item">
-                  <span class="detail-label">Place:</span> <%=
-                  profile.dataValues.place %>
+                  <span class="detail-label">Place:</span>
+                  <%=profile.place %>
                 </p>
-                <div class="button-container">
-                  <button class="accept-btn">
-                    <a
-                      href="/verifier/dashboard/profile/<%=  profile.dataValues.id %>/accept"
-                      >Accept</a
-                    >
-                  </button>
-                  <button class="reject-btn">
-                    <a
-                      href="/verifier/dashboard/profile/<%=  profile.dataValues.id %>/reject"
-                      >Reject</a
-                    >
-                  </button>
-                </div>
               </div>
             </div>
           </div>
-          <% }%>
         </div>
       </div>
     </div>
-
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
     <script>
       AOS.init();

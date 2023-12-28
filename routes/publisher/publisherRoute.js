@@ -64,7 +64,7 @@ router.post("/login", async (req, res) => {
             res.json({ err: err });
           }
           if (data) {
-            res.redirect("dashboard");
+            res.redirect(`${hashPassword?.dataValues?.id}/dashboard`);
           } else {
             res.render("../views/publisher/login", {
               emailExist: true,
@@ -204,7 +204,7 @@ router.post("/register", upload.single("file"), async (req, res) => {
         //hash the password
         bycrypt.hash(password, 12, async (err, hashedPassword) => {
           if (err) {
-            res.json({ err:err.message });
+            res.json({ err: err.message });
           } else {
             const data = await verificationModel
               .create({
@@ -219,7 +219,7 @@ router.post("/register", upload.single("file"), async (req, res) => {
                 proof: fileUpload.secure_url,
               })
               .then((data) => {
-                res.redirect('/publisher/register/success')
+                res.render("../views/publisher/message");
               });
           }
         });
@@ -231,15 +231,35 @@ router.post("/register", upload.single("file"), async (req, res) => {
 });
 
 //registration completed successfully
-router.get('/register/success',(req,res)=>{
-  res.render('../views/publisher/message')
-})
+// router.get('/register/success',(req,res)=>{
+//   res.render('../views/publisher/message')
+// })
 
 //publisher dashboard
-router.get("/dashboard", (req, res) => {
-  res.json({ msg: "Publisher Dashboard" });
+router.get("/:id/dashboard", async (req, res) => {
+  const { id } = req.params;
+
+  const dashboard = await publisherLogin.findByPk(id);
+
+  if (!dashboard) {
+    res.redirect("/publisher/login");
+  } else {
+    res.render("../views/publisher/dashboard", { dashboard: dashboard });
+  }
+
+  res.render("../views/publisher/dashboard");
 });
 
+router.get("/:id/dashboard/profile", async (req, res) => {
+  const { id } = req.params;
+  const profile = await publisherLogin.findByPk(id);
+
+  if (!profile) {
+    res.redirect("/publisher/login");
+  } else {
+    res.render("../views/publisher/profile", { profile: profile.dataValues });
+  }
+});
 router.get("/dashboard/community", (req, res) => {
   res.render("../views/publisher/community", {
     emailExist: false,
@@ -310,6 +330,10 @@ router.post("/dashboard/community", upload.single("logo"), async (req, res) => {
   } catch (error) {
     res.json({ err: error.message });
   }
+});
+
+router.get("/dashboard/:id/logout", (req, res) => {
+  res.redirect("/publisher/dashboard/login");
 });
 
 module.exports = router;

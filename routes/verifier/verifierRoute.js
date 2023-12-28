@@ -207,6 +207,16 @@ router.get("/dashboard/community/:id", async (req, res) => {
   res.render("../views/verifier/communityModal", { community: community });
 });
 
+router.get("/dashboard/community/:id/reject", async (req, res) => {
+  const { id } = req.params;
+  const moveData = await communityRegistration.findByPk(id);
+
+  if (moveData) {
+    moveData.destroy();
+  }
+  res.redirect("/verifier/dashboard/community");
+});
+
 router.get("/dashboard/logout", (req, res) => {
   res.redirect("/verifier/login");
 });
