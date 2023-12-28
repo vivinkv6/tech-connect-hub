@@ -204,7 +204,7 @@ router.post("/register", upload.single("file"), async (req, res) => {
         //hash the password
         bycrypt.hash(password, 12, async (err, hashedPassword) => {
           if (err) {
-            res.json({ err: err.message });
+            res.json({ err:err.message });
           } else {
             const data = await verificationModel
               .create({
@@ -219,7 +219,7 @@ router.post("/register", upload.single("file"), async (req, res) => {
                 proof: fileUpload.secure_url,
               })
               .then((data) => {
-                res.redirect("dashboard");
+                res.redirect('/publisher/register/success')
               });
           }
         });
@@ -229,6 +229,11 @@ router.post("/register", upload.single("file"), async (req, res) => {
     res.json({ err: error.message });
   }
 });
+
+//registration completed successfully
+router.get('/register/success',(req,res)=>{
+  res.render('../views/publisher/message')
+})
 
 //publisher dashboard
 router.get("/dashboard", (req, res) => {
