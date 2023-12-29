@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <!-- Google fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Rubik+Glitch&family=Russo+One&family=Saira+Stencil+One&family=Ubuntu+Condensed&family=Unica+One&display=swap"
+      rel="stylesheet"
+    />
+
+    <!-- AOS  -->
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet" />
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC"
+      crossorigin="anonymous"
+    />
+    <link rel="stylesheet" href="/stylesheets/publisher/post.css" />
+
+    <title>Community Registration</title>
+  </head>
+  <body>
+    <div
+      class="max-width-container"
+      data-aos="fade-in"
+      data-aos-duration="2000"
+      data-aos-delay="500"
+    >
+      <div class="form-header">
+        <h2 class="form-title">Create Event Post</h2>
+        <p class="form-description">
+          Enter your event information to create a post
+        </p>
+      </div>
+      <form
+        action="/publisher/<%=id %>/dashboard/post/create"
+        method="post"
+        enctype="multipart/form-data"
+        class="card-container"
+      >
+        <div class="form-body">
+          <div class="form-group">
+            <label for="community-name">Event Name</label>
+            <input
+              class="input-field"
+              id="community-name"
+              type="text"
+              value=""
+              name="name"
+              placeholder="Enter event name"
+              required
+            />
+          </div>
+          <div class="form-group">
+            <label for="community-description">Short Description</label>
+            <textarea
+              class="textarea"
+              id="community-description"
+              placeholder="Enter your event description"
+              required
+              name="description"
+              value=""
+              cols="30"
+              rows="10"
+            ></textarea>
+          </div>
+          <div class="form-group">
+            <label for="mobile-number">Event Type</label>
+            <select name="type" id="" class="input-field" required>
+              <option value="Conferences">Conferences</option>
+              <option value="Meetups">Meetups</option>
+              <option value="Hackathons">Hackathons</option>
+              <option value="Workshops">Workshops</option>
+              <option value="Webinars">Webinars</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="mobile-number">Mode</label>
+            <select name="mode" id="" class="input-field" required>
+              <option value="Online">Online</option>
+              <option value="Offline">Offline</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="mobile-number">Fee</label>
+            <select name="fee" id="" class="input-field" required>
+              <option value="Free">Free</option>
+              <option value="Paid">Paid</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="place">Date</label>
+            <input
+              class="input-field"
+              id="date"
+              type="date"
+              name="date"
+              value=""
+              placeholder="Enter Date"
+              required
+            />
+          </div>
+          <div class="form-group">
+            <label for="place">Time</label>
+            <input
+              class="input-field"
+              id="time"
+              type="time"
+              name="time"
+              value=""
+              placeholder="Enter place"
+              required
+            />
+          </div>
+          <div class="form-group">
+            <label for="location">State</label>
+            <select
+              class="input-field"
+              id="state"
+              name="state"
+              value=""
+              type="text"
+              placeholder="Enter Place"
+              required
+            >
+              <option value="Andhra Pradesh">Andhra Pradesh</option>
+
+              <option value="Arunachal Pradesh">Arunachal Pradesh</option>
+
+              <option value="Assam">Assam</option>
+
+              <option value="Bihar">Bihar</option>
+
+              <option value="Chhattisgarh">Chhattisgarh</option>
+
+              <option value="Goa">Goa</option>
+
+              <option value="Gujarat">Gujarat</option>
+
+              <option value="Haryana">Haryana</option>
+
+              <option value="Himachal Pradesh">Himachal Pradesh</option>
+
+              <option value="Jammu and Kashmir">Jammu and Kashmir</option>
+
+              <option value="Jharkhand">Jharkhand</option>
+
+              <option value="Karnataka">Karnataka</option>
+
+              <option value="Kerala">Kerala</option>
+
+              <option value="Madhya Pradesh">Madhya Pradesh</option>
+
+              <option value="Maharashtra">Maharashtra</option>
+
+              <option value="Manipur">Manipur</option>
+
+              <option value="Meghalaya">Meghalaya</option>
+
+              <option value="Mizoram">Mizoram</option>
+
+              <option value="Nagaland">Nagaland</option>
+
+              <option value="Odisha">Odisha</option>
+
+              <option value="Punjab">Punjab</option>
+
+              <option value="Rajasthan">Rajasthan</option>
+
+              <option value="Sikkim">Sikkim</option>
+
+              <option value="Tamil Nadu">Tamil Nadu</option>
+
+              <option value="Telangana">Telangana</option>
+
+              <option value="Tripura">Tripura</option>
+
+              <option value="Uttarakhand">Uttarakhand</option>
+
+              <optio value="Uttar Pradesh">Uttar Pradesh</optio>
+
+              <option value="West Bengal">West Bengal</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="social-links">Registration Links</label>
+            <input
+              class="input-field"
+              id="social-links"
+              name="link"
+              value=""
+              type="url"
+              placeholder="Enter registration links"
+              required
+            />
+          </div>
+          <div class="form-group">
+            <label for="mobile-number">Contact</label>
+            <input
+              class="input-field"
+              id="mobile-number"
+              name="contact"
+              value=""
+              type="tel"
+              placeholder="Enter mobile number"
+              required
+            />
+          </div>
+
+          <div class="form-group">
+            <label for="mobile-number">Special Guest</label>
+            <input
+              class="input-field"
+              id="mobile-number"
+              name="guest"
+              value=""
+              type="text"
+              placeholder="Enter guest name"
+              required
+            />
+          </div>
+
+          <div class="form-group">
+            <label for="logo-upload">Banner</label>
+            <input
+              class="input-field"
+              id="logo-upload"
+              name="banner"
+              type="file"
+              required
+            />
+          </div>
+          <div class="form-footer">
+            <button class="submit-button" type="submit">Create Post</button>
+          </div>
+        </div>
+      </form>
+    </div>
+
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script>
+      AOS.init();
+    </script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+      crossorigin="anonymous"
+    ></script>
+  </body>
+</html>

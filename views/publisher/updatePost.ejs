@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <!-- Google fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Rubik+Glitch&family=Russo+One&family=Saira+Stencil+One&family=Ubuntu+Condensed&family=Unica+One&display=swap"
+    rel="stylesheet" />
+
+  <!-- AOS  -->
+  <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet" />
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous" />
+  <link rel="stylesheet" href="/stylesheets/publisher/post.css" />
+
+  <title>Community Registration</title>
+</head>
+
+<body>
+  <div class="max-width-container" data-aos="fade-in" data-aos-duration="2000" data-aos-delay="500">
+    <div class="form-header">
+      <h2 class="form-title">Update Event Post</h2>
+    </div>
+    <form action="/publisher/<%=id1 %>/dashboard/post/<%= post.id %>/update" method="post" enctype="multipart/form-data"
+      class="card-container">
+      <div class="form-body">
+        <div class="form-group">
+          <label for="community-name">Event Name</label>
+          <input class="input-field" id="community-name" type="text" value="<%= post.name %>" name="name"
+            placeholder="Enter event name" required />
+        </div>
+        <div class="form-group">
+          <label for="community-description">Short Description</label>
+          <textarea class="textarea" id="community-description" placeholder="Enter your event description" required
+            name="description" value="<%= post.description %>" cols="30" rows="10"><%= post.description %>
+          </textarea>
+        </div>
+        <div class="form-group">
+          <label for="mobile-number">Event Type</label>
+          <select name="type" id="" class="input-field" aria-selected="<%= post.type %>" required>
+            <option value="Conferences" <%=post.type==='Conferences' ? 'selected' : '' %>>Conferences</option>
+            <option value="Meetups" <%=post.type==='Meetups' ? 'selected' : '' %>>Meetups</option>
+            <option value="Hackathons" <%=post.type==='Hackathons' ? 'selected' : '' %>>Hackathons</option>
+            <option value="Workshops" <%=post.type==='Workshops' ? 'selected' : '' %>>Workshops</option>
+            <option value="Webinars" <%=post.type==='Webinars' ? 'selected' : '' %>>Webinars</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="mobile-number">Mode</label>
+          <select name="mode" id="" class="input-field" aria-selected="<%= post.mode %>" required>
+            <option value="Online" <%=post.mode==='Online' ? 'selected' : '' %>>Online</option>
+            <option value="Offline" <%=post.mode==='Offline' ? 'selected' : '' %>>Offline</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="mobile-number">Fee</label>
+          <select name="fee" id="" class="input-field" aria-selected="<%= post.fee %>" required>
+            <option value="Free" <%=post.fee==='Free' ? 'selected' : '' %>>Free</option>
+            <option value="Paid" <%=post.fee==='Paid' ? 'selected' : '' %>>Paid</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="place">Date</label>
+          <input class="input-field" id="date" type="date" name="date" value="<%= post.date %>" placeholder="Enter Date"
+            required />
+        </div>
+        <div class="form-group">
+          <label for="place">Time</label>
+          <input class="input-field" id="time" type="time" name="time" value="<%= post.time %>"
+            placeholder="Enter place" required />
+        </div>
+        <div class="form-group">
+          <label for="location">State</label>
+          <select class="input-field" id="state" name="state" aria-selected="<%= post.state %>" type="text"
+            placeholder="Enter Place" required>
+            <option value="Andhra Pradesh" <%=post.state==='Andhra Pradesh' ? 'selected' : '' %>>Andhra Pradesh</option>
+
+            <option value="Arunachal Pradesh" <%=post.state==='Arunachal Pradesh' ? 'selected' : '' %>>Arunachal Pradesh
+            </option>
+
+            <option value="Assam" <%=post.state==='Assam' ? 'selected' : '' %>>Assam</option>
+
+            <option value="Bihar" <%=post.state==='Bihar' ? 'selected' : '' %>>Bihar</option>
+
+            <option value="Chhattisgarh" <%=post.state==='Chhattisgarh' ? 'selected' : '' %>>Chhattisgarh</option>
+
+            <option value="Goa" <%=post.state==='Goa' ? 'selected' : '' %>>Goa</option>
+
+            <option value="Gujarat" <%=post.state==='Gujarat' ? 'selected' : '' %>>Gujarat</option>
+
+            <option value="Haryana" <%=post.state==='Haryana' ? 'selected' : '' %>>Haryana</option>
+
+            <option value="Himachal Pradesh" <%=post.state==='Himachal Prades' ? 'selected' : '' %>>Himachal Pradesh
+            </option>
+
+            <option value="Jammu and Kashmir" <%=post.state==='Jammu and Kashmir' ? 'selected' : '' %>>Jammu and Kashmir
+            </option>
+
+            <option value="Jharkhand" <%=post.state==='Jharkhand' ? 'selected' : '' %>>Jharkhand</option>
+
+            <option value="Karnataka" <%=post.state==='Karnataka' ? 'selected' : '' %>>Karnataka</option>
+
+            <option value="Kerala" <%=post.state==='Kerala' ? 'selected' : '' %>>Kerala</option>
+
+            <option value="Madhya Pradesh" <%=post.state==='Madhya Pradesh' ? 'selected' : '' %>>Madhya Pradesh</option>
+
+            <option value="Maharashtra" <%=post.state==='Maharashtra' ? 'selected' : '' %>>Maharashtra</option>
+
+            <option value="Manipur" <%=post.state==='Manipur' ? 'selected' : '' %>>Manipur</option>
+
+            <option value="Meghalaya" <%=post.state==='Meghalaya' ? 'selected' : '' %>>Meghalaya</option>
+
+            <option value="Mizoram" <%=post.state==='Mizoram' ? 'selected' : '' %>>Mizoram</option>
+
+            <option value="Nagaland" <%=post.state==='Nagaland' ? 'selected' : '' %>>Nagaland</option>
+
+            <option value="Odisha" <%=post.state==='Odisha' ? 'selected' : '' %>>Odisha</option>
+
+            <option value="Punjab" <%=post.state==='Punjab' ? 'selected' : '' %>>Punjab</option>
+
+            <option value="Rajasthan" <%=post.state==='Rajasthan' ? 'selected' : '' %>>Rajasthan</option>
+
+            <option value="Sikkim" <%=post.state==='Sikkim' ? 'selected' : '' %>>Sikkim</option>
+
+            <option value="Tamil Nadu" <%=post.state==='Tamil Nadu' ? 'selected' : '' %>>Tamil Nadu</option>
+
+            <option value="Telangana" <%=post.state==='Telangana' ? 'selected' : '' %>>Telangana</option>
+
+            <option value="Tripura" <%=post.state==='Tripura' ? 'selected' : '' %>>Tripura</option>
+
+            <option value="Uttarakhand" <%=post.state==='Uttarakhand' ? 'selected' : '' %>>Uttarakhand</option>
+
+            <optio value="Uttar Pradesh" <%=post.state==='Uttar Pradesh' ? 'selected' : '' %>>Uttar Pradesh</optio>
+
+            <option value="West Bengal" <%=post.state==='West Bengal' ? 'selected' : '' %>>West Bengal</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="social-links">Registration Links</label>
+          <input class="input-field" id="social-links" name="link" value="<%= post.link %>" type="url"
+            placeholder="Enter registration links" required />
+        </div>
+        <div class="form-group">
+          <label for="mobile-number">Contact</label>
+          <input class="input-field" id="mobile-number" name="contact" value="<%= post.contact %>" type="tel"
+            placeholder="Enter mobile number" required />
+        </div>
+
+        <div class="form-group">
+          <label for="mobile-number">Special Guest</label>
+          <input class="input-field" id="mobile-number" name="guest" value="<%= post.guest %>" type="text"
+            placeholder="Enter guest name" required />
+        </div>
+
+        <div class="form-group">
+          <label for="logo-upload">Banner</label>
+
+          <input class="input-field" id="logo-upload" name="banner" type="file" />
+          <input type="image" height="300" width="500" style="object-fit: contain;" src="<%= post.banner %>">
+        </div>
+        <div class="form-footer">
+          <button class="submit-button" type="submit">Update Post</button>
+        </div>
+      </div>
+    </form>
+  </div>
+
+  <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+  <script>
+    AOS.init();
+  </script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+    crossorigin="anonymous"></script>
+</body>
+
+</html>

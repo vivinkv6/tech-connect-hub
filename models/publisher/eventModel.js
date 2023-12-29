@@ -1,8 +1,8 @@
 const { DataTypes } = require("sequelize");
 const sequelizeConfig = require("../../config/sequelize.config");
-const eventModel = require("./eventModel");
+const publisherModel = require("./registrationModel");
 
-const publisherRegistration = sequelizeConfig.define("publisherlogin", {
+const eventModel = sequelizeConfig.define("eventpost", {
   id: {
     type: DataTypes.STRING,
     primaryKey: true,
@@ -13,43 +13,59 @@ const publisherRegistration = sequelizeConfig.define("publisherlogin", {
     type: DataTypes.STRING,
     allowNull: false,
   },
-  email: {
-    type: DataTypes.STRING,
-    allowNull: false,
-    unique: true,
-  },
-  password: {
-    type: DataTypes.STRING,
+  description: {
+    type: DataTypes.TEXT,
     allowNull: false,
   },
-  role: {
+  type: {
     type: DataTypes.STRING,
     allowNull: false,
   },
-  community: {
+  mode: {
     type: DataTypes.STRING,
     allowNull: false,
   },
-  socialmedia: {
+  date: {
+    type: DataTypes.DATEONLY,
+    allowNull: false,
+  },
+  time: {
+    type: DataTypes.TIME,
+    allowNull: false,
+  },
+  link: {
+    type: DataTypes.TEXT,
+    allowNull: false,
+  },
+  fee: {
     type: DataTypes.STRING,
     allowNull: false,
   },
-  place: {
+  state: {
     type: DataTypes.STRING,
     allowNull: false,
   },
-  mobile: {
+  banner: {
     type: DataTypes.STRING,
     allowNull: false,
   },
-  proof: {
+  guest: {
     type: DataTypes.STRING,
     allowNull: false,
+  },
+  contact: {
+    type: DataTypes.STRING,
+    allowNull: false,
+  },
+  publisherId: {
+    type: DataTypes.STRING,
+    allowNull: false,
+    defaultValue: DataTypes.UUIDV4,
   },
 });
 
-publisherRegistration.associate = () => {
-  publisherRegistration.hasMany(eventModel, { foreignKey: "publisherId" });
+eventModel.associate = () => {
+  eventModel.belongsTo(publisherModel, { foreignKey: "publisherId" });
 };
 
-module.exports = publisherRegistration;
+module.exports = eventModel;

@@ -6,6 +6,7 @@ const bycrypt = require("bcrypt");
 const publisherLogin = require("../../models/publisher/registrationModel");
 const verificationModel = require("../../models/verifier/verification");
 const communityModel = require("../../models/publisher/communityRegistrationModel");
+const eventModel = require("../../models/publisher/eventModel");
 
 const cloudinaryConfig = require("../../config/cloudinary.config");
 const multer = require("multer");
@@ -230,26 +231,30 @@ router.post("/register", upload.single("file"), async (req, res) => {
   }
 });
 
-//registration completed successfully
-// router.get('/register/success',(req,res)=>{
-//   res.render('../views/publisher/message')
-// })
-
 //publisher dashboard
 router.get("/:id/dashboard", async (req, res) => {
   const { id } = req.params;
 
   const dashboard = await publisherLogin.findByPk(id);
 
+  const events = await eventModel.findAll({
+    where: {
+      publisherId: id,
+    },
+  });
+  console.log(events);
+
   if (!dashboard) {
     res.redirect("/publisher/login");
   } else {
-    res.render("../views/publisher/dashboard", { dashboard: dashboard });
+    res.render("../views/publisher/dashboard", {
+      dashboard: dashboard,
+      events: events,
+    });
   }
-
-  res.render("../views/publisher/dashboard");
 });
 
+//view profile
 router.get("/:id/dashboard/profile", async (req, res) => {
   const { id } = req.params;
   const profile = await publisherLogin.findByPk(id);
@@ -260,20 +265,234 @@ router.get("/:id/dashboard/profile", async (req, res) => {
     res.render("../views/publisher/profile", { profile: profile.dataValues });
   }
 });
-router.get("/dashboard/community", (req, res) => {
-  res.render("../views/publisher/community", {
-    emailExist: false,
-    name: "",
-    email: "",
-    description: "",
-    place: "",
-    location: "",
-    social: "",
-    mobile: "",
-  });
-  // res.json({msg:"community"})
+
+//create post
+router.get("/:id/dashboard/post/create", async (req, res) => {
+  const { id } = req.params;
+  const profile = await publisherLogin.findByPk(id);
+
+  if (!profile) {
+    res.redirect("/publisher/login");
+  } else {
+    res.render("../views/publisher/post", { id: id });
+  }
 });
 
+//upload post
+router.post(
+  "/:id/dashboard/post/create",
+  upload.single("banner"),
+  async (req, res) => {
+    const { id } = req.params;
+
+    const {
+      name,
+      description,
+      type,
+      mode,
+      date,
+      time,
+      link,
+      fee,
+      state,
+      guest,
+      contact,
+    } = req.body;
+
+    const fileBuffer = req.file.buffer.toString("base64");
+    const fileUpload = await cloudinaryConfig.uploader.upload(
+      `data:image/png;base64,${fileBuffer}`,
+      {
+        folder: "/events",
+        public_id: Date.now() + "-" + req.file.originalname,
+        encoding: "base64",
+      }
+    );
+
+    const postEvent = await eventModel
+      .create({
+        name: name,
+        description: description,
+        type: type,
+        mode: mode,
+        date: date,
+        time: time,
+        banner: fileUpload.secure_url,
+        link: link,
+        fee: fee,
+        state: state,
+        guest: guest,
+        contact: contact,
+        publisherId: id,
+      })
+      .then(() => {
+        res.redirect(`/publisher/${id}/dashboard`);
+      })
+      .catch((err) => {
+        res.json({ err: err });
+      });
+  }
+);
+
+router.get("/:id1/dashboard/post/:id2/update", async (req, res) => {
+  const { id1, id2 } = req.params;
+
+  const validPublisher = await publisherLogin.findByPk(id1);
+  if (!validPublisher) {
+    res.redirect(`/publisher/${id1}/dasboard`);
+  } else {
+    const findPost = await eventModel.findByPk(id2);
+
+    if (!findPost) {
+      res.redirect(`/publisher/${id1}/dasboard`);
+    } else {
+      res.render("../views/publisher/updatePost", {
+        post: findPost.dataValues,
+        id1: id1,
+      });
+    }
+  }
+});
+
+router.post(
+  "/:id1/dashboard/post/:id2/update",
+  upload.single("banner"),
+  async (req, res) => {
+    const { id1, id2 } = req.params;
+    const {
+      name,
+      description,
+      type,
+      mode,
+      date,
+      time,
+      link,
+      fee,
+      state,
+      guest,
+      contact,
+    } = req.body;
+
+    const findPublisher = await publisherLogin.findByPk(id1);
+    if (!findPublisher) {
+      res.redirect(`/publisher/${id1}/dasboard`);
+    } else {
+      const findPost = await eventModel.findByPk(id2);
+      if (!findPost) {
+        res.redirect(`/publisher/${id1}/dasboard`);
+      } else {
+        //Chcek if the image is not update
+        if (!req.file) {
+          findPost
+            .update(req.body)
+            .then(() => {
+              res.redirect(`/publisher/${id1}/dashboard`);
+            })
+            .catch((err) => {
+              res.json({ err: err });
+            });
+        } else {
+          const fileBuffer = req.file.buffer.toString("base64");
+          const fileUpload = await cloudinaryConfig.uploader.upload(
+            `data:image/png;base64,${fileBuffer}`,
+            {
+              folder: "/events",
+              public_id: Date.now() + "-" + req.file.originalname,
+              encoding: "base64",
+            }
+          );
+          findPost
+            .update({
+              name: name,
+              description: description,
+              type: type,
+              mode: mode,
+              date: date,
+              time: time,
+              link: link,
+              fee: fee,
+              state: state,
+              guest: guest,
+              contact: contact,
+              banner: fileUpload.secure_url,
+            })
+            .then(() => {
+              res.redirect(`/publisher/${id1}/dashboard`);
+            })
+            .catch((err) => {
+              res.json({ err: err });
+            });
+        }
+      }
+    }
+  }
+);
+
+//View publisher specific post
+router.get("/:id1/dashboard/post/:id2", async (req, res) => {
+  const { id1, id2 } = req.params;
+  const profile = await publisherLogin.findByPk(id1);
+
+  if (!profile) {
+    res.redirect("/publisher/login");
+  } else {
+    const viewPost = await eventModel.findByPk(id2);
+
+    if (!viewPost) {
+      res.redirect(`/publisher/${id1}/dashboard`);
+    } else {
+      res.render("../views/publisher/viewPost", {
+        id1: id1,
+        profile: viewPost.dataValues,
+      });
+    }
+  }
+});
+
+//Delete publisher specific post
+
+router.get("/:id1/dashboard/post/:id2/delete", async (req, res) => {
+  const { id1, id2 } = req.params;
+
+  const publisher = await publisherLogin.findByPk(id1);
+
+  if (!publisher) {
+    res.redirect(`/publisher/${id1}/dashboard`);
+  } else {
+    const deletePost = await eventModel.findByPk(id2);
+    if (!deletePost) {
+      res.redirect(`/publisher/${id1}/dashboard`);
+    } else {
+      deletePost.destroy();
+      res.redirect(`/publisher/${id1}/dashboard`);
+    }
+  }
+});
+
+//Get community form
+
+router.get("/:id/dashboard/community", async (req, res) => {
+  const { id } = req.params;
+
+  const validId = await publisherLogin.findByPk(id);
+
+  if (!validId) {
+    res.redirect("/publisher/login");
+  } else {
+    res.render("../views/publisher/community", {
+      emailExist: false,
+      name: "",
+      email: "",
+      description: "",
+      place: "",
+      location: "",
+      social: "",
+      mobile: "",
+    });
+  }
+});
+
+//upload community details
 router.post("/dashboard/community", upload.single("logo"), async (req, res) => {
   const { name, description, email, place, location, mobile, social } =
     req.body;
@@ -332,8 +551,9 @@ router.post("/dashboard/community", upload.single("logo"), async (req, res) => {
   }
 });
 
+//logout route
 router.get("/dashboard/:id/logout", (req, res) => {
-  res.redirect("/publisher/dashboard/login");
+  res.redirect("/publisher/login");
 });
 
 module.exports = router;
