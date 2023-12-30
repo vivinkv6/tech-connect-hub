@@ -173,4 +173,35 @@ router.get("/:id/dashboard/post/:post", async (req, res) => {
   }
 });
 
+router.get("/:id/dashboard/filter?", async (req, res) => {
+  try {
+    const { id } = req.params;
+ 
+    const findId = await userlogin.findByPk(id);
+    if (!findId) {
+      res.redirect("/user/login");
+    } else {
+      if (req.query.type == undefined ||req.query.mode == undefined || req.query.fee == undefined ) {
+        console.log("start");
+        const filterPost = await eventModel.findAll({});
+        console.log(filterPost);
+        res.render("../views/user/filter", { post: filterPost, id: id });
+      } else {
+        console.log("next");
+        const filterPost = await eventModel.findAll({
+          where: {
+            type: req.query.type,
+            mode: req.query.mode,
+            fee: req.query.fee,
+          },
+        });
+
+        res.render("../views/user/filter", { post: filterPost, id: id });
+      }
+    }
+  } catch (err) {
+    res.json({ err: err.message });
+  }
+});
+
 module.exports = router;

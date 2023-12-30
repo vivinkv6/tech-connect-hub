@@ -30,67 +30,53 @@
   </head>
   <body>
     <div class="container mt-5">
-      <div class="row bg bg-light p-3 rounded shadow-lg">
+      <div
+        class="row bg bg-light p-3 rounded shadow-lg"
+        data-aos="zoom-in"
+        data-aos-duration="1000"
+      >
         <div class="col-md-6">
           <a href="<%= post.banner %>" target="_blank">
             <img src="<%= post.banner %>" class="banner mt-3" alt="" />
           </a>
           <div class="detail-container">
-            <span
-              ><i class="bi bi-geo-alt-fill text-danger fs-1"></i><br />
+            <center>
+            <span>
+              <i class="bi bi-geo-alt-fill text-danger fs-1"></i>
+              <br />
               <span class="location"><%= post.state %></span></span
             >
-            <span
-              ><i
-                class="bi bi-calendar-fill me-2 fs-1"
-                style="color: rgb(210, 220, 220)"
-              ></i
-              ><br /><b class="date"> <%= post.date %></b></span
-            >
-            <span
-              ><i class="bi bi-alarm-fill fs-1 me-2 text-secondary"></i><br /><b
-                class="date"
+            </center>
+            <center>
+              <span>
+                <i
+                  class="bi bi-calendar-fill fs-1"
+                  style="color: rgb(210, 220, 220)"
+                ></i>
+
+                <br /><b class="date"> <%= post.date %></b></span
               >
-                <%= post.time %></b
-              ></span
-            >
-            <span
-              ><i class="bi bi-person-fill fs-1 me-2 text-secondary"></i
-              ><br /><b class="date"> <%= post.guest %></b></span
-            >
+            </center>
+            <center>
+              <span>
+                <i class="bi bi-alarm-fill fs-1 me-2 text-secondary"></i
+                ><br /><b class="date"> <%= post.time %></b></span
+              >
+            </center>
+            <center>
+              <span
+                ><i class="bi bi-person-fill fs-1 me-2 text-secondary"></i
+                ><br /><b class="date"> <%= post.guest %></b></span
+              >
+            </center>
           </div>
         </div>
         <div class="content col-md-6 mt-3">
           <b class="title fs-1"><%= post.name %></b><br />
-          <!-- <b class="description">Description: </b> -->
-          <p>
-            Lorem ipsum dolor sit amet, consectetur adipisicing elit. Error
-            dolores quas itaque sint perferendis quam reiciendis facilis,
-            corrupti esse, ullam unde, cum delectus ea expedita cumque
-            praesentium quae nisi at. Fuga odio facere sint fugit incidunt
-            officiis, reiciendis, optio, labore eveniet quo quidem. Vitae ea
-            voluptatum unde, odio, sapiente dolore praesentium quia corrupti
-            nulla quis laudantium explicabo mollitia eum maxime! Quaerat tempora
-            eum vel, fuga magnam, id consequuntur consectetur voluptatem unde
-            aspernatur quasi accusantium obcaecati aliquam molestias quae a?
-            Culpa corrupti magnam adipisci, ipsum vel asperiores esse autem
-            omnis obcaecati! Nulla, tenetur. Quae nisi tempora dolorum cum
-            reprehenderit mollitia fugiat, quo unde dolores enim ipsam nostrum
-            suscipit in neque, vitae quibusdam consectetur explicabo ut animi
-            odit! Aliquam esse quibusdam doloremque? Lorem ipsum, dolor sit amet
-            consectetur adipisicing elit. Modi excepturi magni temporibus
-            facilis sunt laudantium itaque neque quis explicabo magnam, iure
-            voluptas corporis porro. Repellendus voluptate voluptatem sapiente
-            quibusdam quo. Consequuntur neque id perspiciatis, tempore repellat
-            eaque nobis. Perspiciatis nostrum quod cumque, sint velit odit!
-            Fugit eius error labore harum blanditiis pariatur expedita eaque
-            eligendi maxime, vel sint voluptas ducimus. Expedita fugit mollitia
-            deleniti omnis dolores eaque rerum nesciunt aperiam officia quaerat,
-            illum nemo provident rem? Repudiandae voluptas sint cumque beatae
-            itaque possimus fugiat eaque cum perspiciatis maxime! Laboriosam,
-            eaque.
-          </p>
-          <div class="mb-3" style="display: flex; justify-content: flex-start">
+          <div
+            class="mb-3 highlight2"
+            style="display: flex; justify-content: flex-start"
+          >
             <% if (post.fee == 'Free') { %>
             <span class="me-2 badge bg text-light bg-success"
               ><%= post.fee%></span
@@ -133,6 +119,8 @@
             >
             <% } %>
           </div>
+          <!-- <b class="description">Description: </b> -->
+          <p><%= post.description %></p>
         </div>
         <a href="<%= post.link %>" target="_blank" class="btn btn-primary"
           >Register Now</a

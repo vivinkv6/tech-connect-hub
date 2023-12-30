@@ -58,6 +58,7 @@ main {
 .card {
   box-shadow: 0px 0px 10px black;
   text-align: left;
+  max-height: 500px;
 }
 
 .techconnect-image {
@@ -74,6 +75,14 @@ main {
 .nav-link:hover {
   color: rgb(181, 181, 181);
 }
+
+/* img{
+  width: 100%;
+  max-height: 250px;
+  object-fit: fill;
+  border-top-right-radius: 10px;
+  border-top-left-radius: 10px;
+} */
 
 footer {
   background-color: #333;
