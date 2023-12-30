@@ -7,6 +7,7 @@ const publisherLogin = require("../../models/publisher/registrationModel");
 const verificationModel = require("../../models/verifier/verification");
 const communityModel = require("../../models/publisher/communityRegistrationModel");
 const eventModel = require("../../models/publisher/eventModel");
+const notificationModel = require("../../models/user/notificationModel");
 
 const cloudinaryConfig = require("../../config/cloudinary.config");
 const multer = require("multer");
@@ -305,38 +306,56 @@ router.post(
       contact,
     } = req.body;
 
-    const fileBuffer = req.file.buffer.toString("base64");
-    const fileUpload = await cloudinaryConfig.uploader.upload(
-      `data:image/png;base64,${fileBuffer}`,
-      {
-        folder: "/events",
-        public_id: Date.now() + "-" + req.file.originalname,
-        encoding: "base64",
-      }
-    );
+    const findId = await publisherLogin.findByPk(id);
 
-    const postEvent = await eventModel
-      .create({
-        name: name,
-        description: description,
-        type: type,
-        mode: mode,
-        date: date,
-        time: time,
-        banner: fileUpload.secure_url,
-        link: link,
-        fee: fee,
-        state: state,
-        guest: guest,
-        contact: contact,
-        publisherId: id,
-      })
-      .then(() => {
-        res.redirect(`/publisher/${id}/dashboard`);
-      })
-      .catch((err) => {
-        res.json({ err: err });
-      });
+    if (!findId) {
+      res.redirect("/publisher/login");
+    } else {
+      const fileBuffer = req.file.buffer.toString("base64");
+      const fileUpload = await cloudinaryConfig.uploader.upload(
+        `data:image/png;base64,${fileBuffer}`,
+        {
+          folder: "/events",
+          public_id: Date.now() + "-" + req.file.originalname,
+          encoding: "base64",
+        }
+      );
+
+      const postEvent = await eventModel
+        .create({
+          name: name,
+          description: description,
+          type: type,
+          mode: mode,
+          date: date,
+          time: time,
+          banner: fileUpload.secure_url,
+          link: link,
+          fee: fee,
+          state: state,
+          guest: guest,
+          contact: contact,
+          publisherId: id,
+        })
+        .then(async (data) => {
+          const sendNotification = await notificationModel
+            .create({
+              pic: fileUpload.secure_url,
+              user: findId.dataValues.name,
+              message: `<i>${findId.dataValues.name}</i> has uploaded new event <b>" ${name} "</b>. Check out the details for the latest updates on upcoming events and plan your schedule accordingly`,
+              eventId: data.dataValues.id,
+            })
+            .then(() => {
+              res.redirect(`/publisher/${id}/dashboard`);
+            })
+            .catch((err) => {
+              res.json({ err: err });
+            });
+        })
+        .catch((err) => {
+          res.json({ err: err });
+        });
+    }
   }
 );
 

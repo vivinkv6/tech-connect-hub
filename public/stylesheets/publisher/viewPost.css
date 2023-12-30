@@ -21,13 +21,13 @@ body {
 }
 
 
-/* .grid-container {
-  display: grid;
+.grid-container {
+  /* display: grid;
   grid-template-columns: 1fr 2fr;
   min-height: 100vh;
-  overflow: hidden;
+  overflow: hidden; */
   background-color: #0000005d;
-} */
+}
 
 .border-right {
   border-right: 1px solid #ddd;
