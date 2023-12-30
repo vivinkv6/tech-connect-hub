@@ -52,8 +52,20 @@
                   stroke-linecap="round"
                   stroke-linejoin="round"
                 >
-                  <line x1="18" y1="6" x2="6" y2="18"></line>
-                  <line x1="6" y1="6" x2="18" y2="18"></line>
+                  <line
+                    x1="18"
+                    y1="6"
+                    x2="6"
+                    y2="18"
+                    style="color: black"
+                  ></line>
+                  <line
+                    x1="6"
+                    y1="6"
+                    x2="18"
+                    y2="18"
+                    style="color: black"
+                  ></line>
                 </svg>
               </a>
             </div>
@@ -69,12 +81,13 @@
               </div>
               <div class="profile-details">
                 <p class="detail-item">
-                  <span class="detail-label">Name:</span> <%=
-                  community.dataValues.name %>
+                  <span class="detail-label"
+                    ><%= community.dataValues.name %></span
+                  >
                 </p>
                 <p class="detail-item">
-                  <span class="detail-label">Description:</span> <%=
-                  community.dataValues.description %>
+                  <span class="detail-label">Description:</span><br />
+                  <%= community.dataValues.description %>
                 </p>
                 <p class="detail-item">
                   <span class="detail-label">Email:</span> <%=
@@ -101,10 +114,7 @@
                 </p>
                 <div class="button-container">
                   <button class="accept-btn">
-                    <a
-                      href="/verifier/dashboard/community/<%=  community.dataValues.id %>/accept"
-                      >Accept</a
-                    >
+                    <a href="/verifier/dashboard/community">Accept</a>
                   </button>
                   <button class="reject-btn">
                     <a

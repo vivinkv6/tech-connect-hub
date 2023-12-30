@@ -1,6 +1,7 @@
 const { DataTypes } = require("sequelize");
 const sequelizeConfig = require("../../config/sequelize.config");
 const eventModel = require("./eventModel");
+const communityModel = require("./communityRegistrationModel");
 
 const publisherRegistration = sequelizeConfig.define("publisherlogin", {
   id: {
@@ -50,6 +51,7 @@ const publisherRegistration = sequelizeConfig.define("publisherlogin", {
 
 publisherRegistration.associate = () => {
   publisherRegistration.hasMany(eventModel, { foreignKey: "publisherId" });
+  publisherRegistration.hasMany(communityModel, { foreignKey: "publisherId" });
 };
 
 module.exports = publisherRegistration;

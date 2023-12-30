@@ -236,6 +236,11 @@ router.get("/:id/dashboard", async (req, res) => {
   const { id } = req.params;
 
   const dashboard = await publisherLogin.findByPk(id);
+  const community = await communityModel.count({
+    where: {
+      publisherId: id,
+    },
+  });
 
   const events = await eventModel.findAll({
     where: {
@@ -250,6 +255,7 @@ router.get("/:id/dashboard", async (req, res) => {
     res.render("../views/publisher/dashboard", {
       dashboard: dashboard,
       events: events,
+      community: community,
     });
   }
 });
@@ -469,9 +475,37 @@ router.get("/:id1/dashboard/post/:id2/delete", async (req, res) => {
   }
 });
 
-//Get community form
+//GET community Dashboard
 
 router.get("/:id/dashboard/community", async (req, res) => {
+  const { id } = req.params;
+  const checkId = await publisherLogin.findByPk(id);
+  const post = await eventModel.count({
+    where: {
+      publisherId: id,
+    },
+  });
+  //check if the ID is valid or not
+  if (!checkId) {
+    res.redirect(`/publisher/${id}/dashboard`);
+  } else {
+    const fetchCommunity = await communityModel.findAll({
+      where: {
+        publisherId: id,
+      },
+    });
+
+    res.render("../views/publisher/communityDashboard", {
+      community: fetchCommunity,
+      id: id,
+      post: post,
+    });
+  }
+});
+
+//Get community form
+
+router.get("/:id/dashboard/community/create", async (req, res) => {
   const { id } = req.params;
 
   const validId = await publisherLogin.findByPk(id);
@@ -480,6 +514,7 @@ router.get("/:id/dashboard/community", async (req, res) => {
     res.redirect("/publisher/login");
   } else {
     res.render("../views/publisher/community", {
+      id: id,
       emailExist: false,
       name: "",
       email: "",
@@ -493,67 +528,87 @@ router.get("/:id/dashboard/community", async (req, res) => {
 });
 
 //upload community details
-router.post("/dashboard/community", upload.single("logo"), async (req, res) => {
-  const { name, description, email, place, location, mobile, social } =
-    req.body;
+router.post(
+  "/:id/dashboard/community/create",
+  upload.single("logo"),
+  async (req, res) => {
+    const { id } = req.params;
+    const { name, description, email, place, location, mobile, social } =
+      req.body;
 
-  try {
-    //check if the community already registered or not
+    try {
+      //check if the community already registered or not
 
-    const result = await communityModel.findOne({
-      where: {
-        email: email,
-      },
-    });
+      const checkId = await publisherLogin.findByPk(id);
 
-    if (result) {
-      res.render("../views/publisher/community", {
-        emailExist: true,
-        name: name,
-        email: email,
-        description: description,
-        place: place,
-        location: location,
-        social: social,
-        mobile: mobile,
-      });
-    } else {
-      const logoBuffer = req.file.buffer.toString("base64");
-      const fileUpload = await cloudinaryConfig.uploader.upload(
-        `data:image/png;base64,${logoBuffer}`,
-        {
-          folder: "community",
-          public_id: Date.now() + "-" + req.file.originalname,
-          encoding: "base64",
-        }
-      );
-
-      //store data to the community table
-
-      const storeData = await communityModel
-        .create({
-          name: name,
-          description: description,
-          email: email,
-          location: location,
-          place: place,
-          mobile: mobile,
-          social: social,
-          logo: fileUpload.secure_url,
-        })
-        .then((data) => {
-          //after data store to the table naviagate to dashboard
-          res.redirect("../dashboard");
+      if (!checkId) {
+        res.redirect(`/publisher/$${id}/dashboard/community`);
+      } else {
+        const result = await communityModel.findOne({
+          where: {
+            email: email,
+          },
         });
+
+        if (result) {
+          res.render("../views/publisher/community", {
+            id: id,
+            emailExist: true,
+            name: name,
+            email: email,
+            description: description,
+            place: place,
+            location: location,
+            social: social,
+            mobile: mobile,
+          });
+        } else {
+          const logoBuffer = req.file.buffer.toString("base64");
+          const fileUpload = await cloudinaryConfig.uploader.upload(
+            `data:image/png;base64,${logoBuffer}`,
+            {
+              folder: "community",
+              public_id: Date.now() + "-" + req.file.originalname,
+              encoding: "base64",
+            }
+          );
+
+          //store data to the community table
+
+          const storeData = await communityModel
+            .create({
+              name: name,
+              description: description,
+              email: email,
+              location: location,
+              place: place,
+              mobile: mobile,
+              social: social,
+              logo: fileUpload.secure_url,
+              publisherId: id,
+            })
+            .then((data) => {
+              //after data store to the table naviagate to dashboard
+              res.redirect(`/publisher/${id}/dashboard/community`);
+            });
+        }
+      }
+    } catch (error) {
+      res.json({ err: error.message });
     }
-  } catch (error) {
-    res.json({ err: error.message });
   }
-});
+);
 
 //logout route
-router.get("/dashboard/:id/logout", (req, res) => {
-  res.redirect("/publisher/login");
+router.get("/:id/dashboard/logout", async (req, res) => {
+  const { id } = req.params;
+  const checkId = await publisherLogin.findByPk(id);
+
+  if (!checkId) {
+    res.redirect("/publisher/login");
+  } else {
+    res.redirect("/publisher/login");
+  }
 });
 
 module.exports = router;

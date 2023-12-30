@@ -46,26 +46,21 @@
               <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></svg>
               Home
             </a> -->
-          <a
-            href="/publisher/<%= dashboard.dataValues.id %>/dashboard/profile"
-            class="bg-gray-100"
-          >
+          <a href="/publisher/<%= id %>/dashboard/profile" class="bg-gray-100">
             <i class="bi bi-person-circle" style="font-size: 20px"></i>
             Profile
           </a>
-          <a href="/publisher/<%= dashboard.dataValues.id %>/dashboard">
+          <a href="/publisher/<%=id %>/dashboard">
             <i class="bi bi-postcard-fill" style="font-size: 20px"></i>
             Post
-            <div class="badge bg-primary"><%= events.length %></div>
+            <div class="badge bg-primary"><%= post %></div>
           </a>
-          <a
-            href="/publisher/<%= dashboard.dataValues.id %>/dashboard/community"
-          >
+          <a href="/publisher/<%=id %>/dashboard/community">
             <i class="bi bi-building" style="font-size: 20px"></i>
             Community
-            <div class="badge bg-primary"><%= community %></div>
+            <div class="badge bg-primary"><%=community.length%></div>
           </a>
-          <a href="/publisher/<%= dashboard.dataValues.id %>/dashboard/logout">
+          <a href="/publisher/<%=id %>/dashboard/logout">
             <i class="bi bi-box-arrow-left" style="font-size: 20px"></i>
             Logout
           </a>
@@ -124,27 +119,23 @@
                     Home
                   </a> -->
                 <a
-                  href="/publisher/<%= dashboard.dataValues.id %>/dashboard/profile"
+                  href="/publisher/<%= id %>/dashboard/profile"
                   class="bg-gray-100"
                 >
                   <i class="bi bi-person-circle" style="font-size: 20px"></i>
                   Profile
                 </a>
-                <a href="/publisher/<%= dashboard.dataValues.id %>/dashboard">
+                <a href="/publisher/<%=id %>/dashboard">
                   <i class="bi bi-postcard-fill" style="font-size: 20px"></i>
                   Post
-                  <div class="badge bg-primary"><%= events.length %></div>
+                  <div class="badge bg-primary"><%= post %></div>
                 </a>
-                <a
-                  href="/publisher/<%= dashboard.dataValues.id %>/dashboard/community"
-                >
+                <a href="/publisher/<%=id %>/dashboard/community">
                   <i class="bi bi-building" style="font-size: 20px"></i>
                   Community
-                  <div class="badge bg-primary"><%= community %></div>
+                  <div class="badge bg-primary"><%=community.length%></div>
                 </a>
-                <a
-                  href="/publisher/<%= dashboard.dataValues.id %>/dashboard/logout"
-                >
+                <a href="/publisher/<%=id %>/dashboard/logout">
                   <i class="bi bi-box-arrow-left" style="font-size: 20px"></i>
                   Logout
                 </a>
@@ -157,65 +148,45 @@
       <!-- Main Content -->
       <div class="main-content mt-5" style="overflow: scroll">
         <div class="container mt-5">
-          <h2>Recent Post</h2>
+          <h2>Recent Communities</h2>
           <hr />
           <div class="table-responsive">
-            <% if (events.length==0) { %>
-            <h2 class="mt-5">No Post Found</h2>
+            <% if (community.length==0) { %>
+            <h2 class="mt-5">No Communities Found</h2>
             <% }else{ %>
             <table class="table table-striped table-bordered">
               <thead>
                 <tr>
-                  <th>Banner</th>
-                  <th>Type</th>
-                  <th>Contact</th>
-                  <th>Fee</th>
-                  <th>Mode</th>
+                  <th>Logo</th>
+                  <th>Name</th>
+                  <th>Email</th>
+                  <th>Mobile</th>
+                  <th>Location</th>
                   <th>Action</th>
                 </tr>
               </thead>
               <tbody>
-                <% for( let i = 0; i < events.length; i++ ) { %>
+                <% for( let i = 0; i < community.length; i++ ) { %>
                 <tr>
                   <td>
                     <img
-                      src="<%= events[i].dataValues.banner %>"
+                      src="<%=  community[i].dataValues.logo %>"
                       height="200"
                       width="200"
                       style="object-fit: contain"
                       alt=""
                     />
                   </td>
-                  <td><%= events[i].dataValues.name %></td>
-                  <td><%= events[i].dataValues.contact%></td>
-                  <td>
-                    <% if (events[i].dataValues.fee=="Free") { %>
-                    <button class="btn btn-success">
-                      <%=events[i].dataValues.fee %>
-                    </button>
-                    <% }else{%>
-                    <button class="btn btn-danger">
-                      <%=events[i].dataValues.fee %>
-                    </button>
-                    <% } %>
-                  </td>
-                  <td>
-                    <% if (events[i].dataValues.mode=="Online") { %>
-                    <button class="btn btn-primary">
-                      <%=events[i].dataValues.mode %>
-                    </button>
-                    <% }else{%>
-                    <button class="btn btn-secondary">
-                      <%=events[i].dataValues.mode %>
-                    </button>
-                    <% } %>
-                  </td>
+                  <td><%= community[i].dataValues.name %></td>
+                  <td><%= community[i].dataValues.email %></td>
+                  <td><%= community[i].dataValues.mobile %></td>
+                  <td><%= community[i].dataValues.location %></td>
                   <th>
                     <center>
                       <button class="btn btn-dark text-light">
                         <a
-                          href="/publisher/<%= dashboard.dataValues.id %>/dashboard/post/<%=events[i].dataValues.id  %>"
-                          >View Post</a
+                          href="/publisher/<%=id %>/dashboard/post/<%= community[i].dataValues.mobile %>"
+                          >View</a
                         >
                       </button>
                     </center>
@@ -230,7 +201,7 @@
       </div>
     </div>
     <div class="add-container">
-      <a href="/publisher/<%= dashboard.dataValues.id %>/dashboard/post/create">
+      <a href="/publisher/<%=id %>/dashboard/community/create">
         <img src="/images/plus.png" class="add" alt=""
       /></a>
     </div>
