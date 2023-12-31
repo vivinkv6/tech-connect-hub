@@ -35,17 +35,25 @@
         data-aos="zoom-in"
         data-aos-duration="1000"
       >
+        <div style="display: flex; justify-content: space-between">
+          <a href="/user/<%= id %>/dashboard/saved/<%= post.id %>">
+            <i class="bi bi-bookmark-fill text-dark fs-1 fw-bold"></i>
+          </a>
+          <a  href="/user/<%= id %>/dashboard" >
+            <i class="bi bi-x-lg text-dark fs-1 fw-bold"></i>
+          </a>
+        </div>
         <div class="col-md-6">
           <a href="<%= post.banner %>" target="_blank">
             <img src="<%= post.banner %>" class="banner mt-3" alt="" />
           </a>
           <div class="detail-container">
             <center>
-            <span>
-              <i class="bi bi-geo-alt-fill text-danger fs-1"></i>
-              <br />
-              <span class="location"><%= post.state %></span></span
-            >
+              <span>
+                <i class="bi bi-geo-alt-fill text-danger fs-1"></i>
+                <br />
+                <span class="location"><%= post.state %></span></span
+              >
             </center>
             <center>
               <span>
@@ -122,7 +130,10 @@
           <!-- <b class="description">Description: </b> -->
           <p><%= post.description %></p>
         </div>
-        <a href="<%= post.link %>" target="_blank" class="btn btn-primary"
+        <a
+          href="<%= post.link %>"
+          target="_blank"
+          class="btn btn-primary fs-3 fw-bold"
           >Register Now</a
         >
       </div>

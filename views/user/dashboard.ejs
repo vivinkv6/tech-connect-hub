@@ -30,13 +30,14 @@
   </head>
   <body>
     <div
-      class="head-container"
+      class="head-container bg bg-light shadow-sm rounded"
       data-aos="fade-down"
       data-aos-delay="100"
       data-aos-duration="1000"
     >
-      <header>
-        <h1><%= greeting %>, <%= profile.username %>!</h1>
+      <header >
+        <h1>TechConnect <span>Hub</span></h1>
+        <h4 class="text-secondary"><%= greeting %>, <%= profile.name %>!</h4>
       </header>
       <nav>
         <li class="">
@@ -80,15 +81,18 @@
 
     <!-- Navbar2 -->
     <nav
-      class="navbar nav2 navbar-expand-lg bg bg-dark bg-body-tertiary"
+      class="navbar nav2 navbar-expand-lg bg bg-light bg-body-tertiary shadow-sm rounded"
       data-aos="fade-down"
       data-aos-delay="100"
       data-aos-duration="1000"
     >
       <div class="container-fluid">
-        <a class="navbar-brand text-light" href="#">TECH CONNECT HUB</a>
+        <header >
+          <h1>TechConnect <span>Hub</span></h1>
+          <h4 class="text-secondary"><%= greeting %>, <%= profile.name %>!</h4>
+        </header>
         <button
-          class="navbar-toggler text-light"
+          class="navbar-toggler text-dark"
           type="button"
           data-bs-toggle="collapse"
           data-bs-target="#navbarText"
@@ -167,20 +171,20 @@
         <div class="col-xl-4 col-md-6">
           <center>
             <div
-              class="card mb-5"
-             
+              class="card mb-5 rounded"
               data-aos="fade-left"
               data-aos-easing="linear"
               data-aos-duration="1000"
             >
-            <a href="/user/<%= profile.id %>/dashboard/post/<%= post[i].dataValues.id %>">
-              <img
-                src="<%= post[i].dataValues.banner %>"
-                class="card-img-top"
-                
-                alt="..."
-              />
-            </a>
+              <a
+                href="/user/<%= profile.id %>/dashboard/post/<%= post[i].dataValues.id %>"
+              >
+                <img
+                  src="<%= post[i].dataValues.banner %>"
+                  class="card-img-top"
+                  alt="..."
+                />
+              </a>
               <div class="card-body">
                 <div
                   class="mb-3"

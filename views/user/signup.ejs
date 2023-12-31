@@ -39,6 +39,16 @@
         <div class="form">
           <form id="signupForm" action="signup" method="post">
             <div class="form-group">
+              <label for="email-address">Name</label>
+              <input
+                type="text"
+                id="name"
+                name="name"
+                value="<%= name %>"
+                required
+              />
+            </div>
+            <div class="form-group">
               <label for="email-address">Email address</label>
               <input
                 type="email"
@@ -54,6 +64,16 @@
                 <p class="text-danger">Email Already Exist</p>
               </div>
               <% } %>
+              <div class="form-group">
+                <label for="email-address">Role</label>
+                <input
+                  type="text"
+                  id="role"
+                  name="role"
+                  value="<%= role %>"
+                  required
+                />
+              </div>
             <div class="form-group">
               <label for="password">Password</label>
               <input
@@ -74,8 +94,7 @@
               <label for="confirm-password">Confirm Password</label>
               <input type="password" id="confirm" name="confirm" value="<%= confirm %>" required />
             </div>
-          
-            
+     
             <button class="btn" id="btn" type="submit">Create Account</button>
           </form>
         </div>

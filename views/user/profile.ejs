@@ -24,56 +24,49 @@
       rel="stylesheet"
       href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.2/font/bootstrap-icons.min.css"
     />
-    <link rel="stylesheet" href="/stylesheets/user/filter.css" />
+    <link rel="stylesheet" href="/stylesheets/user/profile.css" />
 
-    <title>user- login</title>
+    <title>Notification</title>
   </head>
   <body>
-    <form class="filter-container" method="get">
-      <div class="filter-category">
-        <label for="typeFilter">Type:</label>
-        <select id="typeFilter" name="type">
-          <option value="">All</option>
-          <option value="Hackathons">Hackathons</option>
-          <option value="Conferences">Conferences</option>
-          <option value="Webinars">Webinars</option>
-          <option value="Meetups">Meetups</option>
-          <option value="Workshops">Workshops</option>
-        </select>
+    <div class="container">
+      <div
+        class="profile-container"
+        data-aos="zoom-in"
+        data-aos-duration="1000"
+      >
+        <center>
+          <div class="profile-pic">
+            <img src="/images/avatar2.png" alt="Profile Picture" />
+          </div>
+        </center>
+        <div>
+        <label for="">Name: </label>
+        <div class="username" ><%= profile.name %></div>
       </div>
+        <label for="">Role: </label>
+        <div class="username"><%= profile.role %></div>
+        <label for="">UserName: </label>
+        <div class="username"><%= profile.username %></div>
+        <label for="">Email: </label>
+        <div class="username"><%= profile.email %></div>
+        <center>
+        <button class="edit-button">Edit Profile</button>
+      </center>
+      </div>
+      <div class="post-container">
+        <div class="header">
+          <h2 class="fw-bold">Saved Posts</h2>
+        </div>
 
-      <div class="filter-category">
-        <label for="modeFilter">Mode:</label>
-        <select id="modeFilter" name="mode">
-          <option value="">All</option>
-          <option value="Online">Online</option>
-          <option value="Offline">Offline</option>
-        </select>
-      </div>
+        <div class="container">
+          <% if (post.length==0) { %>
+          <h2 class="text-center text-secondary">No Saved Post</h2>
+          <% }else{ %>
+          <div class="row">
+            <% for( let i = 0; i < post.length; i++ ) { %>
 
-      <div class="filter-category">
-        <label for="feeFilter">Fee:</label>
-        <select id="feeFilter" name="fee">
-          <option value="">All</option>
-          <option value="Free">Free</option>
-          <option value="Paid">Paid</option>
-        </select>
-      </div>
-      <div class="button-container">
-        <button class="btn btn-primary">
-          <i class="bi bi-filter text-light"></i>Filter
-        </button>
-      </div>
-    </form>
-
-    <ul class="events-list" id="eventsList">
-      <div class="container mt-5">
-        <div class="row">
-          <% if (post.length ==0) { %>
-          <h1>No Post Found</h1>
-          <% }else{ %> <% for( let i = 0; i < post.length; i++ ) { %>
-          <div class="col-xl-4 col-md-6">
-            <center>
+            <div class="col-md-4">
               <div
                 class="card mb-5 rounded"
                 data-aos="fade-left"
@@ -81,14 +74,21 @@
                 data-aos-duration="1000"
               >
                 <a
-                  href="/user/<%=id %>/dashboard/post/<%= post[i].dataValues.id %>"
+                  href="/user/<%= profile.id %>/dashboard/post/<%= post[i].dataValues.id %>"
                 >
                   <img
                     src="<%= post[i].dataValues.banner %>"
+                    style="position: relative"
                     class="card-img-top"
-                    alt="<%= post[i].dataValues.name %>"
+                    alt="..."
                   />
                 </a>
+                <a
+                  href="/user/<%= profile.id %>/dashboard/remove/<%= post[i].dataValues.id %>"
+                  class="bi bi-trash fs-3 text-secondary px-2 bg bg-light rounded-circle"
+                  style="position: absolute; top: 10px; right: 20px"
+                ></a>
+
                 <div class="card-body">
                   <div
                     class="mb-3"
@@ -145,12 +145,13 @@
                   </div>
                 </div>
               </div>
-            </center>
+            </div>
+            <% } %>
           </div>
-          <% } %> <% } %>
+          <% } %>
         </div>
       </div>
-    </ul>
+    </div>
 
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
     <script>

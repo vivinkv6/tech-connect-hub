@@ -7,6 +7,7 @@ const eventModel = require("../../models/publisher/eventModel");
 const usernameExtractor = require("../../utils/usernameExtractor");
 const getGreeting = require("../../utils/greetings");
 const notificationModel = require("../../models/user/notificationModel");
+const { Sequelize, where } = require("sequelize");
 
 //user all routes
 
@@ -68,6 +69,8 @@ router.get("/signup", (req, res) => {
   res.render("../views/user/signup", {
     emailExist: false,
     passwordError: false,
+    name:"",
+    role:"",
     email: "",
     password: "",
     confirm: "",
@@ -75,7 +78,7 @@ router.get("/signup", (req, res) => {
 });
 
 router.post("/signup", async (req, res) => {
-  const { email, password, confirm } = req.body;
+  const { email, password, confirm,name,role } = req.body;
   const username = usernameExtractor(email);
 
   if (password !== confirm) {
@@ -85,6 +88,8 @@ router.post("/signup", async (req, res) => {
       email: email,
       password: password,
       confirm: confirm,
+      name:name,
+      role:role
     });
   } else {
     const result = await userlogin.findOne({
@@ -100,6 +105,8 @@ router.post("/signup", async (req, res) => {
         email: email,
         password: password,
         confirm: confirm,
+        name:name,
+        role:role
       });
     } else {
       bycrypt.hash(password, 12, async (err, hashedPassword) => {
@@ -111,9 +118,11 @@ router.post("/signup", async (req, res) => {
               username: username,
               email: email,
               password: hashedPassword,
+              name:name,
+              role:role
             })
             .then((data) => {
-              res.redirect("dashboard");
+              res.redirect(`/user/${data.dataValues.id}/dashboard`);
             });
         }
       });
@@ -168,7 +177,10 @@ router.get("/:id/dashboard/post/:post", async (req, res) => {
     if (!findPost) {
       res.redirect("/user/login");
     } else {
-      res.render("../views/user/viewPost", { post: findPost.dataValues });
+      res.render("../views/user/viewPost", {
+        post: findPost.dataValues,
+        id: id,
+      });
     }
   }
 });
@@ -176,12 +188,16 @@ router.get("/:id/dashboard/post/:post", async (req, res) => {
 router.get("/:id/dashboard/filter?", async (req, res) => {
   try {
     const { id } = req.params;
- 
+
     const findId = await userlogin.findByPk(id);
     if (!findId) {
       res.redirect("/user/login");
     } else {
-      if (req.query.type == undefined ||req.query.mode == undefined || req.query.fee == undefined ) {
+      if (
+        req.query.type == undefined ||
+        req.query.mode == undefined ||
+        req.query.fee == undefined
+      ) {
         console.log("start");
         const filterPost = await eventModel.findAll({});
         console.log(filterPost);
@@ -201,6 +217,114 @@ router.get("/:id/dashboard/filter?", async (req, res) => {
     }
   } catch (err) {
     res.json({ err: err.message });
+  }
+});
+
+router.get("/:id/dashboard/profile", async (req, res) => {
+  const { id } = req.params;
+  const profile = await userlogin.findByPk(id);
+
+  //check if the user id is valid or not
+  if (!profile) {
+    res.redirect("/user/login");
+  } else {
+    const savedPost = await eventModel.findAll({
+      where: {
+        id: profile.dataValues.saved,
+      },
+    });
+    // res.json({msg:"success"})
+    res.render("../views/user/profile", {
+      profile: profile.dataValues,
+      post: savedPost,
+    });
+  }
+});
+
+router.get("/:id/dashboard/saved/:post", async (req, res) => {
+  const { id, post } = req.params;
+  const findUser = await userlogin.findByPk(id);
+  let savedPost = [];
+
+  if (!findUser) {
+    res.redirect("/user/login");
+  } else {
+    if (findUser.dataValues.saved == null) {
+      const updatedUser = await userlogin
+        .update(
+          {
+            saved: [post],
+          },
+          {
+            where: {
+              id: id,
+            },
+          }
+        )
+        .then(() => {
+          res.redirect(`/user/${id}/dashboard`);
+        })
+        .catch((err) => {
+          res.json({ err: err.message });
+        });
+    } else {
+      savedPost = [...findUser.dataValues.saved];
+      if (savedPost.includes(post)) {
+        res.redirect(`/user/${id}/dashboard`);
+      } else {
+        const updatedUser = await userlogin
+          .update(
+            {
+              saved: [...findUser.dataValues.saved, post],
+            },
+            {
+              where: {
+                id: id,
+              },
+            }
+          )
+          .then(() => {
+            res.redirect(`/user/${id}/dashboard`);
+          })
+          .catch((err) => {
+            res.json({ err: err.message });
+          });
+      }
+    }
+  }
+});
+
+router.get("/:id/dashboard/remove/:post", async (req, res) => {
+  const { id, post } = req.params;
+  const findId = await userlogin.findByPk(id);
+
+  if (!findId) {
+    res.redirect("/user/login");
+  } else {
+    const deletePost = await userlogin.update(
+      {
+        saved: Sequelize.fn("array_remove", Sequelize.col("saved"), post),
+      },
+      {
+        where: {},
+        returning: true,
+      }
+    ).then(()=>{
+      res.redirect(`/user/${id}/dashboard/profile`);
+    }).catch((err)=>{
+      res.json({err:err.message})
+    })
+  }
+});
+
+router.get("/:id/dashboard/logout", async (req, res) => {
+  const { id } = req.params;
+  const validId = await userlogin.findByPk(id);
+
+  if (!validId) {
+    res.redirect("/user/signup");
+  } else {
+    res.redirect("/user/login");
   }
 });
 

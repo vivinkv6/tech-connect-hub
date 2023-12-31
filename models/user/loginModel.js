@@ -9,6 +9,14 @@ const user = sequelize.define("userlogins", {
     primaryKey: true,
     defaultValue: DataTypes.UUIDV4,
   },
+  name:{
+    type: DataTypes.STRING,
+    allowNull: false,
+  },
+  role:{
+    type: DataTypes.STRING,
+    allowNull: false,
+  },
   username: {
     type: DataTypes.STRING,
     allowNull: false,
@@ -21,6 +29,10 @@ const user = sequelize.define("userlogins", {
     type: DataTypes.STRING,
     allowNull: false,
   },
+  saved:{
+    type:DataTypes.ARRAY(DataTypes.STRING),
+    allowNull:true
+  }
 });
 
 module.exports = user;
