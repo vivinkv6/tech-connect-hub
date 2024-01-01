@@ -35,39 +35,51 @@
         <div class="sidebar col-md-3 shadow-lg">
           <h2 class="mb-4">Admin Dashboard</h2>
           <!-- <a href="#" class="list-group-item list-group-item-action">Profile</a> -->
-          <a href="/admin/dashboard" class="list-group-item list-group-item-action"
+          <a
+            href="/admin/dashboard"
+            class="list-group-item list-group-item-action"
             ><i
               class="bi bi-person fs-3 me-3"
               style="vertical-align: middle"
             ></i
             >Users</a
           >
-          <a href="/admin/dashboard/publisher" class="list-group-item list-group-item-action"
+          <a
+            href="/admin/dashboard/publisher"
+            class="list-group-item list-group-item-action"
             ><i
               class="bi bi-pencil-square fs-3 me-3"
               style="vertical-align: middle"
             ></i
             >Publishers</a
           >
-          <a href="/admin/dashboard/verifier" class="list-group-item list-group-item-action"
+          <a
+            href="/admin/dashboard/verifier"
+            class="list-group-item list-group-item-action"
             ><i
               class="bi bi-check-circle fs-3 me-3"
               style="vertical-align: middle"
             ></i
             >Verifier</a
           >
-          <a href="/admin/dashboard/post" class="list-group-item list-group-item-action"
+          <a
+            href="/admin/dashboard/post"
+            class="list-group-item list-group-item-action"
             ><i class="bi bi-send fs-3 me-3" style="vertical-align: middle"></i
             >Post</a
           >
-          <a href="/admin/dashboard/community" class="list-group-item list-group-item-action"
+          <a
+            href="/admin/dashboard/community"
+            class="list-group-item list-group-item-action"
             ><i
               class="bi bi-building fs-3 me-3"
               style="vertical-align: middle"
             ></i
             >Community</a
           >
-          <a href="/admin/dashboard/logout" class="list-group-item list-group-item-action"
+          <a
+            href="/admin/dashboard/logout"
+            class="list-group-item list-group-item-action"
             ><i
               class="bi bi-box-arrow-left fs-3 me-3"
               style="vertical-align: middle"
@@ -93,42 +105,54 @@
             </button>
             <div class="collapse navbar-collapse" id="navbarNavDropdown">
               <ul class="navbar-nav mt-3">
-                <a href="/admin/dashboard" class="list-group-item list-group-item-action"
+                <a
+                  href="/admin/dashboard"
+                  class="list-group-item list-group-item-action"
                   ><i
                     class="bi bi-person fs-3 me-3"
                     style="vertical-align: middle"
                   ></i
                   >Users</a
                 >
-                <a href="/admin/dashboard/publisher" class="list-group-item list-group-item-action"
+                <a
+                  href="/admin/dashboard/publisher"
+                  class="list-group-item list-group-item-action"
                   ><i
                     class="bi bi-pencil-square fs-3 me-3"
                     style="vertical-align: middle"
                   ></i
                   >Publishers</a
                 >
-                <a href="/admin/dashboard/verifier" class="list-group-item list-group-item-action"
+                <a
+                  href="/admin/dashboard/verifier"
+                  class="list-group-item list-group-item-action"
                   ><i
                     class="bi bi-check-circle fs-3 me-3"
                     style="vertical-align: middle"
                   ></i
                   >Verifier</a
                 >
-                <a href="/admin/dashboard/post" class="list-group-item list-group-item-action"
+                <a
+                  href="/admin/dashboard/post"
+                  class="list-group-item list-group-item-action"
                   ><i
                     class="bi bi-send fs-3 me-3"
                     style="vertical-align: middle"
                   ></i
                   >Post</a
                 >
-                <a href="/admin/dashboard/community" class="list-group-item list-group-item-action"
+                <a
+                  href="/admin/dashboard/community"
+                  class="list-group-item list-group-item-action"
                   ><i
                     class="bi bi-building fs-3 me-3"
                     style="vertical-align: middle"
                   ></i
                   >Community</a
                 >
-                <a href="/admin/dashboard/logout" class="list-group-item list-group-item-action"
+                <a
+                  href="/admin/dashboard/logout"
+                  class="list-group-item list-group-item-action"
                   ><i
                     class="bi bi-box-arrow-left fs-3 me-3"
                     style="vertical-align: middle"
@@ -145,48 +169,55 @@
           <!-- Table -->
           <table class="table table-bordered caption-top">
             <caption>
-              List of Users
+              List of Verifiers
             </caption>
-
-            <% if (users.length==0) { %>
-             <h2 class="text-center text-secondary">No Users</h2>
+            <% if (verifier.length==0) { %>
+            <h2 class="text-center text-secondary">No Verifiers</h2>
             <% }else{ %>
-              <thead class="thead-dark">
-                <tr>
-                  <th class="text-dark">SlNo.</th>
-                  <th class="text-dark">Name</th>
-                  <th class="text-dark">UserName</th>
-                  <th class="text-dark">Email</th>
-                  <th class="text-dark">Role</th>
-                  <th class="text-dark">Action</th>
-                </tr>
-              </thead>
-  
-              <tbody>
-                <% for( let i = 0; i < users.length; i++ ) { %>
-                
-                
-                <tr>
-                  <td><%= i+1 %></td>
-                  <td><%= users[i].dataValues.name %></td>
-                  <td><%= users[i].dataValues.username %></td>
-                  <td><%= users[i].dataValues.email %></td>
-                  <td><%= users[i].dataValues.role %></td>
-                  <td>
-                    <center>
-                    <a href="/admin/dashboard/user/delete/<%= users[i].dataValues.id %>" class="btn btn-danger"><i class="bi bi-trash me-2"></i>Delete</a>
+            <thead class="thead-dark">
+              <tr>
+                <th class="text-dark">SlNo.</th>
+                <th class="text-dark">UserName</th>
+                <th class="text-dark">Email</th>
+                <th class="text-dark">Action</th>
+              </tr>
+            </thead>
+
+            <tbody>
+              <% for( let i = 0; i < verifier.length; i++ ) { %> 
+              <tr>
+                <td><%= i+1 %></td>
+                <td><%= verifier[i].dataValues.username %></td>
+                <td><%= verifier[i].dataValues.email %></td>
+                <td>
+                  <center>
+                    <a
+                      href="/admin/dashboard/verifier/edit/<%= verifier[i].dataValues.id %>"
+                      class="btn btn-primary"
+                    >
+                      <i class="bi bi-pencil-fill me-2"></i>Edit
+                    </a>
+                    <a
+                      href="/admin/dashboard/verifier/delete/<%= verifier[i].dataValues.id %>"
+                      class="btn btn-danger"
+                    >
+                      <i class="bi bi-trash me-2"></i>Delete
+                    </a>
                   </center>
-                  </td>
-                </tr>
-                <% } %>
-              
-                <!-- Add more rows as needed -->
-              </tbody>
+                </td>
+              </tr>
               <% } %>
 
-           
+              <!-- Add more rows as needed -->
+            </tbody>
+            <% } %>
           </table>
+          <div class="fs-1 text-primary" style="position: absolute;top:20px;right: 20px;">
+            <!-- <i class="bi bi-plus-circle-fill"></i> -->
+            <a href="/admin/dashboard/verifier/create" class="btn btn-primary" ><i class="bi bi-person-plus-fill me-2 fs-5"style="vertical-align: middle;"></i>Verifier</a>
+          </div>
         </div>
+        
       </div>
     </div>
 

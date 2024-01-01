@@ -7,10 +7,13 @@ const publisherLogin = require("../../models/publisher/registrationModel");
 const verificationModel = require("../../models/verifier/verification");
 const communityModel = require("../../models/publisher/communityRegistrationModel");
 const eventModel = require("../../models/publisher/eventModel");
+const verifiers=require("../../models/verifier/loginModel");
 const notificationModel = require("../../models/user/notificationModel");
+const randomGenerator =require('../../utils/random');
 
 const cloudinaryConfig = require("../../config/cloudinary.config");
 const multer = require("multer");
+const verfierLogin = require("../../models/verifier/loginModel");
 /* The line `const storage = multer.memoryStorage();` is creating an instance of the `multer`
 middleware's `MemoryStorage` class. */
 const storage = multer.memoryStorage();
@@ -102,6 +105,7 @@ router.get("/register", (req, res) => {
 
 router.post("/register", upload.single("file"), async (req, res) => {
   try {
+    const verifierCount=await verifiers.count();
     const {
       name,
       email,
@@ -203,11 +207,16 @@ router.post("/register", upload.single("file"), async (req, res) => {
           }
         );
 
+
+
         //hash the password
         bycrypt.hash(password, 12, async (err, hashedPassword) => {
           if (err) {
             res.json({ err: err.message });
           } else {
+            const randomVerifier=randomGenerator(verifierCount);
+            const allVerifiers=await verfierLogin.findAll({});
+
             const data = await verificationModel
               .create({
                 name: name,
@@ -219,6 +228,7 @@ router.post("/register", upload.single("file"), async (req, res) => {
                 place: place,
                 mobile: mobile,
                 proof: fileUpload.secure_url,
+                verifierId:allVerifiers[randomVerifier].dataValues.id
               })
               .then((data) => {
                 res.render("../views/publisher/message");
@@ -605,6 +615,7 @@ router.post(
               social: social,
               logo: fileUpload.secure_url,
               publisherId: id,
+              verifierId:checkId.dataValues.verifierId
             })
             .then((data) => {
               //after data store to the table naviagate to dashboard

@@ -39,7 +39,7 @@
           >
             <div class="modal-header">
               <h2 class="modal-title">Profile Information</h2>
-              <a href="/verifier/dashboard">
+              <a href="/verifier/<%= id %>/dashboard">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   viewBox="0 0 24 24"
@@ -115,13 +115,13 @@
                 <div class="button-container">
                   <button class="accept-btn">
                     <a
-                      href="/verifier/dashboard/profile/<%=  profile.dataValues.id %>/accept"
+                      href="/verifier/<%= id %>/dashboard/profile/<%=  profile.dataValues.id %>/accept"
                       >Accept</a
                     >
                   </button>
                   <button class="reject-btn">
                     <a
-                      href="/verifier/dashboard/profile/<%=  profile.dataValues.id %>/reject"
+                      href="/verifier/<%= id %>/dashboard/profile/<%=  profile.dataValues.id %>/reject"
                       >Reject</a
                     >
                   </button>

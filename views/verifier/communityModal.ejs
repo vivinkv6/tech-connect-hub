@@ -40,7 +40,7 @@
           >
             <div class="modal-header">
               <h2 class="modal-title">Community Information</h2>
-              <a href="/verifier/dashboard/community">
+              <a href="/verifier/<%= id %>/dashboard/community">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   viewBox="0 0 24 24"
@@ -114,11 +114,11 @@
                 </p>
                 <div class="button-container">
                   <button class="accept-btn">
-                    <a href="/verifier/dashboard/community">Accept</a>
+                    <a href="/verifier/<%= id %>/dashboard/community">Accept</a>
                   </button>
                   <button class="reject-btn">
                     <a
-                      href="/verifier/dashboard/community/<%= community.dataValues.id %>/reject"
+                      href="/verifier/<%= id %>/dashboard/community/<%= community.dataValues.id %>/reject"
                       >Reject</a
                     >
                   </button>

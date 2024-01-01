@@ -33,41 +33,41 @@
       <div class="row">
         <!-- Sidebar -->
         <div class="sidebar col-md-3 shadow-lg">
-          <h2 class="mb-4">Admin Dashboard</h2>
+          <h2 class="mb-4 ">Admin Dashboard</h2>
           <!-- <a href="#" class="list-group-item list-group-item-action">Profile</a> -->
-          <a href="/admin/dashboard" class="list-group-item list-group-item-action"
+          <a href="/admin/dashboard" class=" list-group-item-action"
             ><i
               class="bi bi-person fs-3 me-3"
               style="vertical-align: middle"
             ></i
             >Users</a
           >
-          <a href="/admin/dashboard/publisher" class="list-group-item list-group-item-action"
+          <a href="/admin/dashboard/publisher" class=" list-group-item-action"
             ><i
               class="bi bi-pencil-square fs-3 me-3"
               style="vertical-align: middle"
             ></i
             >Publishers</a
           >
-          <a href="/admin/dashboard/verifier" class="list-group-item list-group-item-action"
+          <a href="/admin/dashboard/verifier" class="list-group-item-action"
             ><i
               class="bi bi-check-circle fs-3 me-3"
               style="vertical-align: middle"
             ></i
             >Verifier</a
           >
-          <a href="/admin/dashboard/post" class="list-group-item list-group-item-action"
+          <a href="/admin/dashboard/post" class="list-group-item-action"
             ><i class="bi bi-send fs-3 me-3" style="vertical-align: middle"></i
             >Post</a
           >
-          <a href="/admin/dashboard/community" class="list-group-item list-group-item-action"
+          <a href="/admin/dashboard/community" class="list-group-item-action"
             ><i
               class="bi bi-building fs-3 me-3"
               style="vertical-align: middle"
             ></i
             >Community</a
           >
-          <a href="/admin/dashboard/logout" class="list-group-item list-group-item-action"
+          <a href="/admin/dashboard/logout" class="list-group-item-action"
             ><i
               class="bi bi-box-arrow-left fs-3 me-3"
               style="vertical-align: middle"
@@ -145,46 +145,49 @@
           <!-- Table -->
           <table class="table table-bordered caption-top">
             <caption>
-              List of Users
+              List of Publishers
             </caption>
 
-            <% if (users.length==0) { %>
-             <h2 class="text-center text-secondary">No Users</h2>
+            <% if (publishers.length==0) { %>
+              <h2 class="text-center text-secondary">No Publishers</h2>
             <% }else{ %>
               <thead class="thead-dark">
                 <tr>
                   <th class="text-dark">SlNo.</th>
                   <th class="text-dark">Name</th>
-                  <th class="text-dark">UserName</th>
+                  <th class="text-dark">Community</th>
                   <th class="text-dark">Email</th>
                   <th class="text-dark">Role</th>
+                  <th class="text-dark">Proof</th>
+                  <th class="text-dark">Social Media</th>
+                  <th class="text-dark">Place</th>
+                  <th class="text-dark">Mobile</th>
                   <th class="text-dark">Action</th>
                 </tr>
               </thead>
   
               <tbody>
-                <% for( let i = 0; i < users.length; i++ ) { %>
+                <% for( let i = 0; i < publishers.length; i++ ) { %>
                 
-                
+               
                 <tr>
                   <td><%= i+1 %></td>
-                  <td><%= users[i].dataValues.name %></td>
-                  <td><%= users[i].dataValues.username %></td>
-                  <td><%= users[i].dataValues.email %></td>
-                  <td><%= users[i].dataValues.role %></td>
+                  <td><%= publishers[i].dataValues.name %></td>
+                  <td><%= publishers[i].dataValues.community %></td>
+                  <td><%= publishers[i].dataValues.email %></td>
+                  <td><%= publishers[i].dataValues.role %></td>
+                  <td><a href="<%= publishers[i].dataValues.proof %>" target="_blank"><img src="<%= publishers[i].dataValues.proof %>" style="object-fit: contain;" height="50" width="50" alt="ID proof"></a></td>
+                  <td><%= publishers[i].dataValues.socialmedia%></td>
+                  <td><%= publishers[i].dataValues.place %></td>
+                  <td><%= publishers[i].dataValues.mobile %></td>
                   <td>
-                    <center>
-                    <a href="/admin/dashboard/user/delete/<%= users[i].dataValues.id %>" class="btn btn-danger"><i class="bi bi-trash me-2"></i>Delete</a>
-                  </center>
+                    <a href="/admin/dashboard/publisher/delete/<%= publishers[i].dataValues.id %>" class="btn btn-danger"><i class="bi bi-trash me-2"></i>Delete</a>
                   </td>
                 </tr>
                 <% } %>
               
-                <!-- Add more rows as needed -->
-              </tbody>
-              <% } %>
-
-           
+            </tbody>
+            <% } %>
           </table>
         </div>
       </div>

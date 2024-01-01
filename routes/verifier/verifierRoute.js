@@ -47,7 +47,7 @@ router.post("/login", async (req, res) => {
             res.json({ err: err });
           }
           if (data) {
-            res.redirect("dashboard");
+            res.redirect(`/verifier/${hashPassword?.dataValues?.id}/dashboard`);
           } else {
             res.render("../views/verifier/login", {
               emailExist: true,
@@ -80,14 +80,14 @@ router.post("/signup", async (req, res) => {
   const username = usernameExtractor(email);
 
   if (password !== confirm) {
-    // res.render("../views/verifier/signup", {
-    //   emailExist: false,
-    //   passwordError: true,
-    //   email: email,
-    //   password: password,
-    //   confirm: confirm,
-    // });
-    res.json({ msg: "Wrong Password" });
+    res.render("../views/admin/verifierSignup", {
+      emailExist: false,
+      passwordError: true,
+      email: email,
+      password: password,
+      confirm: confirm,
+    });
+    // res.json({ msg: "Wrong Password" });
   } else {
     const result = await verfierLogin.findOne({
       where: {
@@ -96,14 +96,14 @@ router.post("/signup", async (req, res) => {
     });
 
     if (result) {
-      // res.render("../views/verifier/signup", {
-      //   emailExist: true,
-      //   passwordError: false,
-      //   email: email,
-      //   password: password,
-      //   confirm: confirm,
-      // });
-      res.json({ msg: "Email Already Exists" });
+      res.render("../views/admin/verifierSignup", {
+        emailExist: true,
+        passwordError: false,
+        email: email,
+        password: password,
+        confirm: confirm,
+      });
+      // res.json({ msg: "Email Already Exists" });
     } else {
       bycrypt.hash(password, 12, async (err, hashedPassword) => {
         if (err) {
@@ -116,8 +116,8 @@ router.post("/signup", async (req, res) => {
               password: hashedPassword,
             })
             .then((data) => {
-              // res.redirect("dashboard");
-              res.json({ msg: "Dashboard" });
+              res.redirect("/admin/dashboard/verifier");
+              // res.json({ msg: "Dashboard" });
             });
         }
       });
@@ -126,21 +126,35 @@ router.post("/signup", async (req, res) => {
 });
 
 //user dashboard
-router.get("/dashboard", async (req, res) => {
-  const verificationDetails = await verification.findAll({});
-  const verificationCount = await verification.count();
+router.get("/:id/dashboard", async (req, res) => {
+  const { id } = req.params;
+  const verificationDetails = await verification.findAll({
+    where: {
+      verifierId: id,
+    },
+  });
+  const verificationCount = await verification.count({
+    where: {
+      verifierId: id,
+    },
+  });
 
-  const communityCount = await communityRegistration.count();
+  const communityCount = await communityRegistration.count({
+    where: {
+      verifierId: id,
+    },
+  });
 
   res.render("../views/verifier/dashboard", {
     profileCount: verificationCount,
     profileDetails: verificationDetails,
     communityCount: communityCount,
+    id: id,
   });
 });
 
-router.get("/dashboard/profile/:id", async (req, res) => {
-  const { id } = req.params;
+router.get("/:verifier/dashboard/profile/:id", async (req, res) => {
+  const { id, verifier } = req.params;
 
   const profile = await verification.findOne({
     where: {
@@ -148,77 +162,119 @@ router.get("/dashboard/profile/:id", async (req, res) => {
     },
   });
 
-  res.render("../views/verifier/modal", { profile: profile });
+  res.render("../views/verifier/modal", { profile: profile, id: verifier });
 });
 
-router.get("/dashboard/profile/:id/accept", async (req, res) => {
-  const { id } = req.params;
-  const moveData = await verification.findByPk(id).then((data) => {
-    publisherRegistration.create({
-      id: data.dataValues.id,
-      name: data.dataValues.name,
-      email: data.dataValues.email,
-      password: data.dataValues.password,
-      community: data.dataValues.community,
-      role: data.dataValues.role,
-      mobile: data.dataValues.mobile,
-      place: data.dataValues.place,
-      socialmedia: data.dataValues.socialmedia,
-      proof: data.dataValues.proof,
+router.get("/:verifier/dashboard/profile/:id/accept", async (req, res) => {
+  const { id, verifier } = req.params;
+  const findVerifier = await verfierLogin.findByPk(verifier);
+  if (!findVerifier) {
+    res.redirect("/verifier/login");
+  } else {
+    const moveData = await verification.findByPk(id).then((data) => {
+      publisherRegistration.create({
+        id: data.dataValues.id,
+        name: data.dataValues.name,
+        email: data.dataValues.email,
+        password: data.dataValues.password,
+        community: data.dataValues.community,
+        role: data.dataValues.role,
+        mobile: data.dataValues.mobile,
+        place: data.dataValues.place,
+        socialmedia: data.dataValues.socialmedia,
+        proof: data.dataValues.proof,
+        verifierId: data.dataValues.verifierId,
+      });
+
+      data.destroy();
     });
 
-    data.destroy();
-  });
-
-  res.redirect("/verifier/dashboard");
-});
-
-router.get("/dashboard/profile/:id/reject", async (req, res) => {
-  const { id } = req.params;
-  const moveData = await verification.findByPk(id);
-
-  if (moveData) {
-    moveData.destroy();
+    res.redirect(`/verifier/${verifier}/dashboard`);
   }
-  res.redirect("/verifier/dashboard");
 });
 
-router.get("/dashboard/community", async (req, res) => {
+router.get("/:verifier/dashboard/profile/:id/reject", async (req, res) => {
+  const { id, verifier } = req.params;
+  const findVerifier = await verfierLogin.findByPk(verifier);
+
+  if (!findVerifier) {
+    res.redirect("/verifier/login");
+  } else {
+    const moveData = await verification.findByPk(id);
+
+    if (moveData) {
+      moveData.destroy();
+    }
+    res.redirect(`/verifier/${verifier}/dashboard`);
+  }
+});
+
+router.get("/:verifier/dashboard/community", async (req, res) => {
+  const { verifier } = req.params;
+
   const verificationCount = await verification.count();
   const communityDetails = await communityRegistration.findAll({});
   const communityCount = await communityRegistration.count();
+  const findVerifier = await verfierLogin.findByPk(verifier);
 
-  res.render("../views/verifier/community", {
-    profileCount: verificationCount,
-    community: communityDetails,
-    communityCount: communityCount,
-  });
-});
-
-router.get("/dashboard/community/:id", async (req, res) => {
-  const { id } = req.params;
-
-  const community = await communityRegistration.findOne({
-    where: {
-      id: id,
-    },
-  });
-  console.log(community);
-  res.render("../views/verifier/communityModal", { community: community });
-});
-
-router.get("/dashboard/community/:id/reject", async (req, res) => {
-  const { id } = req.params;
-  const moveData = await communityRegistration.findByPk(id);
-
-  if (moveData) {
-    moveData.destroy();
+  if (!findVerifier) {
+    res.redirect("/verifier/login");
+  } else {
+    res.render("../views/verifier/community", {
+      profileCount: verificationCount,
+      community: communityDetails,
+      communityCount: communityCount,
+      id: verifier,
+    });
   }
-  res.redirect("/verifier/dashboard/community");
 });
 
-router.get("/dashboard/logout", (req, res) => {
-  res.redirect("/verifier/login");
+router.get("/:verifier/dashboard/community/:id", async (req, res) => {
+  const { id, verifier } = req.params;
+  const findVerifier = await verfierLogin.findByPk(verifier);
+
+  if (!findVerifier) {
+    res.redirect("/verifier/login");
+  } else {
+    const community = await communityRegistration.findOne({
+      where: {
+        id: id,
+      },
+    });
+    console.log(community);
+    res.render("../views/verifier/communityModal", {
+      community: community,
+      id: verifier,
+    });
+  }
+});
+
+router.get("/:verifier/dashboard/community/:id/reject", async (req, res) => {
+  const { id, verifier } = req.params;
+
+  const findVerifier = await verfierLogin.findByPk(verifier);
+
+  if (!findVerifier) {
+    res.redirect("/verifier/login");
+  } else {
+    const moveData = await communityRegistration.findByPk(id);
+
+    if (moveData) {
+      moveData.destroy();
+    }
+    res.redirect(`/verifier/${verifier}/dashboard/community`);
+  }
+});
+
+router.get("/:verifier/dashboard/logout", async (req, res) => {
+  const { verifier } = req.params;
+  const findVerifier = await verfierLogin.findByPk(verifier);
+
+  if (!findVerifier) {
+    res.redirect("/verifier/login");
+  } else {
+    res.redirect("/verifier/login");
+  }
 });
 
 module.exports = router;

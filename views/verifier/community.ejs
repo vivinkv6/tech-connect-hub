@@ -45,17 +45,17 @@
               <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></svg>
               Home
             </a> -->
-          <a href="/verifier/dashboard" class="bg-gray-100">
+          <a href="/verifier/<%= id %>/dashboard" class="bg-gray-100">
             <i class="bi bi-person-circle" style="font-size: 20px"></i>
             Profiles
             <div class="badge bg-primary"><%=profileCount %></div>
           </a>
-          <a href="/verifier/dashboard/community">
+          <a href="/verifier/<%= id %>/dashboard/community">
             <i class="bi bi-building" style="font-size: 20px"></i>
             Community
             <div class="badge bg-primary"><%=communityCount %></div>
           </a>
-          <a href="/verifier/dashboard/logout">
+          <a href="/verifier/<%= id %>/dashboard/logout">
             <i class="bi bi-box-arrow-left" style="font-size: 20px"></i>
             Logout
           </a>
@@ -106,17 +106,17 @@
                   <a
                     class="nav-link active"
                     aria-current="page"
-                    href="/verifier/dashboard"
+                    href="/verifier/<%= id %>/dashboard"
                     >Profile</a
                   >
                 </li>
                 <li class="nav-item">
-                  <a class="nav-link" href="/verifier/dashboard/community"
+                  <a class="nav-link" href="/verifier/<%= id %>/dashboard/community"
                     >Community</a
                   >
                 </li>
                 <li class="nav-item">
-                  <a class="nav-link" href="/verifier/dashboard/logout"
+                  <a class="nav-link" href="/verifier/<%= id %>/dashboard/logout"
                     >Logout</a
                   >
                 </li>
@@ -164,7 +164,7 @@
                   <th>
                     <button class="btn btn-dark text-light">
                       <a
-                        href="/verifier/dashboard/community/<%=community[i].dataValues.id  %>"
+                        href="/verifier/<%= id %>/dashboard/community/<%=community[i].dataValues.id  %>"
                         >View Profille</a
                       >
                     </button>

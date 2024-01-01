@@ -1,5 +1,6 @@
 const { DataTypes } = require("sequelize");
 const sequelizeConfig = require("../../config/sequelize.config");
+const verfierLogin = require("./loginModel");
 
 const verification = sequelizeConfig.define("publisherdetails", {
   id: {
@@ -45,6 +46,15 @@ const verification = sequelizeConfig.define("publisherdetails", {
     type: DataTypes.STRING,
     allowNull: false,
   },
+  verifierId:{
+    type: DataTypes.STRING,
+    allowNull: false,
+  }
 });
+
+verification.associate=()=>{
+  verification.belongsTo(verfierLogin,{foreignKey:"verifierId"});
+}
+
 
 module.exports = verification;

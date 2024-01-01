@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <!-- Google fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Rubik+Glitch&family=Russo+One&family=Saira+Stencil+One&family=Ubuntu+Condensed&family=Unica+One&display=swap"
+    rel="stylesheet" />
+
+  <!-- AOS  -->
+  <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet" />
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous" />
+  <link rel="stylesheet" href="/stylesheets/admin/dashboard.css" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.2/font/bootstrap-icons.min.css" />
+
+  <title>Admin Login</title>
+</head>
+
+<body>
+  <div class="container-fluid">
+    <div class="row">
+      <!-- Sidebar -->
+      <div class="sidebar col-md-3 shadow-lg" style="position: sticky; top: 0px;">
+        <h2 class="mb-4">Admin Dashboard</h2>
+        <!-- <a href="#" class="list-group-item list-group-item-action">Profile</a> -->
+        <a href="/admin/dashboard" class="list-group-item list-group-item-action"><i class="bi bi-person fs-3 me-3"
+            style="vertical-align: middle"></i>Users</a>
+        <a href="/admin/dashboard/publisher" class="list-group-item list-group-item-action"><i
+            class="bi bi-pencil-square fs-3 me-3" style="vertical-align: middle"></i>Publishers</a>
+        <a href="/admin/dashboard/verifier" class="list-group-item list-group-item-action"><i
+            class="bi bi-check-circle fs-3 me-3" style="vertical-align: middle"></i>Verifier</a>
+        <a href="/admin/dashboard/post" class="list-group-item list-group-item-action"><i class="bi bi-send fs-3 me-3"
+            style="vertical-align: middle"></i>Post</a>
+        <a href="/admin/dashboard/community" class="list-group-item list-group-item-action"><i
+            class="bi bi-building fs-3 me-3" style="vertical-align: middle"></i>Community</a>
+        <a href="/admin/dashboard/logout" class="list-group-item list-group-item-action"><i
+            class="bi bi-box-arrow-left fs-3 me-3" style="vertical-align: middle"></i>Logout</a>
+      </div>
+      <nav class="nav2 navbar navbar-expand-lg bg bg-light shadow-lg bg-body-tertiary">
+        <div class="container-fluid">
+          <a class="navbar-brand" href="#">Navbar</a>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown"
+            aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="bi bi-list text-dark fs-1"></span>
+          </button>
+          <div class="collapse navbar-collapse" id="navbarNavDropdown">
+            <ul class="navbar-nav mt-3">
+              <a href="/admin/dashboard" class="list-group-item list-group-item-action"><i
+                  class="bi bi-person fs-3 me-3" style="vertical-align: middle"></i>Users</a>
+              <a href="/admin/dashboard/publisher" class="list-group-item list-group-item-action"><i
+                  class="bi bi-pencil-square fs-3 me-3" style="vertical-align: middle"></i>Publishers</a>
+              <a href="/admin/dashboard/verifier" class="list-group-item list-group-item-action"><i
+                  class="bi bi-check-circle fs-3 me-3" style="vertical-align: middle"></i>Verifier</a>
+              <a href="/admin/dashboard/post" class="list-group-item list-group-item-action"><i
+                  class="bi bi-send fs-3 me-3" style="vertical-align: middle"></i>Post</a>
+              <a href="/admin/dashboard/community" class="list-group-item list-group-item-action"><i
+                  class="bi bi-building fs-3 me-3" style="vertical-align: middle"></i>Community</a>
+              <a href="/admin/dashboard/logout" class="list-group-item list-group-item-action"><i
+                  class="bi bi-box-arrow-left fs-3 me-3" style="vertical-align: middle"></i>Logout</a>
+            </ul>
+          </div>
+        </div>
+      </nav>
+
+      <!-- Content -->
+      <div class="content col-md-9 table-responsive">
+        <form class="filter-container" method="get">
+          <div class="filter-category">
+            <label for="typeFilter">Type:</label>
+            <select id="typeFilter" name="type">
+              <option value="Conferences" <%=type==='Conferences' ? 'selected' : '' %>>Conferences</option>
+              <option value="Meetups" <%=type==='Meetups' ? 'selected' : '' %>>Meetups</option>
+              <option value="Hackathons" <%=type==='Hackathons' ? 'selected' : '' %>>Hackathons</option>
+              <option value="Workshops" <%=type==='Workshops' ? 'selected' : '' %>>Workshops</option>
+              <option value="Webinars" <%=type==='Webinars' ? 'selected' : '' %>>Webinars</option>
+            </select>
+          </div>
+
+          <div class="filter-category">
+            <label for="modeFilter">Mode:</label>
+            <select id="modeFilter" name="mode">
+              <option value="Online" <%=mode==='Online' ? 'selected' : '' %>>Online</option>
+              <option value="Offline" <%=mode==='Offline' ? 'selected' : '' %>>Offline</option>
+            </select>
+          </div>
+
+          <div class="filter-category">
+            <label for="feeFilter">Fee:</label>
+            <select id="feeFilter" name="fee">
+              <option value="Free" <%=fee==='Free' ? 'selected' : '' %>>Free</option>
+              <option value="Paid" <%=fee==='Paid' ? 'selected' : '' %>>Paid</option>
+            </select>
+          </div>
+          <div class="filter-category">
+            <label for="stateFilter">State:</label>
+            <select id="stateFilter" name="state">
+              <option value="Andhra Pradesh" <%=state==='Andhra Pradesh' ? 'selected' : '' %>>Andhra Pradesh</option>
+
+              <option value="Arunachal Pradesh" <%=state==='Arunachal Pradesh' ? 'selected' : '' %>>Arunachal Pradesh
+              </option>
+
+              <option value="Assam" <%=state==='Assam' ? 'selected' : '' %>>Assam</option>
+
+              <option value="Bihar" <%=state==='Bihar' ? 'selected' : '' %>>Bihar</option>
+
+              <option value="Chhattisgarh" <%=state==='Chhattisgarh' ? 'selected' : '' %>>Chhattisgarh</option>
+
+              <option value="Goa" <%=state==='Goa' ? 'selected' : '' %>>Goa</option>
+
+              <option value="Gujarat" <%=state==='Gujarat' ? 'selected' : '' %>>Gujarat</option>
+
+              <option value="Haryana" <%=state==='Haryana' ? 'selected' : '' %>>Haryana</option>
+
+              <option value="Himachal Pradesh" <%=state==='Himachal Prades' ? 'selected' : '' %>>Himachal Pradesh
+              </option>
+
+              <option value="Jammu and Kashmir" <%=state==='Jammu and Kashmir' ? 'selected' : '' %>>Jammu and Kashmir
+              </option>
+
+              <option value="Jharkhand" <%=state==='Jharkhand' ? 'selected' : '' %>>Jharkhand</option>
+
+              <option value="Karnataka" <%=state==='Karnataka' ? 'selected' : '' %>>Karnataka</option>
+
+              <option value="Kerala" <%=state==='Kerala' ? 'selected' : '' %>>Kerala</option>
+
+              <option value="Madhya Pradesh" <%=state==='Madhya Pradesh' ? 'selected' : '' %>>Madhya Pradesh</option>
+
+              <option value="Maharashtra" <%=state==='Maharashtra' ? 'selected' : '' %>>Maharashtra</option>
+
+              <option value="Manipur" <%=state==='Manipur' ? 'selected' : '' %>>Manipur</option>
+
+              <option value="Meghalaya" <%=state==='Meghalaya' ? 'selected' : '' %>>Meghalaya</option>
+
+              <option value="Mizoram" <%=state==='Mizoram' ? 'selected' : '' %>>Mizoram</option>
+
+              <option value="Nagaland" <%=state==='Nagaland' ? 'selected' : '' %>>Nagaland</option>
+
+              <option value="Odisha" <%=state==='Odisha' ? 'selected' : '' %>>Odisha</option>
+
+              <option value="Punjab" <%=state==='Punjab' ? 'selected' : '' %>>Punjab</option>
+
+              <option value="Rajasthan" <%=state==='Rajasthan' ? 'selected' : '' %>>Rajasthan</option>
+
+              <option value="Sikkim" <%=state==='Sikkim' ? 'selected' : '' %>>Sikkim</option>
+
+              <option value="Tamil Nadu" <%=state==='Tamil Nadu' ? 'selected' : '' %>>Tamil Nadu</option>
+
+              <option value="Telangana" <%=state==='Telangana' ? 'selected' : '' %>>Telangana</option>
+
+              <option value="Tripura" <%=state==='Tripura' ? 'selected' : '' %>>Tripura</option>
+
+              <option value="Uttarakhand" <%=state==='Uttarakhand' ? 'selected' : '' %>>Uttarakhand</option>
+
+              <optio value="Uttar Pradesh" <%=state==='Uttar Pradesh' ? 'selected' : '' %>>Uttar Pradesh</optio>
+
+              <option value="West Bengal" <%=state==='West Bengal' ? 'selected' : '' %>>West Bengal</option>
+            </select>
+          </div>
+          <div class="button-container">
+            <button class="btn btn-primary">
+              <i class="bi bi-filter text-light"></i>Filter
+            </button>
+            <a href="/admin/dashboard/post" class="btn btn-primary">
+              <i class="bi bi-x text-light"></i>Clear
+            </a>
+          </div>
+        </form>
+        <!-- Table -->
+        <table class="table table-bordered caption-top">
+          <caption>
+            List of Posts
+          </caption>
+          <% if (post.length==0) { %>
+            <h2 class="text-center text-secondary">No Publishers</h2>
+            <% } else{%>
+              <thead class="thead-dark">
+                <tr>
+                  <th class="text-dark">SlNo.</th>
+                  <th class="text-dark">Banner</th>
+                  <th class="text-dark">Event Name</th>
+                  <th class="text-dark">Description</th>
+                  <th class="text-dark">Type</th>
+                  <th class="text-dark">State</th>
+                  <th class="text-dark">Mode</th>
+                  <th class="text-dark">Fee</th>
+                  <th class="text-dark">Contact</th>
+                  <th class="text-dark">Action</th>
+                </tr>
+              </thead>
+
+              <tbody>
+                <% for( let i=0; i < post.length; i++ ) { %>
+
+                  <tr style="vertical-align: middle;">
+                    <td>
+                      <%= i+1 %>
+                    </td>
+                    <td>
+                      <a href="<%= post[i].dataValues.banner %>" target="_blank"><img
+                          src="<%= post[i].dataValues.banner %>" height="100" width="100" style="object-fit: contain"
+                          alt="Banner" /></a>
+                    </td>
+                    <td class="fs-5">
+                      <%= post[i].dataValues.name %>
+                    </td>
+                    <td>
+                      <%= post[i].dataValues.description %>
+                    </td>
+                    <td>
+                      <% if (post[i].dataValues.type=='Hackathons' ) { %>
+                        <span class="me-2 badge bg text-light bg-info" style="background-color: bisque">
+                          <%= post[i].dataValues.type%>
+                        </span>
+                        <% }else if(post[i].dataValues.type=='Conferences' ){ %>
+                          <span class="me-2 badge bg text-light bg-warning">
+                            <%= post[i].dataValues.type%>
+                          </span>
+                          <% }else if(post[i].dataValues.type=='Meetups' ){ %>
+                            <span class="me-2 badge bg text-light bg-dark">
+                              <%= post[i].dataValues.type%>
+                            </span>
+                            <% }else if(post[i].dataValues.type=='Webinars' ){ %>
+                              <span class="me-2 badge" style="background-color: rgb(255, 0, 247)">
+                                <%= post[i].dataValues.type%>
+                              </span>
+                              <% }else{ %>
+                                <span class="me-2 badge text-light" style="background-color: rgb(255, 140, 0)">
+                                  <%= post[i].dataValues.type%>
+                                </span>
+                                <% } %>
+                    </td>
+                    <td>
+                      <% if (post[i].state==="Andhra Pradesh" ) { %>
+                        <span class="badge badge-primary" style="background-color: #ff5733">Andhra Pradesh</span>
+                        <% } else if (post[i].state==="Arunachal Pradesh" ) { %>
+                          <span class="badge badge-primary" style="background-color: #ffc300">Arunachal Pradesh</span>
+                          <% } else if (post[i].state==="Assam" ) { %>
+                            <span class="badge badge-primary" style="background-color: #c70039">Assam</span>
+                            <% } else if (post[i].state==="Bihar" ) { %>
+                              <span class="badge badge-primary" style="background-color: #900c3f">Bihar</span>
+                              <% } else if (post[i].state==="Chhattisgarh" ) { %>
+                                <span class="badge badge-primary" style="background-color: #581845">Chhattisgarh</span>
+                                <% } else if (post[i].state==="Goa" ) { %>
+                                  <span class="badge badge-primary" style="background-color: #00a859">Goa</span>
+                                  <% } else if (post[i].state==="Gujarat" ) { %>
+                                    <span class="badge badge-primary" style="background-color: #394240">Gujarat</span>
+                                    <% } else if (post[i].state==="Haryana" ) { %>
+                                      <span class="badge badge-primary" style="background-color: #9c640c">Haryana</span>
+                                      <% } else if (post[i].state==="Himachal Pradesh" ) { %>
+                                        <span class="badge badge-primary" style="background-color: #00b7c2">Himachal
+                                          Pradesh</span>
+                                        <% } else if (post[i].state==="Jammu and Kashmir" ) { %>
+                                          <span class="badge badge-primary" style="background-color: #5e3c58">Jammu and
+                                            Kashmir</span>
+                                          <% } else if (post[i].state==="Jharkhand" ) { %>
+                                            <span class="badge badge-primary"
+                                              style="background-color: #4cb7a5">Jharkhand</span>
+                                            <% } else if (post[i].state==="Karnataka" ) { %>
+                                              <span class="badge badge-primary"
+                                                style="background-color: #eea47f">Karnataka</span>
+                                              <% } else if (post[i].state==="Kerala" ) { %>
+                                                <span class="badge badge-primary"
+                                                  style="background-color: #d4a5a5">Kerala</span>
+                                                <% } else if (post[i].state==="Madhya Pradesh" ) { %>
+                                                  <span class="badge badge-primary"
+                                                    style="background-color: #423e6d">Madhya Pradesh</span>
+                                                  <% } else if (post[i].state==="Maharashtra" ) { %>
+                                                    <span class="badge badge-primary"
+                                                      style="background-color: #faf0ca">Maharashtra</span>
+                                                    <% } else if (post[i].state==="Manipur" ) { %>
+                                                      <span class="badge badge-primary"
+                                                        style="background-color: #a04000">Manipur</span>
+                                                      <% } else if (post[i].state==="Meghalaya" ) { %>
+                                                        <span class="badge badge-primary"
+                                                          style="background-color: #00a5cf">Meghalaya</span>
+                                                        <% } else if (post[i].state==="Mizoram" ) { %>
+                                                          <span class="badge badge-primary"
+                                                            style="background-color: #05d58d">Mizoram</span>
+                                                          <% } else if (post[i].state==="Nagaland" ) { %>
+                                                            <span class="badge badge-primary"
+                                                              style="background-color: #c8ad55">Nagaland</span>
+                                                            <% } else if (post[i].state==="Odisha" ) { %>
+                                                              <span class="badge badge-primary"
+                                                                style="background-color: #f4e1d2">Odisha</span>
+                                                              <% } else if (post[i].state==="Punjab" ) { %>
+                                                                <span class="badge badge-primary"
+                                                                  style="background-color: #980000">Punjab</span>
+                                                                <% } else if (post[i].state==="Rajasthan" ) { %>
+                                                                  <span class="badge badge-primary"
+                                                                    style="background-color: #e25822">Rajasthan</span>
+                                                                  <% } else if (post[i].state==="Sikkim" ) { %>
+                                                                    <span class="badge badge-primary"
+                                                                      style="background-color: #0198e1">Sikkim</span>
+                                                                    <% } else if (post[i].state==="Tamil Nadu" ) { %>
+                                                                      <span class="badge badge-primary"
+                                                                        style="background-color: #3498db">Tamil
+                                                                        Nadu</span>
+                                                                      <% } else if (post[i].state==="Telangana" ) { %>
+                                                                        <span class="badge badge-primary"
+                                                                          style="background-color: #7d3c98">Telangana</span>
+                                                                        <% } else if (post[i].state==="Tripura" ) { %>
+                                                                          <span class="badge badge-primary"
+                                                                            style="background-color: #a2a2a2">Tripura</span>
+                                                                          <% } else if (post[i].state==="Uttarakhand" )
+                                                                            { %>
+                                                                            <span class="badge badge-primary"
+                                                                              style="background-color: #af601a">Uttarakhand</span>
+                                                                            <% } else if
+                                                                              (post[i].state==="Uttar Pradesh" ) { %>
+                                                                              <span class="badge badge-primary"
+                                                                                style="background-color: #ffd12a">Uttar
+                                                                                Pradesh</span>
+                                                                              <% } else if
+                                                                                (post[i].state==="West Bengal" ) { %>
+                                                                                <span class="badge badge-primary"
+                                                                                  style="background-color: #ff5733">West
+                                                                                  Bengal</span>
+                                                                                <% } else { %>
+                                                                                  <span class="badge badge-primary"
+                                                                                    style="background-color: #ffffff">Other</span>
+                                                                                  <% } %>
+                    </td>
+                    <td>
+                      <% if (post[i].dataValues.mode=='Online' ) { %>
+                        <span class="me-2 badge bg text-light bg-primary">
+                          <%= post[i].dataValues.mode%>
+                        </span>
+                        <% }else{ %>
+                          <span class="me-2 badge bg text-light bg-secondary">
+                            <%= post[i].dataValues.mode%>
+                          </span>
+                          <% } %>
+                    </td>
+                    <td>
+                      <% if (post[i].dataValues.fee=='Free' ) { %>
+                        <span class="me-2 badge bg text-light bg-success">
+                          <%= post[i].dataValues.fee%>
+                        </span>
+                        <% }else{ %>
+                          <span class="me-2 badge bg text-light bg-danger">
+                            <%= post[i].dataValues.fee%>
+                          </span>
+                          <% } %>
+                    </td>
+                    <td>
+                      <%= post[i].dataValues.contact %>
+                    </td>
+                    <td>
+                      <a href="/admin/dashboard/post/delete/<%= post[i].dataValues.id %>" class="btn btn-danger">
+                        <i class="bi bi-trash me-2"></i>Delete
+                      </a>
+                    </td>
+                  </tr>
+                  <% } %>
+              </tbody>
+              <% } %>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+  <script>
+    AOS.init();
+  </script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+    crossorigin="anonymous"></script>
+</body>
+
+</html>

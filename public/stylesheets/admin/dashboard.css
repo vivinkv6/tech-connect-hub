@@ -8,6 +8,10 @@ body {
     display: flex;
 }
 
+.nav2{
+    display: none;
+}
+
 /* Sidebar Styles */
 .sidebar {
     width: 250px;
@@ -57,4 +61,34 @@ th, td {
 th {
     background-color: #333;
     color: #fff;
+}
+
+.filter-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+    margin-bottom: 20px;
+  }
+  
+  .filter-category {
+    margin: 10px 10px;
+  }
+
+  select {
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    outline: none;
+  }
+
+  
+@media screen and (max-width:500px) {
+
+    .sidebar{
+        display: none;
+    }
+    .nav2{
+        display: flex;
+    }
 }
