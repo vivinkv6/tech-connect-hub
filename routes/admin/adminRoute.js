@@ -125,7 +125,7 @@ router.post("/signup", async (req, res) => {
 
 //user dashboard
 router.get("/dashboard", (req, res) => {
-  res.json({ msg: "Admin Dashboard" });
+  res.render('../views/admin/dashboard');
 });
 
 module.exports = router;

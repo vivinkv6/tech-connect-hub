@@ -69,8 +69,8 @@ router.get("/signup", (req, res) => {
   res.render("../views/user/signup", {
     emailExist: false,
     passwordError: false,
-    name:"",
-    role:"",
+    name: "",
+    role: "",
     email: "",
     password: "",
     confirm: "",
@@ -78,7 +78,7 @@ router.get("/signup", (req, res) => {
 });
 
 router.post("/signup", async (req, res) => {
-  const { email, password, confirm,name,role } = req.body;
+  const { email, password, confirm, name, role } = req.body;
   const username = usernameExtractor(email);
 
   if (password !== confirm) {
@@ -88,8 +88,8 @@ router.post("/signup", async (req, res) => {
       email: email,
       password: password,
       confirm: confirm,
-      name:name,
-      role:role
+      name: name,
+      role: role,
     });
   } else {
     const result = await userlogin.findOne({
@@ -105,8 +105,8 @@ router.post("/signup", async (req, res) => {
         email: email,
         password: password,
         confirm: confirm,
-        name:name,
-        role:role
+        name: name,
+        role: role,
       });
     } else {
       bycrypt.hash(password, 12, async (err, hashedPassword) => {
@@ -118,8 +118,8 @@ router.post("/signup", async (req, res) => {
               username: username,
               email: email,
               password: hashedPassword,
-              name:name,
-              role:role
+              name: name,
+              role: role,
             })
             .then((data) => {
               res.redirect(`/user/${data.dataValues.id}/dashboard`);
@@ -196,23 +196,33 @@ router.get("/:id/dashboard/filter?", async (req, res) => {
       if (
         req.query.type == undefined ||
         req.query.mode == undefined ||
-        req.query.fee == undefined
+        req.query.fee == undefined ||
+        req.query.state == undefined
       ) {
         console.log("start");
         const filterPost = await eventModel.findAll({});
         console.log(filterPost);
-        res.render("../views/user/filter", { post: filterPost, id: id });
+        res.render("../views/user/filter", { post: filterPost, id: id,type:'All',mode:'All',fee:'All',state:'All' });
+      } else if (
+        req.query.type == "" &&
+        req.query.mode == "" &&
+        req.query.fee == "" &&
+        req.query.state == ""
+      ) {
+        const filterPost = await eventModel.findAll({});
+
+        res.render("../views/user/filter", { post: filterPost, id: id,type:req.query.type,mode:req.query.mode,fee:req.query.fee,state:req.query.state });
       } else {
-        console.log("next");
         const filterPost = await eventModel.findAll({
           where: {
             type: req.query.type,
             mode: req.query.mode,
             fee: req.query.fee,
+            state: req.query.state,
           },
         });
 
-        res.render("../views/user/filter", { post: filterPost, id: id });
+        res.render("../views/user/filter", { post: filterPost, id: id,type:req.query.type,mode:req.query.mode,fee:req.query.fee,state:req.query.state });
       }
     }
   } catch (err) {
@@ -301,19 +311,22 @@ router.get("/:id/dashboard/remove/:post", async (req, res) => {
   if (!findId) {
     res.redirect("/user/login");
   } else {
-    const deletePost = await userlogin.update(
-      {
-        saved: Sequelize.fn("array_remove", Sequelize.col("saved"), post),
-      },
-      {
-        where: {},
-        returning: true,
-      }
-    ).then(()=>{
-      res.redirect(`/user/${id}/dashboard/profile`);
-    }).catch((err)=>{
-      res.json({err:err.message})
-    })
+    const deletePost = await userlogin
+      .update(
+        {
+          saved: Sequelize.fn("array_remove", Sequelize.col("saved"), post),
+        },
+        {
+          where: {},
+          returning: true,
+        }
+      )
+      .then(() => {
+        res.redirect(`/user/${id}/dashboard/profile`);
+      })
+      .catch((err) => {
+        res.json({ err: err.message });
+      });
   }
 });
 

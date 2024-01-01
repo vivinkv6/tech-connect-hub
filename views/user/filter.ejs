@@ -33,30 +33,92 @@
       <div class="filter-category">
         <label for="typeFilter">Type:</label>
         <select id="typeFilter" name="type">
-          <option value="">All</option>
-          <option value="Hackathons">Hackathons</option>
-          <option value="Conferences">Conferences</option>
-          <option value="Webinars">Webinars</option>
-          <option value="Meetups">Meetups</option>
-          <option value="Workshops">Workshops</option>
+          <option value="Conferences" <%=type==='Conferences' ? 'selected' : '' %>>Conferences</option>
+            <option value="Meetups" <%=type==='Meetups' ? 'selected' : '' %>>Meetups</option>
+            <option value="Hackathons" <%=type==='Hackathons' ? 'selected' : '' %>>Hackathons</option>
+            <option value="Workshops" <%=type==='Workshops' ? 'selected' : '' %>>Workshops</option>
+            <option value="Webinars" <%=type==='Webinars' ? 'selected' : '' %>>Webinars</option>
         </select>
       </div>
 
       <div class="filter-category">
         <label for="modeFilter">Mode:</label>
         <select id="modeFilter" name="mode">
-          <option value="">All</option>
-          <option value="Online">Online</option>
-          <option value="Offline">Offline</option>
+          <option value="Online" <%=mode==='Online' ? 'selected' : '' %>>Online</option>
+          <option value="Offline" <%=mode==='Offline' ? 'selected' : '' %>>Offline</option>
         </select>
       </div>
 
       <div class="filter-category">
         <label for="feeFilter">Fee:</label>
         <select id="feeFilter" name="fee">
-          <option value="">All</option>
-          <option value="Free">Free</option>
-          <option value="Paid">Paid</option>
+          <option value="Free" <%=fee==='Free' ? 'selected' : '' %>>Free</option>
+            <option value="Paid" <%=fee==='Paid' ? 'selected' : '' %>>Paid</option>
+        </select>
+      </div>
+      <div class="filter-category">
+        <label for="stateFilter">State:</label>
+        <select id="stateFilter" name="state">
+          <option value="Andhra Pradesh" <%=state==='Andhra Pradesh' ? 'selected' : '' %>>Andhra Pradesh</option>
+
+            <option value="Arunachal Pradesh" <%=state==='Arunachal Pradesh' ? 'selected' : '' %>>Arunachal Pradesh
+            </option>
+
+            <option value="Assam" <%=state==='Assam' ? 'selected' : '' %>>Assam</option>
+
+            <option value="Bihar" <%=state==='Bihar' ? 'selected' : '' %>>Bihar</option>
+
+            <option value="Chhattisgarh" <%=state==='Chhattisgarh' ? 'selected' : '' %>>Chhattisgarh</option>
+
+            <option value="Goa" <%=state==='Goa' ? 'selected' : '' %>>Goa</option>
+
+            <option value="Gujarat" <%=state==='Gujarat' ? 'selected' : '' %>>Gujarat</option>
+
+            <option value="Haryana" <%=state==='Haryana' ? 'selected' : '' %>>Haryana</option>
+
+            <option value="Himachal Pradesh" <%=state==='Himachal Prades' ? 'selected' : '' %>>Himachal Pradesh
+            </option>
+
+            <option value="Jammu and Kashmir" <%=state==='Jammu and Kashmir' ? 'selected' : '' %>>Jammu and Kashmir
+            </option>
+
+            <option value="Jharkhand" <%=state==='Jharkhand' ? 'selected' : '' %>>Jharkhand</option>
+
+            <option value="Karnataka" <%=state==='Karnataka' ? 'selected' : '' %>>Karnataka</option>
+
+            <option value="Kerala" <%=state==='Kerala' ? 'selected' : '' %>>Kerala</option>
+
+            <option value="Madhya Pradesh" <%=state==='Madhya Pradesh' ? 'selected' : '' %>>Madhya Pradesh</option>
+
+            <option value="Maharashtra" <%=state==='Maharashtra' ? 'selected' : '' %>>Maharashtra</option>
+
+            <option value="Manipur" <%=state==='Manipur' ? 'selected' : '' %>>Manipur</option>
+
+            <option value="Meghalaya" <%=state==='Meghalaya' ? 'selected' : '' %>>Meghalaya</option>
+
+            <option value="Mizoram" <%=state==='Mizoram' ? 'selected' : '' %>>Mizoram</option>
+
+            <option value="Nagaland" <%=state==='Nagaland' ? 'selected' : '' %>>Nagaland</option>
+
+            <option value="Odisha" <%=state==='Odisha' ? 'selected' : '' %>>Odisha</option>
+
+            <option value="Punjab" <%=state==='Punjab' ? 'selected' : '' %>>Punjab</option>
+
+            <option value="Rajasthan" <%=state==='Rajasthan' ? 'selected' : '' %>>Rajasthan</option>
+
+            <option value="Sikkim" <%=state==='Sikkim' ? 'selected' : '' %>>Sikkim</option>
+
+            <option value="Tamil Nadu" <%=state==='Tamil Nadu' ? 'selected' : '' %>>Tamil Nadu</option>
+
+            <option value="Telangana" <%=state==='Telangana' ? 'selected' : '' %>>Telangana</option>
+
+            <option value="Tripura" <%=state==='Tripura' ? 'selected' : '' %>>Tripura</option>
+
+            <option value="Uttarakhand" <%=state==='Uttarakhand' ? 'selected' : '' %>>Uttarakhand</option>
+
+            <optio value="Uttar Pradesh" <%=state==='Uttar Pradesh' ? 'selected' : '' %>>Uttar Pradesh</optio>
+
+            <option value="West Bengal" <%=state==='West Bengal' ? 'selected' : '' %>>West Bengal</option>
         </select>
       </div>
       <div class="button-container">
@@ -135,6 +197,186 @@
                       class="me-2 badge text-light"
                       style="background-color: rgb(255, 140, 0)"
                       ><%= post[i].dataValues.type%></span
+                    >
+                    <% } %> <% if (post[i].state === "Andhra Pradesh") { %>
+                    <span
+                      class="badge badge-primary"
+                      style="background-color: #ff5733"
+                      >Andhra Pradesh</span
+                    >
+                    <% } else if (post[i].state === "Arunachal Pradesh") { %>
+                    <span
+                      class="badge badge-primary"
+                      style="background-color: #ffc300"
+                      >Arunachal Pradesh</span
+                    >
+                    <% } else if (post[i].state === "Assam") { %>
+                    <span
+                      class="badge badge-primary"
+                      style="background-color: #c70039"
+                      >Assam</span
+                    >
+                    <% } else if (post[i].state === "Bihar") { %>
+                    <span
+                      class="badge badge-primary"
+                      style="background-color: #900c3f"
+                      >Bihar</span
+                    >
+                    <% } else if (post[i].state === "Chhattisgarh") { %>
+                    <span
+                      class="badge badge-primary"
+                      style="background-color: #581845"
+                      >Chhattisgarh</span
+                    >
+                    <% } else if (post[i].state=== "Goa") { %>
+                    <span
+                      class="badge badge-primary"
+                      style="background-color: #00a859"
+                      >Goa</span
+                    >
+                    <% } else if (post[i].state === "Gujarat") { %>
+                    <span
+                      class="badge badge-primary"
+                      style="background-color: #394240"
+                      >Gujarat</span
+                    >
+                    <% } else if (post[i].state === "Haryana") { %>
+                    <span
+                      class="badge badge-primary"
+                      style="background-color: #9c640c"
+                      >Haryana</span
+                    >
+                    <% } else if (post[i].state === "Himachal Pradesh") { %>
+                    <span
+                      class="badge badge-primary"
+                      style="background-color: #00b7c2"
+                      >Himachal Pradesh</span
+                    >
+                    <% } else if (post[i].state === "Jammu and Kashmir") { %>
+                    <span
+                      class="badge badge-primary"
+                      style="background-color: #5e3c58"
+                      >Jammu and Kashmir</span
+                    >
+                    <% } else if (post[i].state === "Jharkhand") { %>
+                    <span
+                      class="badge badge-primary"
+                      style="background-color: #4cb7a5"
+                      >Jharkhand</span
+                    >
+                    <% } else if (post[i].state === "Karnataka") { %>
+                    <span
+                      class="badge badge-primary"
+                      style="background-color: #eea47f"
+                      >Karnataka</span
+                    >
+                    <% } else if (post[i].state === "Kerala") { %>
+                    <span
+                      class="badge badge-primary"
+                      style="background-color: #d4a5a5"
+                      >Kerala</span
+                    >
+                    <% } else if (post[i].state === "Madhya Pradesh") { %>
+                    <span
+                      class="badge badge-primary"
+                      style="background-color: #423e6d"
+                      >Madhya Pradesh</span
+                    >
+                    <% } else if (post[i].state === "Maharashtra") { %>
+                    <span
+                      class="badge badge-primary"
+                      style="background-color: #faf0ca"
+                      >Maharashtra</span
+                    >
+                    <% } else if (post[i].state === "Manipur") { %>
+                    <span
+                      class="badge badge-primary"
+                      style="background-color: #a04000"
+                      >Manipur</span
+                    >
+                    <% } else if (post[i].state === "Meghalaya") { %>
+                    <span
+                      class="badge badge-primary"
+                      style="background-color: #00a5cf"
+                      >Meghalaya</span
+                    >
+                    <% } else if (post[i].state=== "Mizoram") { %>
+                    <span
+                      class="badge badge-primary"
+                      style="background-color: #05d58d"
+                      >Mizoram</span
+                    >
+                    <% } else if (post[i].state === "Nagaland") { %>
+                    <span
+                      class="badge badge-primary"
+                      style="background-color: #c8ad55"
+                      >Nagaland</span
+                    >
+                    <% } else if (post[i].state === "Odisha") { %>
+                    <span
+                      class="badge badge-primary"
+                      style="background-color: #f4e1d2"
+                      >Odisha</span
+                    >
+                    <% } else if (post[i].state === "Punjab") { %>
+                    <span
+                      class="badge badge-primary"
+                      style="background-color: #980000"
+                      >Punjab</span
+                    >
+                    <% } else if (post[i].state === "Rajasthan") { %>
+                    <span
+                      class="badge badge-primary"
+                      style="background-color: #e25822"
+                      >Rajasthan</span
+                    >
+                    <% } else if (post[i].state === "Sikkim") { %>
+                    <span
+                      class="badge badge-primary"
+                      style="background-color: #0198e1"
+                      >Sikkim</span
+                    >
+                    <% } else if (post[i].state === "Tamil Nadu") { %>
+                    <span
+                      class="badge badge-primary"
+                      style="background-color: #3498db"
+                      >Tamil Nadu</span
+                    >
+                    <% } else if (post[i].state === "Telangana") { %>
+                    <span
+                      class="badge badge-primary"
+                      style="background-color: #7d3c98"
+                      >Telangana</span
+                    >
+                    <% } else if (post[i].state === "Tripura") { %>
+                    <span
+                      class="badge badge-primary"
+                      style="background-color: #a2a2a2"
+                      >Tripura</span
+                    >
+                    <% } else if (post[i].state === "Uttarakhand") { %>
+                    <span
+                      class="badge badge-primary"
+                      style="background-color: #af601a"
+                      >Uttarakhand</span
+                    >
+                    <% } else if (post[i].state === "Uttar Pradesh") { %>
+                    <span
+                      class="badge badge-primary"
+                      style="background-color: #ffd12a"
+                      >Uttar Pradesh</span
+                    >
+                    <% } else if (post[i].state === "West Bengal") { %>
+                    <span
+                      class="badge badge-primary"
+                      style="background-color: #ff5733"
+                      >West Bengal</span
+                    >
+                    <% } else { %>
+                    <span
+                      class="badge badge-primary"
+                      style="background-color: #ffffff"
+                      >Other</span
                     >
                     <% } %>
                   </div>
