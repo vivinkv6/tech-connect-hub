@@ -127,6 +127,7 @@ a:hover {
 
 .table-responsive {
   overflow-y: hidden;
+  width: 100%;
 }
 
 .table {
@@ -185,12 +186,15 @@ a:hover {
   }
 
   .sidebar {
-    width: 100%;
+    display: none;
   }
 
   .header-logo {
     display: flex;
     align-items: center;
+  }
+  .nav2 {
+    display: flex;
   }
 }
 
@@ -198,9 +202,7 @@ a:hover {
   .sidebar {
     display: none;
   }
-  .nav2 {
-    display: flex;
-  }
+ 
 }
 
 /* For WebKit browsers */

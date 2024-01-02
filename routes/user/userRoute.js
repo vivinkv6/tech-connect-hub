@@ -1,6 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const bycrypt = require("bcrypt");
+const jwt = require("jsonwebtoken");
 
 const userlogin = require("../../models/user/loginModel");
 const eventModel = require("../../models/publisher/eventModel");
@@ -8,17 +9,29 @@ const usernameExtractor = require("../../utils/usernameExtractor");
 const getGreeting = require("../../utils/greetings");
 const notificationModel = require("../../models/user/notificationModel");
 const { Sequelize, where } = require("sequelize");
+const cookieAuth = require("../../utils/auth");
 
 //user all routes
 
 //login routes
-router.get("/login", (req, res) => {
-  res.render("../views/user/login", {
-    emailExist: true,
-    passwordError: false,
-    email: "",
-    password: "",
-  });
+router.get("/login", async (req, res) => {
+  console.log(req.cookies.user);
+  if (req.cookies.user) {
+    console.log("correct");
+    const token = jwt.verify(req.cookies.user, process.env.JWT_SECRET_TOKEN);
+    const findId = await userlogin.findByPk(token);
+
+    if (findId) {
+      res.redirect(`/user/${token}/dashboard`);
+    }
+  } else {
+    res.render("../views/user/login", {
+      emailExist: true,
+      passwordError: false,
+      email: "",
+      password: "",
+    });
+  }
 });
 
 router.post("/login", async (req, res) => {
@@ -47,6 +60,12 @@ router.post("/login", async (req, res) => {
             res.json({ err: err });
           }
           if (data) {
+            const jwtToken = cookieAuth(hashPassword?.dataValues?.id);
+            res.cookie("user", jwtToken, {
+              expires: new Date(Date.now() + 172800 * 1000),
+              secure: true,
+              httpOnly: true,
+            });
             res.redirect(`/user/${hashPassword?.dataValues?.id}/dashboard`);
           } else {
             res.render("../views/user/login", {
@@ -122,6 +141,13 @@ router.post("/signup", async (req, res) => {
               role: role,
             })
             .then((data) => {
+              const jwtToken = cookieAuth(data.dataValues.id);
+              res.cookie("user", jwtToken, {
+                expires: new Date(Date.now() + 172800 * 1000),
+                secure: true,
+                httpOnly: true,
+              });
+
               res.redirect(`/user/${data.dataValues.id}/dashboard`);
             });
         }
@@ -134,6 +160,17 @@ router.post("/signup", async (req, res) => {
 router.get("/:id/dashboard", async (req, res) => {
   const { id } = req.params;
 
+  if (req.cookies.user) {
+    console.log("correct");
+    const token = jwt.verify(req.cookies.user, process.env.JWT_SECRET_TOKEN);
+    const findId = await userlogin.findByPk(token);
+
+    if (!findId) {
+      res.redirect(`/user/login`);
+    }
+  } else {
+    res.redirect("/user/login");
+  }
   const findProfile = await userlogin.findByPk(id);
 
   if (!findProfile) {
@@ -151,6 +188,17 @@ router.get("/:id/dashboard", async (req, res) => {
 
 router.get("/:id/dashboard/notification", async (req, res) => {
   const { id } = req.params;
+  if (req.cookies.user) {
+    console.log("correct");
+    const token = jwt.verify(req.cookies.user, process.env.JWT_SECRET_TOKEN);
+    const findId = await userlogin.findByPk(token);
+
+    if (!findId) {
+      res.redirect(`/user/login`);
+    }
+  } else {
+    res.redirect("/user/login");
+  }
   const findId = await userlogin.findByPk(id);
 
   if (!findId) {
@@ -166,6 +214,17 @@ router.get("/:id/dashboard/notification", async (req, res) => {
 
 router.get("/:id/dashboard/post/:post", async (req, res) => {
   const { id, post } = req.params;
+  if (req.cookies.user) {
+    console.log("correct");
+    const token = jwt.verify(req.cookies.user, process.env.JWT_SECRET_TOKEN);
+    const findId = await userlogin.findByPk(token);
+
+    if (!findId) {
+      res.redirect(`/user/login`);
+    }
+  } else {
+    res.redirect("/user/login");
+  }
 
   const checkId = await userlogin.findByPk(id);
 
@@ -189,6 +248,18 @@ router.get("/:id/dashboard/filter?", async (req, res) => {
   try {
     const { id } = req.params;
 
+    if (req.cookies.user) {
+      console.log("correct");
+      const token = jwt.verify(req.cookies.user, process.env.JWT_SECRET_TOKEN);
+      const findId = await userlogin.findByPk(token);
+
+      if (!findId) {
+        res.redirect(`/user/login`);
+      }
+    } else {
+      res.redirect("/user/login");
+    }
+
     const findId = await userlogin.findByPk(id);
     if (!findId) {
       res.redirect("/user/login");
@@ -202,7 +273,14 @@ router.get("/:id/dashboard/filter?", async (req, res) => {
         console.log("start");
         const filterPost = await eventModel.findAll({});
         console.log(filterPost);
-        res.render("../views/user/filter", { post: filterPost, id: id,type:'All',mode:'All',fee:'All',state:'All' });
+        res.render("../views/user/filter", {
+          post: filterPost,
+          id: id,
+          type: "All",
+          mode: "All",
+          fee: "All",
+          state: "All",
+        });
       } else if (
         req.query.type == "" &&
         req.query.mode == "" &&
@@ -211,7 +289,14 @@ router.get("/:id/dashboard/filter?", async (req, res) => {
       ) {
         const filterPost = await eventModel.findAll({});
 
-        res.render("../views/user/filter", { post: filterPost, id: id,type:req.query.type,mode:req.query.mode,fee:req.query.fee,state:req.query.state });
+        res.render("../views/user/filter", {
+          post: filterPost,
+          id: id,
+          type: req.query.type,
+          mode: req.query.mode,
+          fee: req.query.fee,
+          state: req.query.state,
+        });
       } else {
         const filterPost = await eventModel.findAll({
           where: {
@@ -222,7 +307,14 @@ router.get("/:id/dashboard/filter?", async (req, res) => {
           },
         });
 
-        res.render("../views/user/filter", { post: filterPost, id: id,type:req.query.type,mode:req.query.mode,fee:req.query.fee,state:req.query.state });
+        res.render("../views/user/filter", {
+          post: filterPost,
+          id: id,
+          type: req.query.type,
+          mode: req.query.mode,
+          fee: req.query.fee,
+          state: req.query.state,
+        });
       }
     }
   } catch (err) {
@@ -232,6 +324,17 @@ router.get("/:id/dashboard/filter?", async (req, res) => {
 
 router.get("/:id/dashboard/profile", async (req, res) => {
   const { id } = req.params;
+  if (req.cookies.user) {
+    console.log("correct");
+    const token = jwt.verify(req.cookies.user, process.env.JWT_SECRET_TOKEN);
+    const findId = await userlogin.findByPk(token);
+
+    if (!findId) {
+      res.redirect(`/user/login`);
+    }
+  } else {
+    res.redirect("/user/login");
+  }
   const profile = await userlogin.findByPk(id);
 
   //check if the user id is valid or not
@@ -253,6 +356,17 @@ router.get("/:id/dashboard/profile", async (req, res) => {
 
 router.get("/:id/dashboard/saved/:post", async (req, res) => {
   const { id, post } = req.params;
+  if (req.cookies.user) {
+    console.log("correct");
+    const token = jwt.verify(req.cookies.user, process.env.JWT_SECRET_TOKEN);
+    const findId = await userlogin.findByPk(token);
+
+    if (!findId) {
+      res.redirect(`/user/login`);
+    }
+  } else {
+    res.redirect("/user/login");
+  }
   const findUser = await userlogin.findByPk(id);
   let savedPost = [];
 
@@ -306,6 +420,17 @@ router.get("/:id/dashboard/saved/:post", async (req, res) => {
 
 router.get("/:id/dashboard/remove/:post", async (req, res) => {
   const { id, post } = req.params;
+  if (req.cookies.user) {
+    console.log("correct");
+    const token = jwt.verify(req.cookies.user, process.env.JWT_SECRET_TOKEN);
+    const findId = await userlogin.findByPk(token);
+
+    if (!findId) {
+      res.redirect(`/user/login`);
+    }
+  } else {
+    res.redirect("/user/login");
+  }
   const findId = await userlogin.findByPk(id);
 
   if (!findId) {
@@ -332,6 +457,19 @@ router.get("/:id/dashboard/remove/:post", async (req, res) => {
 
 router.get("/:id/dashboard/logout", async (req, res) => {
   const { id } = req.params;
+  if (req.cookies.user) {
+    console.log("correct");
+    const token = jwt.verify(req.cookies.user, process.env.JWT_SECRET_TOKEN);
+    const findId = await userlogin.findByPk(token);
+
+    if (!findId) {
+      res.redirect(`/user/login`);
+    } else {
+      res.clearCookie("user");
+    }
+  } else {
+    res.redirect("/user/login");
+  }
   const validId = await userlogin.findByPk(id);
 
   if (!validId) {

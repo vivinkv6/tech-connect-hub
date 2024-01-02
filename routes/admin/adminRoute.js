@@ -1,6 +1,8 @@
+require("dotenv").config();
 const express = require("express");
 const router = express.Router();
 const bycrypt = require("bcrypt");
+const jwt = require("jsonwebtoken");
 
 const adminlogin = require("../../models/admin/loginModel");
 const userLogin = require("../../models/user/loginModel");
@@ -12,23 +14,34 @@ const community = require("../../models/publisher/communityRegistrationModel");
 const usernameExtractor = require("../../utils/usernameExtractor");
 const eventModel = require("../../models/publisher/eventModel");
 const communityRegistration = require("../../models/publisher/communityRegistrationModel");
+const cookieAuth = require("../../utils/auth");
 
 //user all routes
 
 //login routes
 router.get("/login", async (req, res) => {
   /* This code block is checking if there is already an existing admin account in the database. */
-  const result = await adminlogin.count();
+  if (req.cookies.admin) {
+    console.log("correct");
+    const token = jwt.verify(req.cookies.admin, process.env.JWT_SECRET_TOKEN);
+    const findId = await adminlogin.findByPk(token);
 
-  if (result == 1) {
-    res.render("../views/admin/login", {
-      emailExist: true,
-      passwordError: false,
-      email: "",
-      password: "",
-    });
+    if (findId) {
+      res.redirect(`/admin/dashboard`);
+    }
   } else {
-    res.redirect("signup");
+    const result = await adminlogin.count();
+
+    if (result == 1) {
+      res.render("../views/admin/login", {
+        emailExist: true,
+        passwordError: false,
+        email: "",
+        password: "",
+      });
+    } else {
+      res.redirect("signup");
+    }
   }
 });
 
@@ -64,7 +77,13 @@ router.post("/login", async (req, res) => {
           /* This code block is checking if the password entered by the user matches the hashed password
          stored in the database. */
           if (data) {
-            res.redirect("dashboard");
+            const token = cookieAuth(hashPassword.dataValues.id);
+            res.cookie("admin", token, {
+              expires: new Date(Date.now() + 172800 * 1000),
+              secure: true,
+              httpOnly: true,
+            });
+            res.redirect("/admin/dashboard");
           } else {
             res.render("../views/admin/login", {
               emailExist: true,
@@ -124,7 +143,14 @@ router.post("/signup", async (req, res) => {
             password: hashedPassword,
           })
           .then((data) => {
-            res.redirect("dashboard");
+            const token = cookieAuth(data.dataValues.id);
+
+            res.cookie("admin", token, {
+              expires: new Date(Date.now() + 172800 * 1000),
+              secure: true,
+              httpOnly: true,
+            });
+            res.redirect("/admin/dashboard");
           });
       }
     });
@@ -133,6 +159,17 @@ router.post("/signup", async (req, res) => {
 
 //user dashboard
 router.get("/dashboard", async (req, res) => {
+  if (req.cookies.admin) {
+    console.log("correct");
+    const token = jwt.verify(req.cookies.admin, process.env.JWT_SECRET_TOKEN);
+    const findId = await adminlogin.findByPk(token);
+
+    if (!findId) {
+      res.redirect(`/admin/login`);
+    }
+  } else {
+    res.redirect("/admin/login");
+  }
   const users = await userLogin.findAll({});
 
   res.render("../views/admin/dashboard", { users: users });
@@ -140,35 +177,64 @@ router.get("/dashboard", async (req, res) => {
 
 router.get("/dashboard/user/delete/:id", async (req, res) => {
   const { id } = req.params;
-  const findUser = await userLogin.findByPk(id);
+  if (req.cookies.admin) {
+    console.log("correct");
+    const token = jwt.verify(req.cookies.admin, process.env.JWT_SECRET_TOKEN);
+    const findId = await adminlogin.findByPk(token);
 
-  if (!findUser) {
-    res.redirect("/admin/dashboard");
+    if (!findId) {
+      res.redirect(`/admin/login`);
+    }
   } else {
-    findUser
-      .destroy()
-      .then(() => {
-        res.redirect("/admin/dashboard");
-      })
-      .catch((err) => {
-        res.json({ err: err.message });
-      });
+    const findUser = await userLogin.findByPk(id);
+
+    if (!findUser) {
+      res.redirect("/admin/dashboard");
+    } else {
+      findUser
+        .destroy()
+        .then(() => {
+          res.redirect("/admin/dashboard");
+        })
+        .catch((err) => {
+          res.json({ err: err.message });
+        });
+    }
   }
 });
 
 router.get("/dashboard/publisher", async (req, res) => {
+  if (req.cookies.admin) {
+    console.log("correct");
+    const token = jwt.verify(req.cookies.admin, process.env.JWT_SECRET_TOKEN);
+    const findId = await adminlogin.findByPk(token);
+
+    if (!findId) {
+      res.redirect(`/admin/login`);
+    }
+  }
   const publishers = await publisherLogin.findAll({});
   res.render("../views/admin/publisher", { publishers: publishers });
 });
 
 router.get("/dashboard/publisher/delete/:id", async (req, res) => {
   const { id } = req.params;
+  if (req.cookies.admin) {
+    console.log("correct");
+    const token = jwt.verify(req.cookies.admin, process.env.JWT_SECRET_TOKEN);
+    const findId = await adminlogin.findByPk(token);
+
+    if (!findId) {
+      console.log("wrong");
+      res.redirect(`/admin/login`);
+    }
+  }
   const findPublisher = await publisherLogin.findByPk(id);
 
   if (!findPublisher) {
     res.redirect("/admin/dashboard");
   } else {
-    findPublisher
+    await findPublisher
       .destroy()
       .then(() => {
         res.redirect("/admin/dashboard/publisher");
@@ -180,8 +246,16 @@ router.get("/dashboard/publisher/delete/:id", async (req, res) => {
 });
 
 router.get("/dashboard/verifier", async (req, res) => {
-  const verifierList = await verifierLogin.findAll({});
+  if (req.cookies.admin) {
+    console.log("correct");
+    const token = jwt.verify(req.cookies.admin, process.env.JWT_SECRET_TOKEN);
+    const findId = await adminlogin.findByPk(token);
 
+    if (!findId) {
+      res.redirect(`/admin/login`);
+    }
+  }
+  const verifierList = await verifierLogin.findAll({});
   res.render("../views/admin/verifier", { verifier: verifierList });
 });
 
@@ -189,6 +263,15 @@ router.get("/dashboard/verifier", async (req, res) => {
 
 router.get("/dashboard/verifier/delete/:id", async (req, res) => {
   const { id } = req.params;
+  if (req.cookies.admin) {
+    console.log("correct");
+    const token = jwt.verify(req.cookies.admin, process.env.JWT_SECRET_TOKEN);
+    const findId = await adminlogin.findByPk(token);
+
+    if (!findId) {
+      res.redirect(`/admin/login`);
+    }
+  }
   const checkId = await verifierLogin.findByPk(id);
   if (!checkId) {
     res.redirect("/admin/dashboard/verifier");
@@ -203,7 +286,16 @@ router.get("/dashboard/verifier/delete/:id", async (req, res) => {
       });
   }
 });
-router.get("/dashboard/verifier/create", (req, res) => {
+router.get("/dashboard/verifier/create", async (req, res) => {
+  if (req.cookies.admin) {
+    console.log("correct");
+    const token = jwt.verify(req.cookies.admin, process.env.JWT_SECRET_TOKEN);
+    const findId = await adminlogin.findByPk(token);
+
+    if (!findId) {
+      res.redirect(`/admin/login`);
+    }
+  }
   res.render("../views/admin/verifierSignup", {
     emailExist: false,
     passwordError: false,
@@ -214,6 +306,15 @@ router.get("/dashboard/verifier/create", (req, res) => {
 });
 
 router.get("/dashboard/community", async (req, res) => {
+  if (req.cookies.admin) {
+    console.log("correct");
+    const token = jwt.verify(req.cookies.admin, process.env.JWT_SECRET_TOKEN);
+    const findId = await adminlogin.findByPk(token);
+
+    if (!findId) {
+      res.redirect(`/admin/login`);
+    }
+  }
   const communityList = await communityRegistration.findAll({});
 
   res.render("../views/admin/community", { community: communityList });
@@ -221,7 +322,15 @@ router.get("/dashboard/community", async (req, res) => {
 
 router.get("/dashboard/community/delete/:id", async (req, res) => {
   const { id } = req.params;
+  if (req.cookies.admin) {
+    console.log("correct");
+    const token = jwt.verify(req.cookies.admin, process.env.JWT_SECRET_TOKEN);
+    const findId = await adminlogin.findByPk(token);
 
+    if (!findId) {
+      res.redirect(`/admin/login`);
+    }
+  }
   const checkId = await communityRegistration.findByPk(id);
 
   if (!checkId) {
@@ -244,6 +353,15 @@ router.get("/dashboard/post", async (req, res) => {
   // const communityCount=await communityRegistration.count();
 
   try {
+    if (req.cookies.admin) {
+      console.log("correct");
+      const token = jwt.verify(req.cookies.admin, process.env.JWT_SECRET_TOKEN);
+      const findId = await adminlogin.findByPk(token);
+
+      if (!findId) {
+        res.redirect(`/admin/login`);
+      }
+    }
     if (
       req.query.type == undefined ||
       req.query.mode == undefined ||
@@ -301,7 +419,15 @@ router.get("/dashboard/post", async (req, res) => {
 
 router.get("/dashboard/post/delete/:id", async (req, res) => {
   const { id } = req.params;
+  if (req.cookies.admin) {
+    console.log("correct");
+    const token = jwt.verify(req.cookies.admin, process.env.JWT_SECRET_TOKEN);
+    const findId = await adminlogin.findByPk(token);
 
+    if (!findId) {
+      res.redirect(`/admin/login`);
+    }
+  }
   const checkId = await eventModel.findByPk(id);
 
   if (!checkId) {
@@ -319,6 +445,7 @@ router.get("/dashboard/post/delete/:id", async (req, res) => {
 });
 
 router.get("/dashboard/logout", (req, res) => {
+  res.clearCookie("admin");
   res.redirect("/admin/login");
 });
 module.exports = router;
