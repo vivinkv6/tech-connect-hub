@@ -1,6 +1,8 @@
+require("dotenv").config();
 const express = require("express");
 const router = express.Router();
 const bycrypt = require("bcrypt");
+const jwt = require("jsonwebtoken");
 
 const verfierLogin = require("../../models/verifier/loginModel");
 const publisherRegistration = require("../../models/publisher/registrationModel");
@@ -8,17 +10,33 @@ const communityRegistration = require("../../models/publisher/communityRegistrat
 const verification = require("../../models/verifier/verification");
 
 const usernameExtractor = require("../../utils/usernameExtractor");
+const cookieAuth = require("../../utils/auth");
 
 //user all routes
 
 //login routes
-router.get("/login", (req, res) => {
-  res.render("../views/verifier/login", {
-    emailExist: true,
-    passwordError: false,
-    email: "",
-    password: "",
-  });
+router.get("/login", async (req, res) => {
+  if (req.cookies.verifier) {
+    const verify = jwt.sign(req.cookies.verifier, process.env.JWT_SECRET_TOKEN);
+    const checkId = await verfierLogin.findByPk(verify);
+    if (!checkId) {
+      res.render("../views/verifier/login", {
+        emailExist: true,
+        passwordError: false,
+        email: "",
+        password: "",
+      });
+    } else {
+      res.redirect(`/verifier/${verify}/dashboard`);
+    }
+  } else {
+    res.render("../views/verifier/login", {
+      emailExist: true,
+      passwordError: false,
+      email: "",
+      password: "",
+    });
+  }
 });
 
 router.post("/login", async (req, res) => {
@@ -47,6 +65,12 @@ router.post("/login", async (req, res) => {
             res.json({ err: err });
           }
           if (data) {
+            const token = cookieAuth(hashPassword.dataValues.id);
+            res.cookie("verifier", token, {
+              expires: new Date(Date.now() + 172800 * 1000),
+              secure: true,
+              httpOnly: true,
+            });
             res.redirect(`/verifier/${hashPassword?.dataValues?.id}/dashboard`);
           } else {
             res.render("../views/verifier/login", {
@@ -128,141 +152,240 @@ router.post("/signup", async (req, res) => {
 //user dashboard
 router.get("/:id/dashboard", async (req, res) => {
   const { id } = req.params;
-  const verificationDetails = await verification.findAll({
-    where: {
-      verifierId: id,
-    },
-  });
-  const verificationCount = await verification.count({
-    where: {
-      verifierId: id,
-    },
-  });
+  if (req.cookies.verifier) {
+    const verify = jwt.verify(
+      req.cookies.verifier,
+      process.env.JWT_SECRET_TOKEN
+    );
+    const checkId = await verfierLogin.findByPk(verify);
 
-  const communityCount = await communityRegistration.count({
-    where: {
-      verifierId: id,
-    },
-  });
+    if (!checkId) {
+      res.redirect("/verifier/login");
+    } else {
+      const verificationDetails = await verification.findAll({
+        where: {
+          verifierId: id,
+        },
+      });
+      const verificationCount = await verification.count({
+        where: {
+          verifierId: id,
+        },
+      });
 
-  res.render("../views/verifier/dashboard", {
-    profileCount: verificationCount,
-    profileDetails: verificationDetails,
-    communityCount: communityCount,
-    id: id,
-  });
+      const communityCount = await communityRegistration.count({
+        where: {
+          verifierId: id,
+        },
+      });
+
+      res.render("../views/verifier/dashboard", {
+        profileCount: verificationCount,
+        profileDetails: verificationDetails,
+        communityCount: communityCount,
+        id: id,
+      });
+    }
+  } else {
+    res.redirect("/verifier/login");
+  }
 });
 
 router.get("/:verifier/dashboard/profile/:id", async (req, res) => {
   const { id, verifier } = req.params;
 
-  const profile = await verification.findOne({
-    where: {
-      id: id,
-    },
-  });
+  if (req.cookies.verifier) {
+    const verify = jwt.verify(
+      req.cookies.verifier,
+      process.env.JWT_SECRET_TOKEN
+    );
+    const checkId = await verfierLogin.findByPk(verify);
 
-  res.render("../views/verifier/modal", { profile: profile, id: verifier });
+    if (!checkId) {
+      res.redirect("/verifier/login");
+    } else {
+      const profile = await verification.findOne({
+        where: {
+          id: id,
+        },
+      });
+
+      res.render("../views/verifier/modal", { profile: profile, id: verifier });
+    }
+  } else {
+    res.redirect("/verifier/login");
+  }
 });
 
 router.get("/:verifier/dashboard/profile/:id/accept", async (req, res) => {
   const { id, verifier } = req.params;
-  const findVerifier = await verfierLogin.findByPk(verifier);
-  if (!findVerifier) {
-    res.redirect("/verifier/login");
+
+  if (req.cookies.verifier) {
+    const verify = jwt.verify(
+      req.cookies.verifier,
+      process.env.JWT_SECRET_TOKEN
+    );
+    const checkId = await verfierLogin.findByPk(verify);
+
+    if (!checkId) {
+      res.redirect("/verifier/login");
+    } else {
+      const findVerifier = await verfierLogin.findByPk(verifier);
+      if (!findVerifier) {
+        res.redirect("/verifier/login");
+      } else {
+        const moveData = await verification.findByPk(id).then((data) => {
+          publisherRegistration.create({
+            id: data.dataValues.id,
+            name: data.dataValues.name,
+            email: data.dataValues.email,
+            password: data.dataValues.password,
+            community: data.dataValues.community,
+            role: data.dataValues.role,
+            mobile: data.dataValues.mobile,
+            place: data.dataValues.place,
+            socialmedia: data.dataValues.socialmedia,
+            proof: data.dataValues.proof,
+            verifierId: data.dataValues.verifierId,
+          });
+
+          data.destroy();
+        });
+
+        res.redirect(`/verifier/${verifier}/dashboard`);
+      }
+    }
   } else {
-    const moveData = await verification.findByPk(id).then((data) => {
-      publisherRegistration.create({
-        id: data.dataValues.id,
-        name: data.dataValues.name,
-        email: data.dataValues.email,
-        password: data.dataValues.password,
-        community: data.dataValues.community,
-        role: data.dataValues.role,
-        mobile: data.dataValues.mobile,
-        place: data.dataValues.place,
-        socialmedia: data.dataValues.socialmedia,
-        proof: data.dataValues.proof,
-        verifierId: data.dataValues.verifierId,
-      });
-
-      data.destroy();
-    });
-
-    res.redirect(`/verifier/${verifier}/dashboard`);
+    res.redirect("/verifier/login");
   }
 });
 
 router.get("/:verifier/dashboard/profile/:id/reject", async (req, res) => {
   const { id, verifier } = req.params;
-  const findVerifier = await verfierLogin.findByPk(verifier);
 
-  if (!findVerifier) {
-    res.redirect("/verifier/login");
-  } else {
-    const moveData = await verification.findByPk(id);
+  if (req.cookies.verifier) {
+    const verify = jwt.verify(
+      req.cookies.verifier,
+      process.env.JWT_SECRET_TOKEN
+    );
+    const checkId = await verfierLogin.findByPk(verify);
 
-    if (moveData) {
-      moveData.destroy();
+    if (!checkId) {
+      res.redirect("/verifier/login");
+    } else {
+      const findVerifier = await verfierLogin.findByPk(verifier);
+
+      if (!findVerifier) {
+        res.redirect("/verifier/login");
+      } else {
+        const moveData = await verification.findByPk(id);
+
+        if (moveData) {
+          moveData.destroy();
+        }
+        res.redirect(`/verifier/${verifier}/dashboard`);
+      }
     }
-    res.redirect(`/verifier/${verifier}/dashboard`);
+  } else {
+    res.redirect("/verifier/login");
   }
 });
 
 router.get("/:verifier/dashboard/community", async (req, res) => {
   const { verifier } = req.params;
 
-  const verificationCount = await verification.count();
-  const communityDetails = await communityRegistration.findAll({});
-  const communityCount = await communityRegistration.count();
-  const findVerifier = await verfierLogin.findByPk(verifier);
+  if (req.cookies.verifier) {
+    const verify = jwt.verify(
+      req.cookies.verifier,
+      process.env.JWT_SECRET_TOKEN
+    );
+    const checkId = await verfierLogin.findByPk(verify);
 
-  if (!findVerifier) {
-    res.redirect("/verifier/login");
+    if (!checkId) {
+      res.redirect("/verifier/login");
+    } else {
+      const verificationCount = await verification.count();
+      const communityDetails = await communityRegistration.findAll({});
+      const communityCount = await communityRegistration.count();
+      const findVerifier = await verfierLogin.findByPk(verifier);
+
+      if (!findVerifier) {
+        res.redirect("/verifier/login");
+      } else {
+        res.render("../views/verifier/community", {
+          profileCount: verificationCount,
+          community: communityDetails,
+          communityCount: communityCount,
+          id: verifier,
+        });
+      }
+    }
   } else {
-    res.render("../views/verifier/community", {
-      profileCount: verificationCount,
-      community: communityDetails,
-      communityCount: communityCount,
-      id: verifier,
-    });
+    res.redirect("/verifier/login");
   }
 });
 
 router.get("/:verifier/dashboard/community/:id", async (req, res) => {
   const { id, verifier } = req.params;
-  const findVerifier = await verfierLogin.findByPk(verifier);
+  if (req.cookies.verifier) {
+    const verify = jwt.verify(
+      req.cookies.verifier,
+      process.env.JWT_SECRET_TOKEN
+    );
+    const checkId = await verfierLogin.findByPk(verify);
 
-  if (!findVerifier) {
-    res.redirect("/verifier/login");
+    if (!checkId) {
+      res.redirect("/verifier/login");
+    } else {
+      const findVerifier = await verfierLogin.findByPk(verifier);
+
+      if (!findVerifier) {
+        res.redirect("/verifier/login");
+      } else {
+        const community = await communityRegistration.findOne({
+          where: {
+            id: id,
+          },
+        });
+        console.log(community);
+        res.render("../views/verifier/communityModal", {
+          community: community,
+          id: verifier,
+        });
+      }
+    }
   } else {
-    const community = await communityRegistration.findOne({
-      where: {
-        id: id,
-      },
-    });
-    console.log(community);
-    res.render("../views/verifier/communityModal", {
-      community: community,
-      id: verifier,
-    });
+    res.redirect("/verifier/login");
   }
 });
 
 router.get("/:verifier/dashboard/community/:id/reject", async (req, res) => {
   const { id, verifier } = req.params;
+  if (req.cookies.verifier) {
+    const verify = jwt.verify(
+      req.cookies.verifier,
+      process.env.JWT_SECRET_TOKEN
+    );
+    const checkId = await verfierLogin.findByPk(verify);
 
-  const findVerifier = await verfierLogin.findByPk(verifier);
+    if (!checkId) {
+      res.redirect("/verifier/login");
+    } else {
+      const findVerifier = await verfierLogin.findByPk(verifier);
 
-  if (!findVerifier) {
-    res.redirect("/verifier/login");
-  } else {
-    const moveData = await communityRegistration.findByPk(id);
+      if (!findVerifier) {
+        res.redirect("/verifier/login");
+      } else {
+        const moveData = await communityRegistration.findByPk(id);
 
-    if (moveData) {
-      moveData.destroy();
+        if (moveData) {
+          moveData.destroy();
+        }
+        res.redirect(`/verifier/${verifier}/dashboard/community`);
+      }
     }
-    res.redirect(`/verifier/${verifier}/dashboard/community`);
+  } else {
+    res.redirect("/verifier/login");
   }
 });
 
@@ -270,7 +393,8 @@ router.get("/:verifier/dashboard/logout", async (req, res) => {
   const { verifier } = req.params;
   const findVerifier = await verfierLogin.findByPk(verifier);
 
-  if (!findVerifier) {
+  if (req.cookies.verifier) {
+    res.clearCookie("verifier");
     res.redirect("/verifier/login");
   } else {
     res.redirect("/verifier/login");

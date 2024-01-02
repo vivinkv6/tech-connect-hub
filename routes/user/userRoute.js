@@ -167,22 +167,23 @@ router.get("/:id/dashboard", async (req, res) => {
 
     if (!findId) {
       res.redirect(`/user/login`);
+    } else {
+      const findProfile = await userlogin.findByPk(id);
+
+      if (!findProfile) {
+        res.redirect("/user/login");
+      } else {
+        const greeting = getGreeting();
+        const post = await eventModel.findAll({});
+        res.render("../views/user/dashboard", {
+          greeting: greeting,
+          profile: findProfile.dataValues,
+          post: post,
+        });
+      }
     }
   } else {
     res.redirect("/user/login");
-  }
-  const findProfile = await userlogin.findByPk(id);
-
-  if (!findProfile) {
-    res.redirect("/user/login");
-  } else {
-    const greeting = getGreeting();
-    const post = await eventModel.findAll({});
-    res.render("../views/user/dashboard", {
-      greeting: greeting,
-      profile: findProfile.dataValues,
-      post: post,
-    });
   }
 });
 
@@ -195,20 +196,21 @@ router.get("/:id/dashboard/notification", async (req, res) => {
 
     if (!findId) {
       res.redirect(`/user/login`);
+    } else {
+      const findId = await userlogin.findByPk(id);
+
+      if (!findId) {
+        res.redirect("/user/login");
+      } else {
+        const notification = await notificationModel.findAll({});
+        res.render("../views/user/notification", {
+          notification: notification,
+          id: id,
+        });
+      }
     }
   } else {
     res.redirect("/user/login");
-  }
-  const findId = await userlogin.findByPk(id);
-
-  if (!findId) {
-    res.redirect("/user/login");
-  } else {
-    const notification = await notificationModel.findAll({});
-    res.render("../views/user/notification", {
-      notification: notification,
-      id: id,
-    });
   }
 });
 
@@ -221,26 +223,26 @@ router.get("/:id/dashboard/post/:post", async (req, res) => {
 
     if (!findId) {
       res.redirect(`/user/login`);
-    }
-  } else {
-    res.redirect("/user/login");
-  }
-
-  const checkId = await userlogin.findByPk(id);
-
-  if (!checkId) {
-    res.redirect("/user/login");
-  } else {
-    const findPost = await eventModel.findByPk(post);
-
-    if (!findPost) {
-      res.redirect("/user/login");
     } else {
-      res.render("../views/user/viewPost", {
-        post: findPost.dataValues,
-        id: id,
-      });
+      const checkId = await userlogin.findByPk(id);
+
+      if (!checkId) {
+        res.redirect("/user/login");
+      } else {
+        const findPost = await eventModel.findByPk(post);
+
+        if (!findPost) {
+          res.redirect("/user/login");
+        } else {
+          res.render("../views/user/viewPost", {
+            post: findPost.dataValues,
+            id: id,
+          });
+        }
+      }
     }
+  } else {
+    res.redirect("/user/login");
   }
 });
 
@@ -255,67 +257,67 @@ router.get("/:id/dashboard/filter?", async (req, res) => {
 
       if (!findId) {
         res.redirect(`/user/login`);
-      }
-    } else {
-      res.redirect("/user/login");
-    }
-
-    const findId = await userlogin.findByPk(id);
-    if (!findId) {
-      res.redirect("/user/login");
-    } else {
-      if (
-        req.query.type == undefined ||
-        req.query.mode == undefined ||
-        req.query.fee == undefined ||
-        req.query.state == undefined
-      ) {
-        console.log("start");
-        const filterPost = await eventModel.findAll({});
-        console.log(filterPost);
-        res.render("../views/user/filter", {
-          post: filterPost,
-          id: id,
-          type: "All",
-          mode: "All",
-          fee: "All",
-          state: "All",
-        });
-      } else if (
-        req.query.type == "" &&
-        req.query.mode == "" &&
-        req.query.fee == "" &&
-        req.query.state == ""
-      ) {
-        const filterPost = await eventModel.findAll({});
-
-        res.render("../views/user/filter", {
-          post: filterPost,
-          id: id,
-          type: req.query.type,
-          mode: req.query.mode,
-          fee: req.query.fee,
-          state: req.query.state,
-        });
       } else {
-        const filterPost = await eventModel.findAll({
-          where: {
-            type: req.query.type,
-            mode: req.query.mode,
-            fee: req.query.fee,
-            state: req.query.state,
-          },
-        });
+        const findId = await userlogin.findByPk(id);
+        if (!findId) {
+          res.redirect("/user/login");
+        } else {
+          if (
+            req.query.type == undefined ||
+            req.query.mode == undefined ||
+            req.query.fee == undefined ||
+            req.query.state == undefined
+          ) {
+            console.log("start");
+            const filterPost = await eventModel.findAll({});
+            console.log(filterPost);
+            res.render("../views/user/filter", {
+              post: filterPost,
+              id: id,
+              type: "All",
+              mode: "All",
+              fee: "All",
+              state: "All",
+            });
+          } else if (
+            req.query.type == "" &&
+            req.query.mode == "" &&
+            req.query.fee == "" &&
+            req.query.state == ""
+          ) {
+            const filterPost = await eventModel.findAll({});
 
-        res.render("../views/user/filter", {
-          post: filterPost,
-          id: id,
-          type: req.query.type,
-          mode: req.query.mode,
-          fee: req.query.fee,
-          state: req.query.state,
-        });
+            res.render("../views/user/filter", {
+              post: filterPost,
+              id: id,
+              type: req.query.type,
+              mode: req.query.mode,
+              fee: req.query.fee,
+              state: req.query.state,
+            });
+          } else {
+            const filterPost = await eventModel.findAll({
+              where: {
+                type: req.query.type,
+                mode: req.query.mode,
+                fee: req.query.fee,
+                state: req.query.state,
+              },
+            });
+
+            res.render("../views/user/filter", {
+              post: filterPost,
+              id: id,
+              type: req.query.type,
+              mode: req.query.mode,
+              fee: req.query.fee,
+              state: req.query.state,
+            });
+          }
+        }
       }
+    } else {
+      res.redirect("/user/login");
     }
   } catch (err) {
     res.json({ err: err.message });
@@ -331,26 +333,27 @@ router.get("/:id/dashboard/profile", async (req, res) => {
 
     if (!findId) {
       res.redirect(`/user/login`);
+    } else {
+      const profile = await userlogin.findByPk(id);
+
+      //check if the user id is valid or not
+      if (!profile) {
+        res.redirect("/user/login");
+      } else {
+        const savedPost = await eventModel.findAll({
+          where: {
+            id: profile.dataValues.saved,
+          },
+        });
+        // res.json({msg:"success"})
+        res.render("../views/user/profile", {
+          profile: profile.dataValues,
+          post: savedPost,
+        });
+      }
     }
   } else {
     res.redirect("/user/login");
-  }
-  const profile = await userlogin.findByPk(id);
-
-  //check if the user id is valid or not
-  if (!profile) {
-    res.redirect("/user/login");
-  } else {
-    const savedPost = await eventModel.findAll({
-      where: {
-        id: profile.dataValues.saved,
-      },
-    });
-    // res.json({msg:"success"})
-    res.render("../views/user/profile", {
-      profile: profile.dataValues,
-      post: savedPost,
-    });
   }
 });
 
@@ -363,58 +366,59 @@ router.get("/:id/dashboard/saved/:post", async (req, res) => {
 
     if (!findId) {
       res.redirect(`/user/login`);
-    }
-  } else {
-    res.redirect("/user/login");
-  }
-  const findUser = await userlogin.findByPk(id);
-  let savedPost = [];
-
-  if (!findUser) {
-    res.redirect("/user/login");
-  } else {
-    if (findUser.dataValues.saved == null) {
-      const updatedUser = await userlogin
-        .update(
-          {
-            saved: [post],
-          },
-          {
-            where: {
-              id: id,
-            },
-          }
-        )
-        .then(() => {
-          res.redirect(`/user/${id}/dashboard`);
-        })
-        .catch((err) => {
-          res.json({ err: err.message });
-        });
     } else {
-      savedPost = [...findUser.dataValues.saved];
-      if (savedPost.includes(post)) {
-        res.redirect(`/user/${id}/dashboard`);
+      const findUser = await userlogin.findByPk(id);
+      let savedPost = [];
+
+      if (!findUser) {
+        res.redirect("/user/login");
       } else {
-        const updatedUser = await userlogin
-          .update(
-            {
-              saved: [...findUser.dataValues.saved, post],
-            },
-            {
-              where: {
-                id: id,
+        if (findUser.dataValues.saved == null) {
+          const updatedUser = await userlogin
+            .update(
+              {
+                saved: [post],
               },
-            }
-          )
-          .then(() => {
+              {
+                where: {
+                  id: id,
+                },
+              }
+            )
+            .then(() => {
+              res.redirect(`/user/${id}/dashboard`);
+            })
+            .catch((err) => {
+              res.json({ err: err.message });
+            });
+        } else {
+          savedPost = [...findUser.dataValues.saved];
+          if (savedPost.includes(post)) {
             res.redirect(`/user/${id}/dashboard`);
-          })
-          .catch((err) => {
-            res.json({ err: err.message });
-          });
+          } else {
+            const updatedUser = await userlogin
+              .update(
+                {
+                  saved: [...findUser.dataValues.saved, post],
+                },
+                {
+                  where: {
+                    id: id,
+                  },
+                }
+              )
+              .then(() => {
+                res.redirect(`/user/${id}/dashboard`);
+              })
+              .catch((err) => {
+                res.json({ err: err.message });
+              });
+          }
+        }
       }
     }
+  } else {
+    res.redirect("/user/login");
   }
 });
 
@@ -427,54 +431,45 @@ router.get("/:id/dashboard/remove/:post", async (req, res) => {
 
     if (!findId) {
       res.redirect(`/user/login`);
+    } else {
+      const findId = await userlogin.findByPk(id);
+
+      if (!findId) {
+        res.redirect("/user/login");
+      } else {
+        const deletePost = await userlogin
+          .update(
+            {
+              saved: Sequelize.fn("array_remove", Sequelize.col("saved"), post),
+            },
+            {
+              where: {},
+              returning: true,
+            }
+          )
+          .then(() => {
+            res.redirect(`/user/${id}/dashboard/profile`);
+          })
+          .catch((err) => {
+            res.json({ err: err.message });
+          });
+      }
     }
   } else {
     res.redirect("/user/login");
-  }
-  const findId = await userlogin.findByPk(id);
-
-  if (!findId) {
-    res.redirect("/user/login");
-  } else {
-    const deletePost = await userlogin
-      .update(
-        {
-          saved: Sequelize.fn("array_remove", Sequelize.col("saved"), post),
-        },
-        {
-          where: {},
-          returning: true,
-        }
-      )
-      .then(() => {
-        res.redirect(`/user/${id}/dashboard/profile`);
-      })
-      .catch((err) => {
-        res.json({ err: err.message });
-      });
   }
 });
 
 router.get("/:id/dashboard/logout", async (req, res) => {
   const { id } = req.params;
-  if (req.cookies.user) {
-    console.log("correct");
-    const token = jwt.verify(req.cookies.user, process.env.JWT_SECRET_TOKEN);
-    const findId = await userlogin.findByPk(token);
 
-    if (!findId) {
-      res.redirect(`/user/login`);
-    } else {
-      res.clearCookie("user");
-    }
-  } else {
-    res.redirect("/user/login");
-  }
-  const validId = await userlogin.findByPk(id);
+  const token = jwt.verify(req.cookies.user, process.env.JWT_SECRET_TOKEN);
+  const findId = await userlogin.findByPk(token);
 
-  if (!validId) {
-    res.redirect("/user/signup");
+  if (!findId) {
+    res.redirect(`/user/login`);
   } else {
+    res.clearCookie("user");
     res.redirect("/user/login");
   }
 });

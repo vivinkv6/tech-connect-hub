@@ -28,6 +28,8 @@ router.get("/login", async (req, res) => {
 
     if (findId) {
       res.redirect(`/admin/dashboard`);
+    } else {
+      res.redirect(`/admin/login`);
     }
   } else {
     const result = await adminlogin.count();
@@ -166,13 +168,13 @@ router.get("/dashboard", async (req, res) => {
 
     if (!findId) {
       res.redirect(`/admin/login`);
+    } else {
+      const users = await userLogin.findAll({});
+      res.render("../views/admin/dashboard", { users: users });
     }
   } else {
     res.redirect("/admin/login");
   }
-  const users = await userLogin.findAll({});
-
-  res.render("../views/admin/dashboard", { users: users });
 });
 
 router.get("/dashboard/user/delete/:id", async (req, res) => {
@@ -184,22 +186,24 @@ router.get("/dashboard/user/delete/:id", async (req, res) => {
 
     if (!findId) {
       res.redirect(`/admin/login`);
+    } else {
+      const findUser = await userLogin.findByPk(id);
+
+      if (!findUser) {
+        res.redirect("/admin/dashboard");
+      } else {
+        findUser
+          .destroy()
+          .then(() => {
+            res.redirect("/admin/dashboard");
+          })
+          .catch((err) => {
+            res.json({ err: err.message });
+          });
+      }
     }
   } else {
-    const findUser = await userLogin.findByPk(id);
-
-    if (!findUser) {
-      res.redirect("/admin/dashboard");
-    } else {
-      findUser
-        .destroy()
-        .then(() => {
-          res.redirect("/admin/dashboard");
-        })
-        .catch((err) => {
-          res.json({ err: err.message });
-        });
-    }
+    res.redirect("/admin/login");
   }
 });
 
@@ -211,10 +215,13 @@ router.get("/dashboard/publisher", async (req, res) => {
 
     if (!findId) {
       res.redirect(`/admin/login`);
+    } else {
+      const publishers = await publisherLogin.findAll({});
+      res.render("../views/admin/publisher", { publishers: publishers });
     }
+  } else {
+    res.redirect(`/admin/login`);
   }
-  const publishers = await publisherLogin.findAll({});
-  res.render("../views/admin/publisher", { publishers: publishers });
 });
 
 router.get("/dashboard/publisher/delete/:id", async (req, res) => {
@@ -225,38 +232,42 @@ router.get("/dashboard/publisher/delete/:id", async (req, res) => {
     const findId = await adminlogin.findByPk(token);
 
     if (!findId) {
-      console.log("wrong");
       res.redirect(`/admin/login`);
-    }
-  }
-  const findPublisher = await publisherLogin.findByPk(id);
+    } else {
+      const findPublisher = await publisherLogin.findByPk(id);
 
-  if (!findPublisher) {
-    res.redirect("/admin/dashboard");
+      if (!findPublisher) {
+        res.redirect("/admin/dashboard");
+      } else {
+        await findPublisher
+          .destroy()
+          .then(() => {
+            res.redirect("/admin/dashboard/publisher");
+          })
+          .catch((err) => {
+            res.json({ err: err.message });
+          });
+      }
+    }
   } else {
-    await findPublisher
-      .destroy()
-      .then(() => {
-        res.redirect("/admin/dashboard/publisher");
-      })
-      .catch((err) => {
-        res.json({ err: err.message });
-      });
+    res.redirect("/admin/login");
   }
 });
 
 router.get("/dashboard/verifier", async (req, res) => {
   if (req.cookies.admin) {
-    console.log("correct");
     const token = jwt.verify(req.cookies.admin, process.env.JWT_SECRET_TOKEN);
     const findId = await adminlogin.findByPk(token);
 
     if (!findId) {
       res.redirect(`/admin/login`);
+    } else {
+      const verifierList = await verifierLogin.findAll({});
+      res.render("../views/admin/verifier", { verifier: verifierList });
     }
+  } else {
+    res.redirect(`/admin/login`);
   }
-  const verifierList = await verifierLogin.findAll({});
-  res.render("../views/admin/verifier", { verifier: verifierList });
 });
 
 // router.get("/dashboard/verifier/edit/:id", (req, res) => {});
@@ -270,20 +281,23 @@ router.get("/dashboard/verifier/delete/:id", async (req, res) => {
 
     if (!findId) {
       res.redirect(`/admin/login`);
-    }
-  }
-  const checkId = await verifierLogin.findByPk(id);
-  if (!checkId) {
-    res.redirect("/admin/dashboard/verifier");
-  } else {
-    checkId
-      .destroy()
-      .then(() => {
+    } else {
+      const checkId = await verifierLogin.findByPk(id);
+      if (!checkId) {
         res.redirect("/admin/dashboard/verifier");
-      })
-      .catch((err) => {
-        res.json({ err: err.message });
-      });
+      } else {
+        checkId
+          .destroy()
+          .then(() => {
+            res.redirect("/admin/dashboard/verifier");
+          })
+          .catch((err) => {
+            res.json({ err: err.message });
+          });
+      }
+    }
+  } else {
+    res.redirect(`/admin/login`);
   }
 });
 router.get("/dashboard/verifier/create", async (req, res) => {
@@ -294,15 +308,18 @@ router.get("/dashboard/verifier/create", async (req, res) => {
 
     if (!findId) {
       res.redirect(`/admin/login`);
+    } else {
+      res.render("../views/admin/verifierSignup", {
+        emailExist: false,
+        passwordError: false,
+        email: "",
+        password: "",
+        confirm: "",
+      });
     }
+  } else {
+    res.redirect(`/admin/login`);
   }
-  res.render("../views/admin/verifierSignup", {
-    emailExist: false,
-    passwordError: false,
-    email: "",
-    password: "",
-    confirm: "",
-  });
 });
 
 router.get("/dashboard/community", async (req, res) => {
@@ -313,11 +330,14 @@ router.get("/dashboard/community", async (req, res) => {
 
     if (!findId) {
       res.redirect(`/admin/login`);
-    }
-  }
-  const communityList = await communityRegistration.findAll({});
+    } else {
+      const communityList = await communityRegistration.findAll({});
 
-  res.render("../views/admin/community", { community: communityList });
+      res.render("../views/admin/community", { community: communityList });
+    }
+  } else {
+    res.redirect(`/admin/login`);
+  }
 });
 
 router.get("/dashboard/community/delete/:id", async (req, res) => {
@@ -329,21 +349,24 @@ router.get("/dashboard/community/delete/:id", async (req, res) => {
 
     if (!findId) {
       res.redirect(`/admin/login`);
-    }
-  }
-  const checkId = await communityRegistration.findByPk(id);
+    } else {
+      const checkId = await communityRegistration.findByPk(id);
 
-  if (!checkId) {
-    res.redirect("/admin/dashboard/community");
-  } else {
-    checkId
-      .destroy()
-      .then(() => {
+      if (!checkId) {
         res.redirect("/admin/dashboard/community");
-      })
-      .catch((err) => {
-        res.json({ err: err.message });
-      });
+      } else {
+        checkId
+          .destroy()
+          .then(() => {
+            res.redirect("/admin/dashboard/community");
+          })
+          .catch((err) => {
+            res.json({ err: err.message });
+          });
+      }
+    }
+  } else {
+    res.redirect(`/admin/login`);
   }
 });
 
@@ -360,55 +383,58 @@ router.get("/dashboard/post", async (req, res) => {
 
       if (!findId) {
         res.redirect(`/admin/login`);
+      } else {
+        if (
+          req.query.type == undefined ||
+          req.query.mode == undefined ||
+          req.query.fee == undefined ||
+          req.query.state == undefined
+        ) {
+          const filterPost = await eventModel.findAll({});
+
+          res.render("../views/admin/post", {
+            post: filterPost,
+            type: "All",
+            mode: "All",
+            fee: "All",
+            state: "All",
+          });
+        } else if (
+          req.query.type == "" &&
+          req.query.mode == "" &&
+          req.query.fee == "" &&
+          req.query.state == ""
+        ) {
+          const filterPost = await eventModel.findAll({});
+
+          res.render("../views/admin/post", {
+            post: filterPost,
+            type: req.query.type,
+            mode: req.query.mode,
+            fee: req.query.fee,
+            state: req.query.state,
+          });
+        } else {
+          const filterPost = await eventModel.findAll({
+            where: {
+              type: req.query.type,
+              mode: req.query.mode,
+              fee: req.query.fee,
+              state: req.query.state,
+            },
+          });
+
+          res.render("../views/admin/post", {
+            post: filterPost,
+            type: req.query.type,
+            mode: req.query.mode,
+            fee: req.query.fee,
+            state: req.query.state,
+          });
+        }
       }
-    }
-    if (
-      req.query.type == undefined ||
-      req.query.mode == undefined ||
-      req.query.fee == undefined ||
-      req.query.state == undefined
-    ) {
-      const filterPost = await eventModel.findAll({});
-
-      res.render("../views/admin/post", {
-        post: filterPost,
-        type: "All",
-        mode: "All",
-        fee: "All",
-        state: "All",
-      });
-    } else if (
-      req.query.type == "" &&
-      req.query.mode == "" &&
-      req.query.fee == "" &&
-      req.query.state == ""
-    ) {
-      const filterPost = await eventModel.findAll({});
-
-      res.render("../views/admin/post", {
-        post: filterPost,
-        type: req.query.type,
-        mode: req.query.mode,
-        fee: req.query.fee,
-        state: req.query.state,
-      });
     } else {
-      const filterPost = await eventModel.findAll({
-        where: {
-          type: req.query.type,
-          mode: req.query.mode,
-          fee: req.query.fee,
-          state: req.query.state,
-        },
-      });
-
-      res.render("../views/admin/post", {
-        post: filterPost,
-        type: req.query.type,
-        mode: req.query.mode,
-        fee: req.query.fee,
-        state: req.query.state,
-      });
+      res.redirect(`/admin/login`);
     }
   } catch (err) {
     res.json({ err: err.message });
@@ -426,26 +452,33 @@ router.get("/dashboard/post/delete/:id", async (req, res) => {
 
     if (!findId) {
       res.redirect(`/admin/login`);
-    }
-  }
-  const checkId = await eventModel.findByPk(id);
+    } else {
+      const checkId = await eventModel.findByPk(id);
 
-  if (!checkId) {
-    res.redirect("/admin/dashboard/post");
-  } else {
-    checkId
-      .destroy()
-      .then(() => {
+      if (!checkId) {
         res.redirect("/admin/dashboard/post");
-      })
-      .catch((err) => {
-        res.json({ err: err.message });
-      });
+      } else {
+        checkId
+          .destroy()
+          .then(() => {
+            res.redirect("/admin/dashboard/post");
+          })
+          .catch((err) => {
+            res.json({ err: err.message });
+          });
+      }
+    }
+  } else {
+    res.redirect(`/admin/login`);
   }
 });
 
 router.get("/dashboard/logout", (req, res) => {
-  res.clearCookie("admin");
-  res.redirect("/admin/login");
+  if (req.cookies.admin) {
+    res.clearCookie("admin");
+    res.redirect("/admin/login");
+  } else {
+    res.redirect("/admin/login");
+  }
 });
 module.exports = router;
