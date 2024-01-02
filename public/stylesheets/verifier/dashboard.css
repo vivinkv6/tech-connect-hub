@@ -25,10 +25,8 @@ a:hover {
 
 .sidebar-header {
   display: flex;
-
   align-items: center;
   padding: 1rem;
-  background-color: rgb(204, 204, 204);
 }
 
 .sidebar-logo {
@@ -38,7 +36,7 @@ a:hover {
   font-weight: 600;
   text-decoration: none;
   color: #1a202c;
-  font-size: 25px;
+  font-size: 35px;
 }
 
 .sidebar-logo svg {

@@ -68,8 +68,9 @@ main {
 .card {
   box-shadow: 0px 0px 10px black;
   text-align: left;
-  max-height: 500px;
+  height: 550px;
   border-radius: 20px;
+  width: 350px;
 }
 
 .techconnect-image {

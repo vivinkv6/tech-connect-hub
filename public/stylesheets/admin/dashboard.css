@@ -3,7 +3,9 @@ body {
     margin: 0;
     padding: 0;
 }
-
+.add-verifier{
+    position: absolute;top:20px;right: 20px;
+}
 .container {
     display: flex;
 }
@@ -35,13 +37,16 @@ body {
 }
 
 /* Responsive Styles */
-@media (max-width: 768px) {
-    .container {
-        flex-direction: column;
+@media (max-width: 900px) {
+  .add-verifier{
+    position: absolute;
+    top: 80px;
+  }
+    .sidebar{
+        display: none;
     }
-
-    .sidebar {
-        width: 100%;
+    .nav2{
+        display: flex;
     }
 }
 

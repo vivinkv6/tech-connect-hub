@@ -25,73 +25,64 @@
       rel="stylesheet"
       href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.2/font/bootstrap-icons.min.css"
     />
+    <style>
+      @import url('https://fonts.googleapis.com/css2?family=Saira+Stencil+One&display=swap');
+      </style>
 
-    <title>Admin Login</title>
+    <title>Admin Dashboard</title>
   </head>
   <body>
     <div class="container-fluid">
       <div class="row">
         <!-- Sidebar -->
         <div class="sidebar col-md-3 shadow-lg">
-          <h2 class="mb-4">Admin Dashboard</h2>
+          <h2 class="mb-4 text-secondary" style="font-family: 'Saira Stencil One', sans-serif;">ADMIN DASHBOARD</h2>
           <!-- <a href="#" class="list-group-item list-group-item-action">Profile</a> -->
-          <a
-            href="/admin/dashboard"
-            class="list-group-item list-group-item-action"
-            ><i
-              class="bi bi-person fs-3 me-3"
-              style="vertical-align: middle"
-            ></i
-            >Users</a
-          >
-          <a
-            href="/admin/dashboard/publisher"
-            class="list-group-item list-group-item-action"
-            ><i
-              class="bi bi-pencil-square fs-3 me-3"
-              style="vertical-align: middle"
-            ></i
-            >Publishers</a
-          >
-          <a
-            href="/admin/dashboard/verifier"
-            class="list-group-item list-group-item-action"
-            ><i
-              class="bi bi-check-circle fs-3 me-3"
-              style="vertical-align: middle"
-            ></i
-            >Verifier</a
-          >
-          <a
-            href="/admin/dashboard/post"
-            class="list-group-item list-group-item-action"
-            ><i class="bi bi-send fs-3 me-3" style="vertical-align: middle"></i
-            >Post</a
-          >
-          <a
-            href="/admin/dashboard/community"
-            class="list-group-item list-group-item-action"
-            ><i
-              class="bi bi-building fs-3 me-3"
-              style="vertical-align: middle"
-            ></i
-            >Community</a
-          >
-          <a
-            href="/admin/dashboard/logout"
-            class="list-group-item list-group-item-action"
-            ><i
-              class="bi bi-box-arrow-left fs-3 me-3"
-              style="vertical-align: middle"
-            ></i
-            >Logout</a
-          >
+          <a href="/admin/dashboard" class=" list-group-item-action"
+          ><i
+            class="bi bi-person fs-3 me-3"
+            style="vertical-align: middle"
+          ></i
+          >Users</a
+        >
+        <a href="/admin/dashboard/publisher" class=" list-group-item-action"
+          ><i
+            class="bi bi-pencil-square fs-3 me-3"
+            style="vertical-align: middle"
+          ></i
+          >Publishers</a
+        >
+        <a href="/admin/dashboard/verifier" class="list-group-item-action"
+          ><i
+            class="bi bi-check-circle fs-3 me-3"
+            style="vertical-align: middle"
+          ></i
+          >Verifier</a
+        >
+        <a href="/admin/dashboard/post" class="list-group-item-action"
+          ><i class="bi bi-send fs-3 me-3" style="vertical-align: middle"></i
+          >Post</a
+        >
+        <a href="/admin/dashboard/community" class="list-group-item-action"
+          ><i
+            class="bi bi-building fs-3 me-3"
+            style="vertical-align: middle"
+          ></i
+          >Community</a
+        >
+        <a href="/admin/dashboard/logout" class="list-group-item-action"
+          ><i
+            class="bi bi-box-arrow-left fs-3 me-3"
+            style="vertical-align: middle"
+          ></i
+          >Logout</a
+        >
         </div>
         <nav
           class="nav2 navbar navbar-expand-lg bg bg-light shadow-lg bg-body-tertiary"
         >
           <div class="container-fluid">
-            <a class="navbar-brand" href="#">Navbar</a>
+            <h4 class="text-secondary" style="font-family: 'Saira Stencil One', sans-serif;">ADMIN DASHBOARD</h4>
             <button
               class="navbar-toggler"
               type="button"
@@ -105,54 +96,42 @@
             </button>
             <div class="collapse navbar-collapse" id="navbarNavDropdown">
               <ul class="navbar-nav mt-3">
-                <a
-                  href="/admin/dashboard"
-                  class="list-group-item list-group-item-action"
+                <a href="/admin/dashboard" class="text-decoration-none list-group-item-action"
                   ><i
                     class="bi bi-person fs-3 me-3"
                     style="vertical-align: middle"
                   ></i
                   >Users</a
                 >
-                <a
-                  href="/admin/dashboard/publisher"
-                  class="list-group-item list-group-item-action"
+                <a href="/admin/dashboard/publisher" class="text-decoration-none list-group-item-action"
                   ><i
                     class="bi bi-pencil-square fs-3 me-3"
                     style="vertical-align: middle"
                   ></i
                   >Publishers</a
                 >
-                <a
-                  href="/admin/dashboard/verifier"
-                  class="list-group-item list-group-item-action"
+                <a href="/admin/dashboard/verifier" class="text-decoration-none list-group-item-action"
                   ><i
                     class="bi bi-check-circle fs-3 me-3"
                     style="vertical-align: middle"
                   ></i
                   >Verifier</a
                 >
-                <a
-                  href="/admin/dashboard/post"
-                  class="list-group-item list-group-item-action"
+                <a href="/admin/dashboard/post" class="text-decoration-none list-group-item-action"
                   ><i
                     class="bi bi-send fs-3 me-3"
                     style="vertical-align: middle"
                   ></i
                   >Post</a
                 >
-                <a
-                  href="/admin/dashboard/community"
-                  class="list-group-item list-group-item-action"
+                <a href="/admin/dashboard/community" class="text-decoration-none list-group-item-action"
                   ><i
                     class="bi bi-building fs-3 me-3"
                     style="vertical-align: middle"
                   ></i
                   >Community</a
                 >
-                <a
-                  href="/admin/dashboard/logout"
-                  class="list-group-item list-group-item-action"
+                <a href="/admin/dashboard/logout" class="text-decoration-none list-group-item-action"
                   ><i
                     class="bi bi-box-arrow-left fs-3 me-3"
                     style="vertical-align: middle"
@@ -212,7 +191,7 @@
             </tbody>
             <% } %>
           </table>
-          <div class="fs-1 text-primary" style="position: absolute;top:20px;right: 20px;">
+          <div class="fs-1 text-primary add-verifier">
             <!-- <i class="bi bi-plus-circle-fill"></i> -->
             <a href="/admin/dashboard/verifier/create" class="btn btn-primary" ><i class="bi bi-person-plus-fill me-2 fs-5"style="vertical-align: middle;"></i>Verifier</a>
           </div>

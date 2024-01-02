@@ -27,15 +27,17 @@
     />
     <link rel="stylesheet" href="/stylesheets/verifier/dashboard.css" />
 
-    <title>Verifier - Dashboard</title>
+    <title>Verifier Dashboard</title>
   </head>
   <body>
     <div class="grid-container">
       <!-- Sidebar -->
-      <div class="sidebar">
+      <div class="sidebar bg bg-light shadow-lg">
         <div class="sidebar-header">
           <a href="#" class="sidebar-logo">
-            <span class="text-xs sm:text-sm md:text-base"
+            <span
+              class="text-xs sm:text-sm md:text-base text-secondary"
+              style="font-family: 'Saira Stencil One', sans-serif"
               >Verifier Dashboard</span
             >
           </a>
@@ -64,12 +66,15 @@
 
       <!-- Nav2 -->
 
-      <nav class="navbar nav2 bg-body-tertiary fixed-top bg-dark">
+      <nav class="navbar nav2 bg-body-tertiary fixed-top bg-light shadow-lg">
         <div class="container-fluid">
           <a href="#" class="sidebar-logo">
-            <span class="text-xs sm:text-sm md:text-base text-light"
-              >Verifier Dashboard</span
+            <h4
+              class="text-xs text-secondary"
+              style="font-family: 'Saira Stencil One', sans-serif"
             >
+              Verifier Dashboard
+            </h4>
           </a>
           <button
             class="navbar-toggler"
@@ -79,7 +84,9 @@
             aria-controls="offcanvasNavbar"
             aria-label="Toggle navigation"
           >
-            <span class="navbar-toggler-icon"></span>
+            <span class="navbar-toggler-icon">
+              <i class="bi bi-list text-dark fs-1"></i>
+            </span>
           </button>
           <div
             class="offcanvas offcanvas-end"
@@ -89,9 +96,12 @@
           >
             <div class="offcanvas-header">
               <a href="#" class="sidebar-logo">
-                <span class="text-xs sm:text-sm md:text-base text-dark"
-                  >Verifier Dashboard</span
+                <h4
+                  class="text-xs text-secondary"
+                  style="font-family: 'Saira Stencil One', sans-serif"
                 >
+                  Verifier Dashboard
+                </h4>
               </a>
               <button
                 type="button"
@@ -102,23 +112,26 @@
             </div>
             <div class="offcanvas-body">
               <ul class="navbar-nav justify-content-end flex-grow-1 pe-3">
-                <li class="nav-item">
-                  <a
-                    class="nav-link active"
-                    aria-current="page"
-                    href="/verifier/<%= id %>/dashboard"
-                    >Profile</a
-                  >
+                <li class="nav-item mb-3">
+                  
+                  <a href="/verifier/<%= id %>/dashboard" class="bg-gray-100 text-secondary">
+                    <i class="bi bi-person-circle" style="font-size: 20px"></i>
+                    Profiles
+                    <div class="badge bg-primary"><%=profileCount %></div>
+                  </a>
                 </li>
-                <li class="nav-item">
-                  <a class="nav-link" href="/verifier/<%= id %>/dashboard/community"
-                    >Community</a
-                  >
+                <li class="nav-item mb-3">
+                  <a href="/verifier/<%= id %>/dashboard/community" class="text-secondary">
+                    <i class="bi bi-building" style="font-size: 20px"></i>
+                    Community
+                    <div class="badge bg-primary"><%=communityCount %></div>
+                  </a>
                 </li>
-                <li class="nav-item">
-                  <a class="nav-link" href="/verifier/<%= id %>/dashboard/logout"
-                    >Logout</a
-                  >
+                <li class="nav-item mb-3">
+                  <a href="/verifier/<%= id %>/dashboard/logout" class="text-secondary">
+                    <i class="bi bi-box-arrow-left" style="font-size: 20px"></i>
+                    Logout
+                  </a>
                 </li>
               </ul>
             </div>
