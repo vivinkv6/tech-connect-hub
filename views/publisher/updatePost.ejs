@@ -68,6 +68,7 @@
           <label for="mobile-number">Community</label>
          
             <select name="community" id="" class="input-field" required>
+              <option value="No Community">No Community</option>
             <% for( let i = 0; i < community.length; i++ ) { %>
               <% if (community[i].name == post.community) { %>
                 <option selected value="<%= community[i].name %>">

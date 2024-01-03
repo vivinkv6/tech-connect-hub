@@ -683,7 +683,7 @@ router.get("/:id/dashboard/community", async (req, res) => {
           },
         });
 
-        res.render("../views/publisher/communityDashboard", {
+        res.render(`publisher/communityDashboard`, {
           community: fetchCommunity,
           id: id,
           post: post,
@@ -714,7 +714,7 @@ router.get("/:id/dashboard/community/create", async (req, res) => {
       if (!validId) {
         res.redirect("/publisher/login");
       } else {
-        res.render("../views/publisher/community", {
+        res.render("publisher/community", {
           id: id,
           emailExist: false,
           name: "",
@@ -766,7 +766,7 @@ router.post(
             });
 
             if (result) {
-              res.render("../views/publisher/community", {
+              res.render("publisher/community", {
                 id: id,
                 emailExist: true,
                 name: name,
@@ -841,7 +841,7 @@ router.get("/:id1/dashboard/community/:id2", async (req, res) => {
         if (!viewCommunity) {
           res.redirect(`/publisher/${id1}/dashboard`);
         } else {
-          res.render("../views/publisher/viewCommunity", {
+          res.render("publisher/viewCommunity", {
             id1: id1,
             profile: viewCommunity.dataValues,
           });
@@ -906,7 +906,7 @@ router.get("/:id1/dashboard/community/:id2/update", async (req, res) => {
         if (!findCommunity) {
           res.redirect(`/publisher/${id1}/dasboard/community`);
         } else {
-          res.render("../views/publisher/updateCommunity", {
+          res.render("publisher/updateCommunity", {
             post: findCommunity.dataValues,
             id1: id1,
           });
