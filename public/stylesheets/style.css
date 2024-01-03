@@ -8,7 +8,6 @@ html {
 body {
   background-color: var(--bg);
   color: var(--primary);
-  overflow-x: hidden;
 }
 a {
   text-decoration: none;
@@ -241,6 +240,7 @@ span {
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
+  overflow-x: hidden;
 }
 
 .faq > p {
@@ -562,6 +562,7 @@ footer {
     flex-direction: row;
     justify-content: space-between;
     align-items: center;
+    overflow-x: hidden;
   }
 
   .faq > p {
@@ -852,6 +853,7 @@ footer {
     flex-direction: row;
     justify-content: space-between;
     align-items: center;
+    overflow-x: hidden;
   }
 
   .faq > p {
@@ -1108,6 +1110,7 @@ footer {
     flex-direction: row;
     justify-content: space-between;
     align-items: center;
+    overflow-x: hidden;
   }
 
   .faq > p {
