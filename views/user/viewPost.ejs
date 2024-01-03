@@ -48,14 +48,14 @@
             <img src="<%= post.banner %>" class="banner mt-3" alt="" />
           </a>
           <div class="detail-container">
-            <center>
+            <center class="col-md-3 col-sm-6">
               <span>
                 <i class="bi bi-geo-alt-fill text-danger fs-1"></i>
                 <br />
                 <span class="location"><%= post.state %></span></span
               >
             </center>
-            <center>
+            <center class="col-md-3 col-sm-6">
               <span>
                 <i
                   class="bi bi-calendar-fill fs-1"
@@ -65,13 +65,13 @@
                 <br /><b class="date"> <%= post.date %></b></span
               >
             </center>
-            <center>
+            <center class="col-md-3 col-sm-6">
               <span>
                 <i class="bi bi-alarm-fill fs-1 me-2 text-secondary"></i
                 ><br /><b class="date"> <%= post.time %></b></span
               >
             </center>
-            <center>
+            <center class="col-md-3 col-sm-6">
               <span
                 ><i class="bi bi-person-fill fs-1 me-2 text-secondary"></i
                 ><br /><b class="date"> <%= post.guest %></b></span
