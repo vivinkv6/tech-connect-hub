@@ -31,7 +31,7 @@
   <body>
     <div class="container">
       <div
-        class="profile-container"
+        class="profile-container px-5 py-5"
         data-aos="zoom-in"
         data-aos-duration="1000"
       >
@@ -40,10 +40,9 @@
             <img src="/images/avatar2.png" alt="Profile Picture" />
           </div>
         </center>
-        <div>
+
         <label for="">Name: </label>
-        <div class="username" ><%= profile.name %></div>
-      </div>
+        <div class="username"><%= profile.name %></div>
         <label for="">Role: </label>
         <div class="username"><%= profile.role %></div>
         <label for="">UserName: </label>
@@ -51,8 +50,8 @@
         <label for="">Email: </label>
         <div class="username"><%= profile.email %></div>
         <center>
-        <button class="edit-button">Edit Profile</button>
-      </center>
+          <button class="edit-button">Edit Profile</button>
+        </center>
       </div>
       <div class="post-container">
         <div class="header">
@@ -66,7 +65,7 @@
           <div class="row">
             <% for( let i = 0; i < post.length; i++ ) { %>
 
-            <div class="col-md-4">
+            <div class="col-md-6 col-xl-4 col-lg-4">
               <div
                 class="card mb-5 rounded"
                 data-aos="fade-left"
@@ -92,7 +91,12 @@
                 <div class="card-body">
                   <div
                     class="mb-3"
-                    style="display: flex; justify-content: flex-start"
+                    style="
+                      display: flex;
+                      justify-content: flex-start;
+                      flex-wrap: wrap;
+                      gap: 10px;
+                    "
                   >
                     <% if (post[i].dataValues.fee == 'Free') { %>
                     <span class="me-2 badge bg text-light bg-success"
@@ -137,6 +141,11 @@
                       ><%= post[i].dataValues.type%></span
                     >
                     <% } %>
+                    <span
+                      class="badge badge-primary"
+                      style="background-color: #b4e063"
+                      ><%=post[i].dataValues.community %></span
+                    >
                   </div>
                   <div class="card-head p-2">
                     <h5 class="card-title fw-bold">

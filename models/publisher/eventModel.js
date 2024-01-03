@@ -57,6 +57,10 @@ const eventModel = sequelizeConfig.define("eventpost", {
     type: DataTypes.STRING,
     allowNull: false,
   },
+  community:{
+    type: DataTypes.STRING,
+    allowNull: true,
+  },
   publisherId: {
     type: DataTypes.STRING,
     allowNull: false,

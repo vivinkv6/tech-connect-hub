@@ -17,7 +17,7 @@ const cookieAuth = require("../../utils/auth");
 //login routes
 router.get("/login", async (req, res) => {
   if (req.cookies.verifier) {
-    const verify = jwt.sign(req.cookies.verifier, process.env.JWT_SECRET_TOKEN);
+    const verify = jwt.verify(req.cookies.verifier, process.env.JWT_SECRET_TOKEN);
     const checkId = await verfierLogin.findByPk(verify);
     if (!checkId) {
       res.render("../views/verifier/login", {

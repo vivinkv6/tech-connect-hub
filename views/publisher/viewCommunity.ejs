@@ -43,8 +43,8 @@
               data-aos-duration="1000"
             >
               <div class="modal-header">
-                <h2 class="modal-title">Your Post</h2>
-                <a href="/publisher/<%=id1 %>/dashboard">
+                <h2 class="modal-title">Your Community</h2>
+                <a href="/publisher/<%=id1 %>/dashboard/community">
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     viewBox="0 0 24 24"
@@ -77,7 +77,7 @@
                 <div class="profile-pic-container">
                   <center>
                     <img
-                      src="<%= profile.banner %>"
+                      src="<%= profile.logo %>"
                       style="object-fit: contain; height: 200px; width: 100%"
                       alt=""
                     />
@@ -93,69 +93,40 @@
                   </p>
 
                   <p class="detail-item">
-                    <span class="detail-label">Type:</span>
-                    <%=profile.type %>
+                    <span class="detail-label">Email:</span>
+                    <%=profile.email %>
                   </p>
                   <p class="detail-item">
-                    <span class="detail-label">Mode:</span>
-                    <% if (profile.mode=="Online") { %>
-                      <button class="btn btn-primary"><%=profile.mode %></button>
-                    <% }else{%>
-                      <button class="btn btn-secondary"><%=profile.mode %></button>
-                      <% } %>
+                    <span class="detail-label">Social Media:</span>
+                    <%=profile.social %>
                     
                   </p>
+
                   <p class="detail-item">
-                    <span class="detail-label">Community:</span>
-                    <%=profile.community %>
+                    <span class="detail-label">Place:</span>
+                    <%=profile.place %>
+                  </p>
+                  <p class="detail-item">
+                    <span class="detail-label">Location:</span>
+                    <%=profile.location %>
                   </p>
 
                   <p class="detail-item">
-                    <span class="detail-label">Date:</span>
-                    <%=profile.date %>
+                    <span class="detail-label">Mobile:</span>
+                    <%=profile.mobile %>
                   </p>
-                  <p class="detail-item">
-                    <span class="detail-label">Time:</span>
-                    <%=profile.time %>
-                  </p>
-
-                  <p class="detail-item">
-                    <span class="detail-label">Registration Link:</span>
-                    <a
-                      href=" <%=profile.link %>"
-                      style="color: blue; text-decoration: underline"
-                    >
-                      <%=profile.link %></a
-                    >
-                  </p>
-                  <p class="detail-item">
-                    <span class="detail-label">Fees:</span>
-                    <% if (profile.fee=="Free") { %>
-                      <button class="btn btn-success"><%=profile.fee %></button>
-                    <% }else{%>
-                      <button class="btn btn-danger"><%=profile.fee %></button>
-                      <% } %>
-                  </p>
-
-                  <p class="detail-item">
-                    <span class="detail-label">State:</span>
-                    <%=profile.state %>
-                  </p>
-                  <p class="detail-item">
-                    <span class="detail-label">Chief Guest:</span>
-                    <%=profile.guest %>
-                  </p>
+                
 
                   <div class="button-container">
                     <button class="accept-btn">
                       <a
-                        href="/publisher/<%= id1 %>/dashboard/post/<%= profile.id %>/update"
+                        href="/publisher/<%= id1 %>/dashboard/community/<%= profile.id %>/update"
                         ><i class="bi bi-pencil me-2"></i>EDIT</a
                       >
                     </button>
                     <button class="reject-btn">
                       <a
-                        href="/publisher/<%= id1 %>/dashboard/post/<%= profile.id %>/delete"
+                        href="/publisher/<%= id1 %>/dashboard/community/<%= profile.id %>/delete"
                         ><i class="bi bi-trash me-2"></i>DELETE</a
                       >
                     </button>

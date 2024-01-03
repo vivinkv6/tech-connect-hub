@@ -83,7 +83,12 @@
           <b class="title fs-1"><%= post.name %></b><br />
           <div
             class="mb-3 highlight2"
-            style="display: flex; justify-content: flex-start"
+            style="
+              display: flex;
+              justify-content: flex-start;
+              flex-wrap: wrap;
+              gap: 10px;
+            "
           >
             <% if (post.fee == 'Free') { %>
             <span class="me-2 badge bg text-light bg-success"
@@ -246,6 +251,11 @@
               >Other</span
             >
             <% } %>
+            <span
+              class="badge badge-primary ms-2"
+              style="background-color: #b4e063"
+              ><%=post.community %></span
+            >
           </div>
           <!-- <b class="description">Description: </b> -->
           <p><%= post.description %></p>

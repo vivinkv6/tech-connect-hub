@@ -84,15 +84,15 @@
           >
         </div>
         <nav
-          class="nav2 navbar navbar-expand-lg bg bg-light shadow-lg bg-body-tertiary"
+          class="nav2 navbar navbar-expand-lg bg bg-light shadow-sm bg-body-tertiary"
         >
           <div class="container-fluid">
-            <h4
+            <h5
               class="text-secondary"
               style="font-family: 'Saira Stencil One', sans-serif"
             >
               ADMIN DASHBOARD
-            </h4>
+            </h5>
             <button
               class="navbar-toggler"
               type="button"
@@ -168,12 +168,12 @@
         <div class="content col-md-9 table-responsive">
           <!-- Table -->
           <table class="table table-bordered caption-top">
-            <caption>
-              List of Communities</caption> <% if (community.length==0) { %>
+            <% if (community.length==0) { %>
               <h2 class="text-center text-secondary">No Communities</h2>
             
             <% } else{%>
-
+              <caption>
+                List of Communities</caption>
             <thead class="thead-dark">
               <tr>
                 <th class="text-dark">SlNo.</th>

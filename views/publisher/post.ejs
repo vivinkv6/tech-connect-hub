@@ -94,6 +94,23 @@
             </select>
           </div>
           <div class="form-group">
+            <label for="mobile-number">Community</label>
+            <% if (community.length==0) { %>
+            <select name="fee" id="" class="input-field" required>
+              <option value="No Community">No Community</option>
+            </select>
+            <% }else{ %>
+            <select name="community" id="" class="input-field" required>
+              <% for( let i = 0; i < community.length; i++ ) { %>
+
+              <option value="<%= community[i].name %>">
+                <%= community[i].name %>
+              </option>
+              <% } %>
+            </select>
+            <% } %>
+          </div>
+          <div class="form-group">
             <label for="place">Date</label>
             <input
               class="input-field"

@@ -149,12 +149,13 @@
                     src="<%= post[i].dataValues.banner %>"
                     class="card-img-top"
                     alt="<%= post[i].dataValues.name %>"
+                    style="height: 350px;"
                   />
                 </a>
                 <div class="card-body">
                   <div
                     class="mb-3"
-                    style="display: flex; justify-content: flex-start"
+                    style="display: flex; justify-content: flex-start;flex-wrap: wrap; gap: 10px;"
                   >
                     <% if (post[i].dataValues.fee == 'Free') { %>
                     <span class="me-2 badge bg text-light bg-success"
@@ -379,6 +380,8 @@
                       >Other</span
                     >
                     <% } %>
+                    <span class="badge badge-primary"
+                    style="background-color: #b4e063"><%=post[i].community %></span>    
                   </div>
                   <div class="card-head p-2">
                     <h5 class="card-title fw-bold">

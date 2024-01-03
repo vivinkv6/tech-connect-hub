@@ -82,7 +82,7 @@
           class="nav2 navbar navbar-expand-lg bg bg-light shadow-sm bg-body-tertiary"
         >
           <div class="container-fluid">
-            <h4 class="text-secondary" style="font-family: 'Saira Stencil One', sans-serif;">ADMIN DASHBOARD</h4>
+            <h5 class="text-secondary" style="font-family: 'Saira Stencil One', sans-serif;">ADMIN DASHBOARD</h5>
             <button
               class="navbar-toggler"
               type="button"
@@ -147,13 +147,14 @@
         <div class="content col-md-9 table-responsive">
           <!-- Table -->
           <table class="table table-bordered caption-top">
-            <caption>
-              List of Users
-            </caption>
+           
 
             <% if (users.length==0) { %>
              <h2 class="text-center text-secondary">No Users</h2>
             <% }else{ %>
+              <caption>
+                List of Users
+              </caption>
               <thead class="thead-dark">
                 <tr>
                   <th class="text-dark">SlNo.</th>

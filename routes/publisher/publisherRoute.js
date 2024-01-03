@@ -353,11 +353,16 @@ router.get("/:id/dashboard/post/create", async (req, res) => {
       res.redirect("/publisher/login");
     } else {
       const profile = await publisherLogin.findByPk(id);
+      const community=await communityModel.findAll({
+        where:{
+          publisherId:checkId.dataValues.id
+        }
+      })
 
       if (!profile) {
         res.redirect("/publisher/login");
       } else {
-        res.render("../views/publisher/post", { id: id });
+        res.render("../views/publisher/post", { id: id,community:community });
       }
     }
   } else {
@@ -384,6 +389,7 @@ router.post(
       state,
       guest,
       contact,
+      community
     } = req.body;
     if (req.cookies.publisher) {
       const verify = jwt.verify(
@@ -425,6 +431,7 @@ router.post(
               guest: guest,
               contact: contact,
               publisherId: id,
+              community:community
             })
             .then(async (data) => {
               const sendNotification = await notificationModel
@@ -469,6 +476,11 @@ router.get("/:id1/dashboard/post/:id2/update", async (req, res) => {
         res.redirect(`/publisher/${id1}/dasboard`);
       } else {
         const findPost = await eventModel.findByPk(id2);
+        const community=await communityModel.findAll({
+          where:{
+            publisherId:id1
+          }
+        })
 
         if (!findPost) {
           res.redirect(`/publisher/${id1}/dasboard`);
@@ -476,6 +488,7 @@ router.get("/:id1/dashboard/post/:id2/update", async (req, res) => {
           res.render("../views/publisher/updatePost", {
             post: findPost.dataValues,
             id1: id1,
+            community:community
           });
         }
       }
@@ -805,6 +818,184 @@ router.post(
     }
   }
 );
+
+router.get("/:id1/dashboard/community/:id2", async (req, res) => {
+  const { id1, id2 } = req.params;
+  if (req.cookies.publisher) {
+    const verify = jwt.verify(
+      req.cookies.publisher,
+      process.env.JWT_SECRET_TOKEN
+    );
+    const checkId = await publisherLogin.findByPk(verify);
+
+    if (!checkId) {
+      res.redirect("/publisher/login");
+    } else {
+      const profile = await publisherLogin.findByPk(id1);
+
+      if (!profile) {
+        res.redirect("/publisher/login");
+      } else {
+        const viewCommunity = await communityModel.findByPk(id2);
+
+        if (!viewCommunity) {
+          res.redirect(`/publisher/${id1}/dashboard`);
+        } else {
+          res.render("../views/publisher/viewCommunity", {
+            id1: id1,
+            profile: viewCommunity.dataValues,
+          });
+        }
+      }
+    }
+  } else {
+    res.redirect("/publisher/login");
+  }
+});
+
+router.get("/:id1/dashboard/community/:id2/delete", async (req, res) => {
+  const { id1, id2 } = req.params;
+  if (req.cookies.publisher) {
+    const verify = jwt.verify(
+      req.cookies.publisher,
+      process.env.JWT_SECRET_TOKEN
+    );
+    const checkId = await publisherLogin.findByPk(verify);
+
+    if (!checkId) {
+      res.redirect("/publisher/login");
+    } else {
+      const publisher = await publisherLogin.findByPk(id1);
+
+      if (!publisher) {
+        res.redirect(`/publisher/${id1}/dashboard/community`);
+      } else {
+        const deletePost = await communityModel.findByPk(id2);
+        if (!deletePost) {
+          res.redirect(`/publisher/${id1}/dashboard`);
+        } else {
+          deletePost.destroy();
+          res.redirect(`/publisher/${id1}/dashboard`);
+        }
+      }
+    }
+  } else {
+    res.redirect("/publisher/login");
+  }
+});
+
+
+router.get("/:id1/dashboard/community/:id2/update", async (req, res) => {
+  const { id1, id2 } = req.params;
+  if (req.cookies.publisher) {
+    const verify = jwt.verify(
+      req.cookies.publisher,
+      process.env.JWT_SECRET_TOKEN
+    );
+    const checkId = await publisherLogin.findByPk(verify);
+
+    if (!checkId) {
+      res.redirect("/publisher/login");
+    } else {
+      const validPublisher = await publisherLogin.findByPk(id1);
+      if (!validPublisher) {
+        res.redirect(`/publisher/${id1}/dasboard`);
+      } else {
+        const findCommunity = await communityModel.findByPk(id2);
+
+        if (!findCommunity) {
+          res.redirect(`/publisher/${id1}/dasboard/community`);
+        } else {
+          res.render("../views/publisher/updateCommunity", {
+            post: findCommunity.dataValues,
+            id1: id1,
+          });
+        }
+      }
+    }
+  } else {
+    res.redirect("/publisher/login");
+  }
+});
+
+router.post(
+  "/:id1/dashboard/community/:id2/update",
+  upload.single("logo"),
+  async (req, res) => {
+    const { id1, id2 } = req.params;
+    const {
+      name,
+      description,
+     mobile,location,place,email,social
+    } = req.body;
+    if (req.cookies.publisher) {
+      const verify = jwt.verify(
+        req.cookies.publisher,
+        process.env.JWT_SECRET_TOKEN
+      );
+      const checkId = await publisherLogin.findByPk(verify);
+
+      if (!checkId) {
+        res.redirect("/publisher/login");
+      } else {
+        const findPublisher = await publisherLogin.findByPk(id1);
+        if (!findPublisher) {
+          res.redirect(`/publisher/${id1}/dasboard`);
+        } else {
+          const findCommunity = await communityModel.findByPk(id2);
+          if (!findCommunity) {
+            res.redirect(`/publisher/${id1}/dasboard/community`);
+          } else {
+            //Chcek if the image is not update
+            if (!req.file) {
+              communityModel
+                .update(req.body)
+                .then(() => {
+                  res.redirect(`/publisher/${id1}/dashboard/community`);
+                })
+                .catch((err) => {
+                  res.json({ err: err });
+                });
+            } else {
+              const fileBuffer = req.file.buffer.toString("base64");
+              const fileUpload = await cloudinaryConfig.uploader.upload(
+                `data:image/png;base64,${fileBuffer}`,
+                {
+                  folder: "/events",
+                  public_id: Date.now() + "-" + req.file.originalname,
+                  encoding: "base64",
+                }
+              );
+              findCommunity
+                .update({
+                  name: name,
+                  description: description,
+                  mobile:mobile,
+                  social:social,
+                  email:email,
+                  place:place,
+                  location:location,
+                  logo: fileUpload.secure_url,
+                })
+                .then(() => {
+                  res.redirect(`/publisher/${id1}/dashboard/community`);
+                })
+                .catch((err) => {
+                  res.json({ err: err });
+                });
+            }
+          }
+        }
+      }
+    } else {
+      res.redirect("/publisher/login");
+    }
+  }
+);
+
+
+
+
 
 //logout route
 router.get("/:id/dashboard/logout", async (req, res) => {
