@@ -179,7 +179,7 @@ a:hover {
 }
 
 /* Responsive Styles */
-@media (max-width: 768px) {
+@media (max-width: 900px) {
   .grid-container {
     grid-template-columns: 1fr;
   }

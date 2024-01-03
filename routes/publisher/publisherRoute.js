@@ -683,7 +683,7 @@ router.get("/:id/dashboard/community", async (req, res) => {
           },
         });
 
-        res.render(`../views/publisher/communityDashboard`, {
+        res.render("../views/publisher/comdashboard", {
           community: fetchCommunity,
           id: id,
           post: post,

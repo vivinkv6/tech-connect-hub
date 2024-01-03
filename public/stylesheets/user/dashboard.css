@@ -7,6 +7,7 @@ body {
   margin: 0;
   padding: 0;
   background-color: #f4f4f4;
+  overflow-x: hidden;
 }
 
 .nav2 {
@@ -101,6 +102,10 @@ footer {
   text-align: center;
   padding: 1em;
   margin-top: 2em;
+  position: relative;
+  bottom: 0px;
+  left: 0px;
+  width: 100%;
 }
 
 @media screen and (max-width: 900px) {
@@ -111,12 +116,18 @@ footer {
 
 @media screen and (max-width: 500px) {
   header > h1 {
-    font-size: 30px;
+    font-size: 20px;
+  }
+  header>h4{
+    font-size: 10px;
   }
   .head-container {
     display: none;
   }
   .nav2 {
     display: flex;
+  }
+  .card{
+    width: 300px;
   }
 }
