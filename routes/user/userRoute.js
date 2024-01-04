@@ -174,7 +174,9 @@ router.get("/:id/dashboard", async (req, res) => {
         res.redirect("/user/login");
       } else {
         const greeting = getGreeting();
-        const post = await eventModel.findAll({});
+        const post = await eventModel.findAll({
+          order:[['createdAt','DESC']]
+        });
         res.render("../views/user/dashboard", {
           greeting: greeting,
           profile: findProfile.dataValues,
@@ -202,7 +204,9 @@ router.get("/:id/dashboard/notification", async (req, res) => {
       if (!findId) {
         res.redirect("/user/login");
       } else {
-        const notification = await notificationModel.findAll({});
+        const notification = await notificationModel.findAll({
+          order:[['createdAt','DESC']]
+        })
         res.render("../views/user/notification", {
           notification: notification,
           id: id,
@@ -269,7 +273,9 @@ router.get("/:id/dashboard/filter?", async (req, res) => {
             req.query.state == undefined
           ) {
             console.log("start");
-            const filterPost = await eventModel.findAll({});
+            const filterPost = await eventModel.findAll({
+              order:[['createdAt','DESC']]
+            });
             console.log(filterPost);
             res.render("../views/user/filter", {
               post: filterPost,
@@ -285,7 +291,9 @@ router.get("/:id/dashboard/filter?", async (req, res) => {
             req.query.fee == "" &&
             req.query.state == ""
           ) {
-            const filterPost = await eventModel.findAll({});
+            const filterPost = await eventModel.findAll({
+              order:[['createdAt','DESC']]
+            });
 
             res.render("../views/user/filter", {
               post: filterPost,

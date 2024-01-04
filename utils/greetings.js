@@ -1,5 +1,5 @@
 function getGreeting() {
-  var currentHour = new Date().getHours();
+  var currentHour = new Date().getHours()+6;
   if (currentHour >= 5 && currentHour < 12) {
     return "Good Morning";
   } else if (currentHour >= 12 && currentHour < 18) {
