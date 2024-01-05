@@ -184,8 +184,12 @@
         <div class="form-group">
           <label for="logo-upload">Banner</label>
 
-          <input class="input-field" id="logo-upload" name="banner" type="file" />
-          <input type="image" height="300" width="500" style="object-fit: contain;" src="<%= post.banner %>">
+          
+          <center>
+          <img src="<%= post.banner %>" style="width: 300px;object-fit: contain;margin-bottom: 20px;" alt="">
+        </center>
+        <input class="input-field" id="logo-upload" name="banner" type="file" />
+          <!-- <input type="image" style="object-fit: contain;max-width: 200px;height: 300px;margin-top: 10px;" src=""> -->
         </div>
         <div class="form-footer">
           <button class="submit-button" type="submit">Update Post</button>
