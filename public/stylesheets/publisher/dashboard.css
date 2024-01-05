@@ -21,6 +21,9 @@ a:hover {
   flex-direction: column;
   gap: 2rem;
   width: 250px;
+  position: sticky;
+  top: 0px;
+  left: 0px;
 }
 
 .sidebar-header {
