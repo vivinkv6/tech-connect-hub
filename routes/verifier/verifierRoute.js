@@ -17,7 +17,10 @@ const cookieAuth = require("../../utils/auth");
 //login routes
 router.get("/login", async (req, res) => {
   if (req.cookies.verifier) {
-    const verify = jwt.verify(req.cookies.verifier, process.env.JWT_SECRET_TOKEN);
+    const verify = jwt.verify(
+      req.cookies.verifier,
+      process.env.JWT_SECRET_TOKEN
+    );
     const checkId = await verfierLogin.findByPk(verify);
     if (!checkId) {
       res.clearCookie("verifier");
@@ -161,6 +164,7 @@ router.get("/:id/dashboard", async (req, res) => {
     const checkId = await verfierLogin.findByPk(verify);
 
     if (!checkId) {
+      res.clearCookie("verifier");
       res.redirect("/verifier/login");
     } else {
       const verificationDetails = await verification.findAll({
@@ -203,6 +207,7 @@ router.get("/:verifier/dashboard/profile/:id", async (req, res) => {
     const checkId = await verfierLogin.findByPk(verify);
 
     if (!checkId) {
+      res.clearCookie("verifier");
       res.redirect("/verifier/login");
     } else {
       const profile = await verification.findOne({
@@ -229,10 +234,12 @@ router.get("/:verifier/dashboard/profile/:id/accept", async (req, res) => {
     const checkId = await verfierLogin.findByPk(verify);
 
     if (!checkId) {
+      res.clearCookie("verifier");
       res.redirect("/verifier/login");
     } else {
       const findVerifier = await verfierLogin.findByPk(verifier);
       if (!findVerifier) {
+        res.clearCookie("verifier");
         res.redirect("/verifier/login");
       } else {
         const moveData = await verification.findByPk(id).then((data) => {
@@ -272,11 +279,13 @@ router.get("/:verifier/dashboard/profile/:id/reject", async (req, res) => {
     const checkId = await verfierLogin.findByPk(verify);
 
     if (!checkId) {
+      res.clearCookie("verifier");
       res.redirect("/verifier/login");
     } else {
       const findVerifier = await verfierLogin.findByPk(verifier);
 
       if (!findVerifier) {
+        res.clearCookie("verifier");
         res.redirect("/verifier/login");
       } else {
         const moveData = await verification.findByPk(id);
@@ -303,6 +312,7 @@ router.get("/:verifier/dashboard/community", async (req, res) => {
     const checkId = await verfierLogin.findByPk(verify);
 
     if (!checkId) {
+      res.clearCookie("verifier");
       res.redirect("/verifier/login");
     } else {
       const verificationCount = await verification.count();
@@ -311,6 +321,7 @@ router.get("/:verifier/dashboard/community", async (req, res) => {
       const findVerifier = await verfierLogin.findByPk(verifier);
 
       if (!findVerifier) {
+        res.clearCookie("verifier");
         res.redirect("/verifier/login");
       } else {
         res.render("../views/verifier/community", {
@@ -336,11 +347,13 @@ router.get("/:verifier/dashboard/community/:id", async (req, res) => {
     const checkId = await verfierLogin.findByPk(verify);
 
     if (!checkId) {
+      res.clearCookie("verifier");
       res.redirect("/verifier/login");
     } else {
       const findVerifier = await verfierLogin.findByPk(verifier);
 
       if (!findVerifier) {
+        res.clearCookie("verifier");
         res.redirect("/verifier/login");
       } else {
         const community = await communityRegistration.findOne({
@@ -370,11 +383,13 @@ router.get("/:verifier/dashboard/community/:id/reject", async (req, res) => {
     const checkId = await verfierLogin.findByPk(verify);
 
     if (!checkId) {
+      res.clearCookie("verifier");
       res.redirect("/verifier/login");
     } else {
       const findVerifier = await verfierLogin.findByPk(verifier);
 
       if (!findVerifier) {
+        res.clearCookie("verifier");
         res.redirect("/verifier/login");
       } else {
         const moveData = await communityRegistration.findByPk(id);
@@ -390,10 +405,7 @@ router.get("/:verifier/dashboard/community/:id/reject", async (req, res) => {
   }
 });
 
-router.get("/:verifier/dashboard/logout", async (req, res) => {
-  const { verifier } = req.params;
-  const findVerifier = await verfierLogin.findByPk(verifier);
-
+router.get("/:verifier/dashboard/logout", (req, res) => {
   if (req.cookies.verifier) {
     res.clearCookie("verifier");
     res.redirect("/verifier/login");

@@ -167,16 +167,18 @@ router.get("/:id/dashboard", async (req, res) => {
     const findId = await userlogin.findByPk(token);
 
     if (!findId) {
+      res.clearCookie("user");
       res.redirect(`/user/login`);
     } else {
       const findProfile = await userlogin.findByPk(id);
 
       if (!findProfile) {
+        res.clearCookie("user");
         res.redirect("/user/login");
       } else {
         const greeting = getGreeting();
         const post = await eventModel.findAll({
-          order:[['createdAt','DESC']]
+          order: [["createdAt", "DESC"]],
         });
         res.render("../views/user/dashboard", {
           greeting: greeting,
@@ -198,16 +200,18 @@ router.get("/:id/dashboard/notification", async (req, res) => {
     const findId = await userlogin.findByPk(token);
 
     if (!findId) {
+      res.clearCookie("user");
       res.redirect(`/user/login`);
     } else {
       const findId = await userlogin.findByPk(id);
 
       if (!findId) {
+        res.clearCookie("user");
         res.redirect("/user/login");
       } else {
         const notification = await notificationModel.findAll({
-          order:[['createdAt','DESC']]
-        })
+          order: [["createdAt", "DESC"]],
+        });
         res.render("../views/user/notification", {
           notification: notification,
           id: id,
@@ -227,16 +231,19 @@ router.get("/:id/dashboard/post/:post", async (req, res) => {
     const findId = await userlogin.findByPk(token);
 
     if (!findId) {
+      res.clearCookie("user");
       res.redirect(`/user/login`);
     } else {
       const checkId = await userlogin.findByPk(id);
 
       if (!checkId) {
+        res.clearCookie("user");
         res.redirect("/user/login");
       } else {
         const findPost = await eventModel.findByPk(post);
 
         if (!findPost) {
+          res.clearCookie("user");
           res.redirect("/user/login");
         } else {
           res.render("../views/user/viewPost", {
@@ -261,10 +268,12 @@ router.get("/:id/dashboard/filter?", async (req, res) => {
       const findId = await userlogin.findByPk(token);
 
       if (!findId) {
+        res.clearCookie("user");
         res.redirect(`/user/login`);
       } else {
         const findId = await userlogin.findByPk(id);
         if (!findId) {
+          res.clearCookie("user");
           res.redirect("/user/login");
         } else {
           if (
@@ -275,7 +284,7 @@ router.get("/:id/dashboard/filter?", async (req, res) => {
           ) {
             console.log("start");
             const filterPost = await eventModel.findAll({
-              order:[['createdAt','DESC']]
+              order: [["createdAt", "DESC"]],
             });
             console.log(filterPost);
             res.render("../views/user/filter", {
@@ -293,7 +302,7 @@ router.get("/:id/dashboard/filter?", async (req, res) => {
             req.query.state == ""
           ) {
             const filterPost = await eventModel.findAll({
-              order:[['createdAt','DESC']]
+              order: [["createdAt", "DESC"]],
             });
 
             res.render("../views/user/filter", {
@@ -341,12 +350,14 @@ router.get("/:id/dashboard/profile", async (req, res) => {
     const findId = await userlogin.findByPk(token);
 
     if (!findId) {
+      res.clearCookie("user");
       res.redirect(`/user/login`);
     } else {
       const profile = await userlogin.findByPk(id);
 
       //check if the user id is valid or not
       if (!profile) {
+        res.clearCookie("user");
         res.redirect("/user/login");
       } else {
         const savedPost = await eventModel.findAll({
@@ -374,12 +385,14 @@ router.get("/:id/dashboard/saved/:post", async (req, res) => {
     const findId = await userlogin.findByPk(token);
 
     if (!findId) {
+      res.clearCookie("user");
       res.redirect(`/user/login`);
     } else {
       const findUser = await userlogin.findByPk(id);
       let savedPost = [];
 
       if (!findUser) {
+        res.clearCookie("user");
         res.redirect("/user/login");
       } else {
         if (findUser.dataValues.saved == null) {
@@ -439,11 +452,13 @@ router.get("/:id/dashboard/remove/:post", async (req, res) => {
     const findId = await userlogin.findByPk(token);
 
     if (!findId) {
+      res.clearCookie("user");
       res.redirect(`/user/login`);
     } else {
       const findId = await userlogin.findByPk(id);
 
       if (!findId) {
+        res.clearCookie("user");
         res.redirect("/user/login");
       } else {
         const deletePost = await userlogin
@@ -469,18 +484,17 @@ router.get("/:id/dashboard/remove/:post", async (req, res) => {
   }
 });
 
-router.get("/:id/dashboard/logout", async (req, res) => {
+router.get("/:id/dashboard/logout",(req, res) => {
   const { id } = req.params;
 
-  const token = jwt.verify(req.cookies.user, process.env.JWT_SECRET_TOKEN);
-  const findId = await userlogin.findByPk(token);
-
-  if (!findId) {
-    res.redirect(`/user/login`);
+  if (!req.cookies.user) {
+    res.redirect("/user/login");
   } else {
     res.clearCookie("user");
     res.redirect("/user/login");
   }
+
+ 
 });
 
 module.exports = router;

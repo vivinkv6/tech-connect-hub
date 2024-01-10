@@ -280,6 +280,7 @@ router.get("/:id/dashboard", async (req, res) => {
     const checkId = await publisherLogin.findByPk(verify);
 
     if (!checkId) {
+      res.clearCookie('publisher');
       res.redirect("/publisher/login");
     } else {
       const dashboard = await publisherLogin.findByPk(id);
@@ -297,6 +298,7 @@ router.get("/:id/dashboard", async (req, res) => {
       console.log(events);
 
       if (!dashboard) {
+        res.clearCookie('publisher');
         res.redirect("/publisher/login");
       } else {
         res.render("../views/publisher/dashboard", {
@@ -323,11 +325,13 @@ router.get("/:id/dashboard/profile", async (req, res) => {
     const checkId = await publisherLogin.findByPk(verify);
 
     if (!checkId) {
+      res.clearCookie('publisher');
       res.redirect("/publisher/login");
     } else {
       const profile = await publisherLogin.findByPk(id);
 
       if (!profile) {
+        res.clearCookie('publisher');
         res.redirect("/publisher/login");
       } else {
         res.render("../views/publisher/profile", {
@@ -351,6 +355,7 @@ router.get("/:id/dashboard/post/create", async (req, res) => {
     const checkId = await publisherLogin.findByPk(verify);
 
     if (!checkId) {
+      res.clearCookie('publisher');
       res.redirect("/publisher/login");
     } else {
       const profile = await publisherLogin.findByPk(id);
@@ -361,6 +366,7 @@ router.get("/:id/dashboard/post/create", async (req, res) => {
       })
 
       if (!profile) {
+        res.clearCookie('publisher');
         res.redirect("/publisher/login");
       } else {
         res.render("../views/publisher/post", { id: id,community:community });
@@ -400,11 +406,13 @@ router.post(
       const checkId = await publisherLogin.findByPk(verify);
 
       if (!checkId) {
+        res.clearCookie('publisher');
         res.redirect("/publisher/login");
       } else {
         const findId = await publisherLogin.findByPk(id);
 
         if (!findId) {
+          res.clearCookie('publisher');
           res.redirect("/publisher/login");
         } else {
           const fileBuffer = req.file.buffer.toString("base64");
@@ -470,6 +478,7 @@ router.get("/:id1/dashboard/post/:id2/update", async (req, res) => {
     const checkId = await publisherLogin.findByPk(verify);
 
     if (!checkId) {
+      res.clearCookie('publisher');
       res.redirect("/publisher/login");
     } else {
       const validPublisher = await publisherLogin.findByPk(id1);
@@ -525,6 +534,7 @@ router.post(
       const checkId = await publisherLogin.findByPk(verify);
 
       if (!checkId) {
+        res.clearCookie('publisher');
         res.redirect("/publisher/login");
       } else {
         const findPublisher = await publisherLogin.findByPk(id1);
@@ -597,11 +607,13 @@ router.get("/:id1/dashboard/post/:id2", async (req, res) => {
     const checkId = await publisherLogin.findByPk(verify);
 
     if (!checkId) {
+      res.clearCookie('publisher');
       res.redirect("/publisher/login");
     } else {
       const profile = await publisherLogin.findByPk(id1);
 
       if (!profile) {
+        res.clearCookie('publisher');
         res.redirect("/publisher/login");
       } else {
         const viewPost = await eventModel.findByPk(id2);
@@ -633,6 +645,7 @@ router.get("/:id1/dashboard/post/:id2/delete", async (req, res) => {
     const checkId = await publisherLogin.findByPk(verify);
 
     if (!checkId) {
+      res.clearCookie('publisher');
       res.redirect("/publisher/login");
     } else {
       const publisher = await publisherLogin.findByPk(id1);
@@ -666,6 +679,7 @@ router.get("/:id/dashboard/community", async (req, res) => {
     const checkId = await publisherLogin.findByPk(verify);
 
     if (!checkId) {
+      res.clearCookie('publisher');
       res.redirect("/publisher/login");
     } else {
       const checkId = await publisherLogin.findByPk(id);
@@ -708,11 +722,13 @@ router.get("/:id/dashboard/community/create", async (req, res) => {
     const checkId = await publisherLogin.findByPk(verify);
 
     if (!checkId) {
+      res.clearCookie('publisher');
       res.redirect("/publisher/login");
     } else {
       const validId = await publisherLogin.findByPk(id);
 
       if (!validId) {
+        res.clearCookie('publisher');
         res.redirect("/publisher/login");
       } else {
         res.render("../views/publisher/community", {
@@ -753,6 +769,7 @@ router.post(
         const checkId = await publisherLogin.findByPk(verify);
 
         if (!checkId) {
+          res.clearCookie('publisher');
           res.redirect("/publisher/login");
         } else {
           const checkId = await publisherLogin.findByPk(id);
@@ -830,11 +847,13 @@ router.get("/:id1/dashboard/community/:id2", async (req, res) => {
     const checkId = await publisherLogin.findByPk(verify);
 
     if (!checkId) {
+      res.clearCookie('publisher');
       res.redirect("/publisher/login");
     } else {
       const profile = await publisherLogin.findByPk(id1);
 
       if (!profile) {
+        res.clearCookie('publisher');
         res.redirect("/publisher/login");
       } else {
         const viewCommunity = await communityModel.findByPk(id2);
@@ -864,6 +883,7 @@ router.get("/:id1/dashboard/community/:id2/delete", async (req, res) => {
     const checkId = await publisherLogin.findByPk(verify);
 
     if (!checkId) {
+      res.clearCookie('publisher');
       res.redirect("/publisher/login");
     } else {
       const publisher = await publisherLogin.findByPk(id1);
@@ -896,6 +916,7 @@ router.get("/:id1/dashboard/community/:id2/update", async (req, res) => {
     const checkId = await publisherLogin.findByPk(verify);
 
     if (!checkId) {
+      res.clearCookie('publisher');
       res.redirect("/publisher/login");
     } else {
       const validPublisher = await publisherLogin.findByPk(id1);
@@ -937,6 +958,7 @@ router.post(
       const checkId = await publisherLogin.findByPk(verify);
 
       if (!checkId) {
+        res.clearCookie('publisher');
         res.redirect("/publisher/login");
       } else {
         const findPublisher = await publisherLogin.findByPk(id1);
@@ -999,11 +1021,10 @@ router.post(
 
 
 //logout route
-router.get("/:id/dashboard/logout", async (req, res) => {
+router.get("/:id/dashboard/logout", (req, res) => {
   const { id } = req.params;
-  const checkId = await publisherLogin.findByPk(id);
 
-  if (!checkId) {
+  if (!req.cookies.publisher) {
     res.redirect("/publisher/login");
   } else {
     res.clearCookie("publisher");
