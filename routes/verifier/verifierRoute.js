@@ -20,6 +20,7 @@ router.get("/login", async (req, res) => {
     const verify = jwt.verify(req.cookies.verifier, process.env.JWT_SECRET_TOKEN);
     const checkId = await verfierLogin.findByPk(verify);
     if (!checkId) {
+      res.clearCookie("verifier");
       res.render("../views/verifier/login", {
         emailExist: true,
         passwordError: false,

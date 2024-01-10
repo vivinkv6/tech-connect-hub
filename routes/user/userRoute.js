@@ -25,6 +25,7 @@ router.get("/login", async (req, res) => {
       res.redirect(`/user/${token}/dashboard`);
     }
   } else {
+    res.clearCookie("user");
     res.render("../views/user/login", {
       emailExist: true,
       passwordError: false,

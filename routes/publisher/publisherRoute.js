@@ -37,6 +37,7 @@ router.get("/login", async (req, res) => {
     if (checkId) {
       res.redirect(`/publisher/${checkId.dataValues.id}/dashboard`);
     } else {
+      res.clearCookie('publisher');
       res.render("../views/publisher/login", {
         emailExist: true,
         passwordError: false,
