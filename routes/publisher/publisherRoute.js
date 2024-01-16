@@ -294,6 +294,7 @@ router.get("/:id/dashboard", async (req, res) => {
         where: {
           publisherId: id,
         },
+        order: [["createdAt", "DESC"]],
       });
       console.log(events);
 
@@ -696,6 +697,7 @@ router.get("/:id/dashboard/community", async (req, res) => {
           where: {
             publisherId: id,
           },
+          order: [["createdAt", "DESC"]],
         });
 
         res.render("../views/publisher/comdashboard", {
@@ -837,6 +839,7 @@ router.post(
   }
 );
 
+//GET details about specific community
 router.get("/:id1/dashboard/community/:id2", async (req, res) => {
   const { id1, id2 } = req.params;
   if (req.cookies.publisher) {
@@ -873,6 +876,7 @@ router.get("/:id1/dashboard/community/:id2", async (req, res) => {
   }
 });
 
+//delete specific community
 router.get("/:id1/dashboard/community/:id2/delete", async (req, res) => {
   const { id1, id2 } = req.params;
   if (req.cookies.publisher) {
@@ -905,7 +909,7 @@ router.get("/:id1/dashboard/community/:id2/delete", async (req, res) => {
   }
 });
 
-
+//GET update specific community details
 router.get("/:id1/dashboard/community/:id2/update", async (req, res) => {
   const { id1, id2 } = req.params;
   if (req.cookies.publisher) {
@@ -940,6 +944,7 @@ router.get("/:id1/dashboard/community/:id2/update", async (req, res) => {
   }
 });
 
+//POST update specific community details
 router.post(
   "/:id1/dashboard/community/:id2/update",
   upload.single("logo"),
@@ -1020,7 +1025,7 @@ router.post(
 
 
 
-//logout route
+//publisher logout
 router.get("/:id/dashboard/logout", (req, res) => {
   const { id } = req.params;
 

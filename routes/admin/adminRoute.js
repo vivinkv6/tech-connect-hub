@@ -8,8 +8,6 @@ const adminlogin = require("../../models/admin/loginModel");
 const userLogin = require("../../models/user/loginModel");
 const publisherLogin = require("../../models/publisher/registrationModel");
 const verifierLogin = require("../../models/verifier/loginModel");
-const post = require("../../models/publisher/eventModel");
-const community = require("../../models/publisher/communityRegistrationModel");
 
 const usernameExtractor = require("../../utils/usernameExtractor");
 const eventModel = require("../../models/publisher/eventModel");
@@ -102,7 +100,7 @@ router.post("/login", async (req, res) => {
   }
 });
 
-//signup routes
+//GET admin signup
 router.get("/signup", async (req, res) => {
   /* This code block is checking if there is already an existing admin account in the database. */
   const result = await adminlogin.count();
@@ -118,6 +116,7 @@ router.get("/signup", async (req, res) => {
   }
 });
 
+//POST admin signup
 router.post("/signup", async (req, res) => {
   const { email, password, confirm } = req.body;
 
@@ -159,7 +158,7 @@ router.post("/signup", async (req, res) => {
   }
 });
 
-//user dashboard
+//GET all user details
 router.get("/dashboard", async (req, res) => {
   if (req.cookies.admin) {
     console.log("correct");
@@ -169,7 +168,9 @@ router.get("/dashboard", async (req, res) => {
     if (!findId) {
       res.redirect(`/admin/login`);
     } else {
-      const users = await userLogin.findAll({});
+      const users = await userLogin.findAll({
+        order: [["createdAt", "DESC"]],
+      });
       res.render("../views/admin/dashboard", { users: users });
     }
   } else {
@@ -177,6 +178,7 @@ router.get("/dashboard", async (req, res) => {
   }
 });
 
+//delete specific user 
 router.get("/dashboard/user/delete/:id", async (req, res) => {
   const { id } = req.params;
   if (req.cookies.admin) {
@@ -207,6 +209,7 @@ router.get("/dashboard/user/delete/:id", async (req, res) => {
   }
 });
 
+//GET all publisher details
 router.get("/dashboard/publisher", async (req, res) => {
   if (req.cookies.admin) {
     console.log("correct");
@@ -216,7 +219,9 @@ router.get("/dashboard/publisher", async (req, res) => {
     if (!findId) {
       res.redirect(`/admin/login`);
     } else {
-      const publishers = await publisherLogin.findAll({});
+      const publishers = await publisherLogin.findAll({
+        order: [["createdAt", "DESC"]],
+      });
       res.render("../views/admin/publisher", { publishers: publishers });
     }
   } else {
@@ -224,6 +229,7 @@ router.get("/dashboard/publisher", async (req, res) => {
   }
 });
 
+//delete specific publisher
 router.get("/dashboard/publisher/delete/:id", async (req, res) => {
   const { id } = req.params;
   if (req.cookies.admin) {
@@ -254,6 +260,7 @@ router.get("/dashboard/publisher/delete/:id", async (req, res) => {
   }
 });
 
+//GET all verifier details
 router.get("/dashboard/verifier", async (req, res) => {
   if (req.cookies.admin) {
     const token = jwt.verify(req.cookies.admin, process.env.JWT_SECRET_TOKEN);
@@ -262,7 +269,9 @@ router.get("/dashboard/verifier", async (req, res) => {
     if (!findId) {
       res.redirect(`/admin/login`);
     } else {
-      const verifierList = await verifierLogin.findAll({});
+      const verifierList = await verifierLogin.findAll({
+        order: [["createdAt", "DESC"]],
+      });
       res.render("../views/admin/verifier", { verifier: verifierList });
     }
   } else {
@@ -272,6 +281,8 @@ router.get("/dashboard/verifier", async (req, res) => {
 
 // router.get("/dashboard/verifier/edit/:id", (req, res) => {});
 
+
+//delete specific verifier
 router.get("/dashboard/verifier/delete/:id", async (req, res) => {
   const { id } = req.params;
   if (req.cookies.admin) {
@@ -300,6 +311,8 @@ router.get("/dashboard/verifier/delete/:id", async (req, res) => {
     res.redirect(`/admin/login`);
   }
 });
+
+//create new verifier account
 router.get("/dashboard/verifier/create", async (req, res) => {
   if (req.cookies.admin) {
     console.log("correct");
@@ -322,6 +335,7 @@ router.get("/dashboard/verifier/create", async (req, res) => {
   }
 });
 
+//GET all community details
 router.get("/dashboard/community", async (req, res) => {
   if (req.cookies.admin) {
     console.log("correct");
@@ -331,7 +345,9 @@ router.get("/dashboard/community", async (req, res) => {
     if (!findId) {
       res.redirect(`/admin/login`);
     } else {
-      const communityList = await communityRegistration.findAll({});
+      const communityList = await communityRegistration.findAll({
+        order: [["createdAt", "DESC"]],
+      });
 
       res.render("../views/admin/community", { community: communityList });
     }
@@ -340,6 +356,7 @@ router.get("/dashboard/community", async (req, res) => {
   }
 });
 
+//delete specific community
 router.get("/dashboard/community/delete/:id", async (req, res) => {
   const { id } = req.params;
   if (req.cookies.admin) {
@@ -370,6 +387,8 @@ router.get("/dashboard/community/delete/:id", async (req, res) => {
   }
 });
 
+
+//GET all post details
 router.get("/dashboard/post", async (req, res) => {
   // const postList=await eventModel.findAll({});
   // const postCount=await eventModel.count();
@@ -390,7 +409,9 @@ router.get("/dashboard/post", async (req, res) => {
           req.query.fee == undefined ||
           req.query.state == undefined
         ) {
-          const filterPost = await eventModel.findAll({});
+          const filterPost = await eventModel.findAll({
+            order: [["createdAt", "DESC"]],
+          });
 
           res.render("../views/admin/post", {
             post: filterPost,
@@ -443,6 +464,7 @@ router.get("/dashboard/post", async (req, res) => {
   // res.render("../views/admin/post",{post:postList});
 });
 
+//delete post
 router.get("/dashboard/post/delete/:id", async (req, res) => {
   const { id } = req.params;
   if (req.cookies.admin) {
@@ -473,6 +495,8 @@ router.get("/dashboard/post/delete/:id", async (req, res) => {
   }
 });
 
+
+//admin logout
 router.get("/dashboard/logout", (req, res) => {
   if (req.cookies.admin) {
     res.clearCookie("admin");
