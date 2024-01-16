@@ -23,9 +23,16 @@ router.get("/login", async (req, res) => {
 
     if (findId) {
       res.redirect(`/user/${token}/dashboard`);
+    } else {
+      res.clearCookie("user");
+      res.render("../views/user/login", {
+        emailExist: true,
+        passwordError: false,
+        email: "",
+        password: "",
+      });
     }
   } else {
-    res.clearCookie("user");
     res.render("../views/user/login", {
       emailExist: true,
       passwordError: false,
@@ -85,16 +92,36 @@ router.post("/login", async (req, res) => {
 });
 
 //signup routes
-router.get("/signup", (req, res) => {
-  res.render("../views/user/signup", {
-    emailExist: false,
-    passwordError: false,
-    name: "",
-    role: "",
-    email: "",
-    password: "",
-    confirm: "",
-  });
+router.get("/signup", async (req, res) => {
+  if (req.cookies.user) {
+    const token = jwt.verify(req.cookies.user, process.env.JWT_SECRET_TOKEN);
+    const findId = await userlogin.findByPk(token);
+
+    if (findId) {
+      res.redirect(`/user/${token}/dashboard`);
+    } else {
+      res.clearCookie("user");
+      res.render("../views/user/signup", {
+        emailExist: false,
+        passwordError: false,
+        name: "",
+        role: "",
+        email: "",
+        password: "",
+        confirm: "",
+      });
+    }
+  } else {
+    res.render("../views/user/signup", {
+      emailExist: false,
+      passwordError: false,
+      name: "",
+      role: "",
+      email: "",
+      password: "",
+      confirm: "",
+    });
+  }
 });
 
 router.post("/signup", async (req, res) => {
@@ -484,7 +511,7 @@ router.get("/:id/dashboard/remove/:post", async (req, res) => {
   }
 });
 
-router.get("/:id/dashboard/logout",(req, res) => {
+router.get("/:id/dashboard/logout", (req, res) => {
   const { id } = req.params;
 
   if (!req.cookies.user) {
@@ -493,8 +520,6 @@ router.get("/:id/dashboard/logout",(req, res) => {
     res.clearCookie("user");
     res.redirect("/user/login");
   }
-
- 
 });
 
 module.exports = router;
