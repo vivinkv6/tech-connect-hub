@@ -33,9 +33,8 @@ To run the application locally, follow these steps:
 1. Clone the repository
 `git clone "https://github.com/vivinkv6/tech-connect-hub.git"`
 2. Install dependencies using `npm install`.
-3. Set up the PostgreSQL database and configure the connection.<br>
-4.Set up cloudinary configuration.<br>
-5. Run the application using `node app.js`.
+3. Set up the PostgreSQL database and configure the connection.
+4. Run the application using `node app.js`.
 
 
 ## Usage
