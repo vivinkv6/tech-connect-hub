@@ -44,6 +44,9 @@ To run the application locally, follow these steps:
 4. Verifiers can manage and verify publisher profiles to maintain the quality of event listings.
 5. Admins have the authority to manage the community, user roles, and overall application functionality.
 
+## Home Page
+
+
 ## User Dashboards
 
 ### User Dashboard
