@@ -45,21 +45,22 @@ To run the application locally, follow these steps:
 5. Admins have the authority to manage the community, user roles, and overall application functionality.
 
 ## Home Page
+![Screenshot (28)](https://github.com/vivinkv6/tech-connect-hub/assets/102971812/fadd2c01-4c8b-490a-be13-a2f1aa147106)
 
-
-## User Dashboards
+## Dashboards
 
 ### User Dashboard
-![User Dashboard](user_dashboard_image_url)
+![Screenshot (22)](https://github.com/vivinkv6/tech-connect-hub/assets/102971812/ca72af51-7b99-4722-8098-b73c03ef88d1)
 
 ### Publisher Dashboard
-![Publisher Dashboard](publisher_dashboard_image_url)
+![Screenshot (23)](https://github.com/vivinkv6/tech-connect-hub/assets/102971812/b433b09e-2de3-4f73-9f84-516bad2dab01)
 
 ### Verifier Dashboard
-![Verifier Dashboard](verifier_dashboard_image_url)
+
+![Screenshot (25)](https://github.com/vivinkv6/tech-connect-hub/assets/102971812/272681f2-c73a-4cc3-a2ed-59e8b93ec7f3)
 
 ### Admin Dashboard
-![Admin Dashboard](admin_dashboard_image_url)
+![Screenshot (24)](https://github.com/vivinkv6/tech-connect-hub/assets/102971812/9fefafaa-7f18-46f0-988f-f71dd05a8796)
 
 ## License
 
