@@ -41,7 +41,7 @@ const eventModel = sequelizeConfig.define("eventpost", {
     type: DataTypes.STRING,
     allowNull: false,
   },
-  state: {
+  district: {
     type: DataTypes.STRING,
     allowNull: false,
   },

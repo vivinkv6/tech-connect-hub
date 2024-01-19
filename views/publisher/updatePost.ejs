@@ -100,68 +100,23 @@
         </div>
         <div class="form-group">
           <label for="location">State</label>
-          <select class="input-field" id="state" name="state" aria-selected="<%= post.state %>" type="text"
-            placeholder="Enter Place" required>
-            <option value="Andhra Pradesh" <%=post.state==='Andhra Pradesh' ? 'selected' : '' %>>Andhra Pradesh</option>
-
-            <option value="Arunachal Pradesh" <%=post.state==='Arunachal Pradesh' ? 'selected' : '' %>>Arunachal Pradesh
-            </option>
-
-            <option value="Assam" <%=post.state==='Assam' ? 'selected' : '' %>>Assam</option>
-
-            <option value="Bihar" <%=post.state==='Bihar' ? 'selected' : '' %>>Bihar</option>
-
-            <option value="Chhattisgarh" <%=post.state==='Chhattisgarh' ? 'selected' : '' %>>Chhattisgarh</option>
-
-            <option value="Goa" <%=post.state==='Goa' ? 'selected' : '' %>>Goa</option>
-
-            <option value="Gujarat" <%=post.state==='Gujarat' ? 'selected' : '' %>>Gujarat</option>
-
-            <option value="Haryana" <%=post.state==='Haryana' ? 'selected' : '' %>>Haryana</option>
-
-            <option value="Himachal Pradesh" <%=post.state==='Himachal Prades' ? 'selected' : '' %>>Himachal Pradesh
-            </option>
-
-            <option value="Jammu and Kashmir" <%=post.state==='Jammu and Kashmir' ? 'selected' : '' %>>Jammu and Kashmir
-            </option>
-
-            <option value="Jharkhand" <%=post.state==='Jharkhand' ? 'selected' : '' %>>Jharkhand</option>
-
-            <option value="Karnataka" <%=post.state==='Karnataka' ? 'selected' : '' %>>Karnataka</option>
-
-            <option value="Kerala" <%=post.state==='Kerala' ? 'selected' : '' %>>Kerala</option>
-
-            <option value="Madhya Pradesh" <%=post.state==='Madhya Pradesh' ? 'selected' : '' %>>Madhya Pradesh</option>
-
-            <option value="Maharashtra" <%=post.state==='Maharashtra' ? 'selected' : '' %>>Maharashtra</option>
-
-            <option value="Manipur" <%=post.state==='Manipur' ? 'selected' : '' %>>Manipur</option>
-
-            <option value="Meghalaya" <%=post.state==='Meghalaya' ? 'selected' : '' %>>Meghalaya</option>
-
-            <option value="Mizoram" <%=post.state==='Mizoram' ? 'selected' : '' %>>Mizoram</option>
-
-            <option value="Nagaland" <%=post.state==='Nagaland' ? 'selected' : '' %>>Nagaland</option>
-
-            <option value="Odisha" <%=post.state==='Odisha' ? 'selected' : '' %>>Odisha</option>
-
-            <option value="Punjab" <%=post.state==='Punjab' ? 'selected' : '' %>>Punjab</option>
-
-            <option value="Rajasthan" <%=post.state==='Rajasthan' ? 'selected' : '' %>>Rajasthan</option>
-
-            <option value="Sikkim" <%=post.state==='Sikkim' ? 'selected' : '' %>>Sikkim</option>
-
-            <option value="Tamil Nadu" <%=post.state==='Tamil Nadu' ? 'selected' : '' %>>Tamil Nadu</option>
-
-            <option value="Telangana" <%=post.state==='Telangana' ? 'selected' : '' %>>Telangana</option>
-
-            <option value="Tripura" <%=post.state==='Tripura' ? 'selected' : '' %>>Tripura</option>
-
-            <option value="Uttarakhand" <%=post.state==='Uttarakhand' ? 'selected' : '' %>>Uttarakhand</option>
-
-            <optio value="Uttar Pradesh" <%=post.state==='Uttar Pradesh' ? 'selected' : '' %>>Uttar Pradesh</optio>
-
-            <option value="West Bengal" <%=post.state==='West Bengal' ? 'selected' : '' %>>West Bengal</option>
+          <select id="stateFilter" name="state">
+            <option value="Thiruvananthapuram" <%=district==='Thiruvananthapuram' ? 'selected' : '' %>>Thiruvananthapuram</option>
+            <option value="Kollam" <%=district==='Kollam' ? 'selected' : '' %>>Kollam</option>
+            <option value="Alappuzha" <%=district==='Alappuzha' ? 'selected' : '' %>>Alappuzha</option>
+            <option value="Pathanamthitta" <%=district==='Pathanamthitta' ? 'selected' : '' %>>Pathanamthitta</option>
+            <option value="Kottayam" <%=district==='Kottayam' ? 'selected' : '' %>>Kottayam</option>
+            <option value="Idukki" <%=district==='Idukki' ? 'selected' : '' %>>Idukki</option>
+            <option value="Ernakulam" <%=district==='Ernakulam' ? 'selected' : '' %>>Ernakulam</option>
+            <option value="Thrissur" <%=district==='Thrissur' ? 'selected' : '' %>>Thrissur</option>
+            <option value="Palakkad" <%=district==='Palakkad' ? 'selected' : '' %>>Palakkad</option>
+            <option value="Malappuram" <%=district==='Malappuram' ? 'selected' : '' %>>Malappuram</option>
+            <option value="Kozhikode" <%=district==='Kozhikode' ? 'selected' : '' %>>Kozhikode</option>
+            <option value="Wayanad" <%=district==='Wayanad' ? 'selected' : '' %>>Wayanad</option>
+            <option value=" Kannur" <%=district===' Kannur' ? 'selected' : '' %>> Kannur</option>
+            <option value="Kasaragod" <%=district==='Kasaragod' ? 'selected' : '' %>>Kasaragod</option>
+  
+             
           </select>
         </div>
         <div class="form-group">

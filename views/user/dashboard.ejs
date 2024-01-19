@@ -35,8 +35,8 @@
       data-aos-delay="100"
       data-aos-duration="1000"
     >
-      <header >
-        <h1>TechConnect <br><span>Hub</span></h1>
+      <header>
+        <h1>TechConnect <br /><span>Hub</span></h1>
         <h4 class="text-secondary"><%= greeting %>, <%= profile.name %>!</h4>
       </header>
       <nav>
@@ -87,8 +87,8 @@
       data-aos-duration="1000"
     >
       <div class="container-fluid">
-        <header >
-          <h1>Tech Connect <br><span>Hub</span></h1>
+        <header>
+          <h1>Tech Connect <br /><span>Hub</span></h1>
           <h4 class="text-secondary"><%= greeting %>, <%= profile.name %>!</h4>
         </header>
         <button
@@ -111,7 +111,7 @@
                 href="/user/<%= profile.id %>/dashboard"
               >
                 <i
-                  class="bi bi-house-fill  fs-2 me-2"
+                  class="bi bi-house-fill fs-2 me-2"
                   style="vertical-align: middle"
                 ></i>
                 Home</a
@@ -162,12 +162,12 @@
       </div>
     </nav>
 
-    <div class="container mt-5" style="overflow-x: hidden;">
+    <div class="container mt-5" style="overflow-x: hidden">
       <div class="row">
         <% if (post.length ==0) { %>
         <h1>No Post</h1>
         <% }else{ %> <% for( let i = 0; i < post.length; i++ ) { %>
-        <div class="col-xl-4 col-md-6" >
+        <div class="col-xl-4 col-md-6">
           <center>
             <div
               class="card mb-5 rounded"
@@ -180,15 +180,20 @@
               >
                 <img
                   src="<%= post[i].dataValues.banner %>"
-                  style="height: 350px;object-fit: fill;"
+                  style="height: 350px; object-fit: fill"
                   class="card-img-top"
                   alt="..."
                 />
               </a>
-              <div class="card-body ">
+              <div class="card-body">
                 <div
                   class="mb-3"
-                  style="display: flex; justify-content: flex-start;flex-wrap: wrap; gap: 10px;"
+                  style="
+                    display: flex;
+                    justify-content: flex-start;
+                    flex-wrap: wrap;
+                    gap: 10px;
+                  "
                 >
                   <% if (post[i].dataValues.fee == 'Free') { %>
                   <span class="me-2 badge bg text-light bg-success"
@@ -232,101 +237,102 @@
                     style="background-color: rgb(255, 140, 0)"
                     ><%= post[i].dataValues.type%></span
                   >
+                  <% } %> <% if (post[i].district === "Thiruvananthapuram") { %>
+                  <span
+                    class="badge badge-primary"
+                    style="background-color: #ff5733"
+                    >Thiruvananthapuram</span
+                  >
+                  <% } else if (post[i].district === "Kollam") { %>
+                  <span
+                    class="badge badge-primary"
+                    style="background-color: #ffc300"
+                    >Kollam</span
+                  >
+                  <% } else if (post[i].district === "Alappuzha") { %>
+                  <span
+                    class="badge badge-primary"
+                    style="background-color: #c70039"
+                    >Alappuzha</span
+                  >
+                  <% } else if (post[i].district === "Pathanamthitta") { %>
+                  <span
+                    class="badge badge-primary"
+                    style="background-color: #900c3f"
+                    >Pathanamthitta</span
+                  >
+                  <% } else if (post[i].district === "Kottayam") { %>
+                  <span
+                    class="badge badge-primary"
+                    style="background-color: #581845"
+                    >Kottayam</span
+                  >
+                  <% } else if (post[i].district === "Idukki") { %>
+                  <span
+                    class="badge badge-primary"
+                    style="background-color: #00a859"
+                    >Idukki</span
+                  >
+                  <% } else if (post[i].district === "Ernakulam") { %>
+                  <span
+                    class="badge badge-primary"
+                    style="background-color: #394240"
+                    >Ernakulam</span
+                  >
+                  <% } else if (post[i].district === "Thrissur") { %>
+                  <span
+                    class="badge badge-primary"
+                    style="background-color: #9c640c"
+                    >Thrissur</span
+                  >
+                  <% } else if (post[i].district === "Palakkad") { %>
+                  <span
+                    class="badge badge-primary"
+                    style="background-color: #00b7c2"
+                    >Palakkad</span
+                  >
+                  <% } else if (post[i].district === "Malappuram") { %>
+                  <span
+                    class="badge badge-primary"
+                    style="background-color: #5e3c58"
+                    >Malappuram</span
+                  >
+                  <% } else if (post[i].district === "Kozhikode") { %>
+                  <span
+                    class="badge badge-primary"
+                    style="background-color: #4cb7a5"
+                    >Kozhikode</span
+                  >
+                  <% } else if (post[i].district === "Wayanad") { %>
+                  <span
+                    class="badge badge-primary"
+                    style="background-color: #eea47f"
+                    >Wayanad</span
+                  >
+                  <% } else if (post[i].district === "Kannur") { %>
+                  <span
+                    class="badge badge-primary"
+                    style="background-color: #d4a5a5"
+                    >Kannur</span
+                  >
+                  <% } else if (post[i].district === "Kasaragod") { %>
+                  <span
+                    class="badge badge-primary"
+                    style="background-color: #423e6d"
+                    >Kasaragod</span
+                  >
+                  <% } else { %>
+                  <span
+                    class="badge badge-primary"
+                    style="background-color: #ffffff"
+                    >Other</span
+                  >
                   <% } %>
-
-
-                  <% if (post[i].state==="Andhra Pradesh" ) { %>
-                    <span class="badge badge-primary" style="background-color: #ff5733">Andhra Pradesh</span>
-                    <% } else if (post[i].state==="Arunachal Pradesh" ) { %>
-                      <span class="badge badge-primary" style="background-color: #ffc300">Arunachal Pradesh</span>
-                      <% } else if (post[i].state==="Assam" ) { %>
-                        <span class="badge badge-primary" style="background-color: #c70039">Assam</span>
-                        <% } else if (post[i].state==="Bihar" ) { %>
-                          <span class="badge badge-primary" style="background-color: #900c3f">Bihar</span>
-                          <% } else if (post[i].state==="Chhattisgarh" ) { %>
-                            <span class="badge badge-primary" style="background-color: #581845">Chhattisgarh</span>
-                            <% } else if (post[i].state==="Goa" ) { %>
-                              <span class="badge badge-primary" style="background-color: #00a859">Goa</span>
-                              <% } else if (post[i].state==="Gujarat" ) { %>
-                                <span class="badge badge-primary" style="background-color: #394240">Gujarat</span>
-                                <% } else if (post[i].state==="Haryana" ) { %>
-                                  <span class="badge badge-primary" style="background-color: #9c640c">Haryana</span>
-                                  <% } else if (post[i].state==="Himachal Pradesh" ) { %>
-                                    <span class="badge badge-primary" style="background-color: #00b7c2">Himachal
-                                      Pradesh</span>
-                                    <% } else if (post[i].state==="Jammu and Kashmir" ) { %>
-                                      <span class="badge badge-primary" style="background-color: #5e3c58">Jammu and
-                                        Kashmir</span>
-                                      <% } else if (post[i].state==="Jharkhand" ) { %>
-                                        <span class="badge badge-primary"
-                                          style="background-color: #4cb7a5">Jharkhand</span>
-                                        <% } else if (post[i].state==="Karnataka" ) { %>
-                                          <span class="badge badge-primary"
-                                            style="background-color: #eea47f">Karnataka</span>
-                                          <% } else if (post[i].state==="Kerala" ) { %>
-                                            <span class="badge badge-primary"
-                                              style="background-color: #d4a5a5">Kerala</span>
-                                            <% } else if (post[i].state==="Madhya Pradesh" ) { %>
-                                              <span class="badge badge-primary"
-                                                style="background-color: #423e6d">Madhya Pradesh</span>
-                                              <% } else if (post[i].state==="Maharashtra" ) { %>
-                                                <span class="badge badge-primary"
-                                                  style="background-color: #faf0ca">Maharashtra</span>
-                                                <% } else if (post[i].state==="Manipur" ) { %>
-                                                  <span class="badge badge-primary"
-                                                    style="background-color: #a04000">Manipur</span>
-                                                  <% } else if (post[i].state==="Meghalaya" ) { %>
-                                                    <span class="badge badge-primary"
-                                                      style="background-color: #00a5cf">Meghalaya</span>
-                                                    <% } else if (post[i].state==="Mizoram" ) { %>
-                                                      <span class="badge badge-primary"
-                                                        style="background-color: #05d58d">Mizoram</span>
-                                                      <% } else if (post[i].state==="Nagaland" ) { %>
-                                                        <span class="badge badge-primary"
-                                                          style="background-color: #c8ad55">Nagaland</span>
-                                                        <% } else if (post[i].state==="Odisha" ) { %>
-                                                          <span class="badge badge-primary"
-                                                            style="background-color: #f4e1d2">Odisha</span>
-                                                          <% } else if (post[i].state==="Punjab" ) { %>
-                                                            <span class="badge badge-primary"
-                                                              style="background-color: #980000">Punjab</span>
-                                                            <% } else if (post[i].state==="Rajasthan" ) { %>
-                                                              <span class="badge badge-primary"
-                                                                style="background-color: #e25822">Rajasthan</span>
-                                                              <% } else if (post[i].state==="Sikkim" ) { %>
-                                                                <span class="badge badge-primary"
-                                                                  style="background-color: #0198e1">Sikkim</span>
-                                                                <% } else if (post[i].state==="Tamil Nadu" ) { %>
-                                                                  <span class="badge badge-primary"
-                                                                    style="background-color: #3498db">Tamil
-                                                                    Nadu</span>
-                                                                  <% } else if (post[i].state==="Telangana" ) { %>
-                                                                    <span class="badge badge-primary"
-                                                                      style="background-color: #7d3c98">Telangana</span>
-                                                                    <% } else if (post[i].state==="Tripura" ) { %>
-                                                                      <span class="badge badge-primary"
-                                                                        style="background-color: #a2a2a2">Tripura</span>
-                                                                      <% } else if (post[i].state==="Uttarakhand" )
-                                                                        { %>
-                                                                        <span class="badge badge-primary"
-                                                                          style="background-color: #af601a">Uttarakhand</span>
-                                                                        <% } else if
-                                                                          (post[i].state==="Uttar Pradesh" ) { %>
-                                                                          <span class="badge badge-primary"
-                                                                            style="background-color: #ffd12a">Uttar
-                                                                            Pradesh</span>
-                                                                          <% } else if
-                                                                            (post[i].state==="West Bengal" ) { %>
-                                                                            <span class="badge badge-primary"
-                                                                              style="background-color: #ff5733">West
-                                                                              Bengal</span>
-                                                                            <% } else { %>
-                                                                              <span class="badge badge-primary"
-                                                                                style="background-color: #ffffff">Other</span>
-                                                                              <% } %>
-                                                                              <span class="badge badge-primary"
-                                                                                style="background-color: #b4e063"><%=post[i].community %></span>        
-
+                  <span
+                    class="badge badge-primary"
+                    style="background-color: #b4e063"
+                    ><%=post[i].community %></span
+                  >
                 </div>
                 <div class="card-head p-2">
                   <h5 class="card-title fw-bold">

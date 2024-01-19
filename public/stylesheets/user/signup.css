@@ -70,7 +70,7 @@ body {
     color: #2d3748;
   }
   
-  .form input {
+  .form input,.form select {
     height: 2.5rem;
     width: 100%;
     margin-top: 0.25rem;

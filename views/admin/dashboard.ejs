@@ -162,6 +162,7 @@
                   <th class="text-dark">UserName</th>
                   <th class="text-dark">Email</th>
                   <th class="text-dark">Role</th>
+                  <th class="text-dark">Place</th>
                   <th class="text-dark">Action</th>
                 </tr>
               </thead>
@@ -176,6 +177,7 @@
                   <td><%= users[i].dataValues.username %></td>
                   <td><%= users[i].dataValues.email %></td>
                   <td><%= users[i].dataValues.role %></td>
+                  <td><%= users[i].dataValues.place %></td>
                   <td>
                     <center>
                     <a href="/admin/dashboard/user/delete/<%= users[i].dataValues.id %>" class="btn btn-danger"><i class="bi bi-trash me-2"></i>Delete</a>

@@ -407,7 +407,7 @@ router.get("/dashboard/post", async (req, res) => {
           req.query.type == undefined ||
           req.query.mode == undefined ||
           req.query.fee == undefined ||
-          req.query.state == undefined
+          req.query.district == undefined
         ) {
           const filterPost = await eventModel.findAll({
             order: [["createdAt", "DESC"]],
@@ -418,13 +418,13 @@ router.get("/dashboard/post", async (req, res) => {
             type: "All",
             mode: "All",
             fee: "All",
-            state: "All",
+            district: "All",
           });
         } else if (
           req.query.type == "" &&
           req.query.mode == "" &&
           req.query.fee == "" &&
-          req.query.state == ""
+          req.query.district == ""
         ) {
           const filterPost = await eventModel.findAll({});
 
@@ -433,7 +433,7 @@ router.get("/dashboard/post", async (req, res) => {
             type: req.query.type,
             mode: req.query.mode,
             fee: req.query.fee,
-            state: req.query.state,
+            district: req.query.district,
           });
         } else {
           const filterPost = await eventModel.findAll({
@@ -441,7 +441,7 @@ router.get("/dashboard/post", async (req, res) => {
               type: req.query.type,
               mode: req.query.mode,
               fee: req.query.fee,
-              state: req.query.state,
+              district: req.query.district,
             },
           });
 
@@ -450,7 +450,7 @@ router.get("/dashboard/post", async (req, res) => {
             type: req.query.type,
             mode: req.query.mode,
             fee: req.query.fee,
-            state: req.query.state,
+            district: req.query.district,
           });
         }
       }

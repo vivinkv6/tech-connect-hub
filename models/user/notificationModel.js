@@ -30,6 +30,10 @@ const notificationModel = sequelizeConfig.define("notification", {
     allowNull: false,
     defaultValue: DataTypes.UUIDV4,
   },
+  place:{
+    type: DataTypes.STRING,
+    allowNull: false,
+  }
 });
 
 module.exports = notificationModel;

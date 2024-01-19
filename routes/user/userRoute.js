@@ -106,6 +106,7 @@ router.get("/signup", async (req, res) => {
         passwordError: false,
         name: "",
         role: "",
+        place:"",
         email: "",
         password: "",
         confirm: "",
@@ -117,6 +118,7 @@ router.get("/signup", async (req, res) => {
       passwordError: false,
       name: "",
       role: "",
+      place:"",
       email: "",
       password: "",
       confirm: "",
@@ -125,7 +127,7 @@ router.get("/signup", async (req, res) => {
 });
 
 router.post("/signup", async (req, res) => {
-  const { email, password, confirm, name, role } = req.body;
+  const { email, password, confirm, name, role, place } = req.body;
   const username = usernameExtractor(email);
 
   if (password !== confirm) {
@@ -133,6 +135,7 @@ router.post("/signup", async (req, res) => {
       emailExist: false,
       passwordError: true,
       email: email,
+      place:place,
       password: password,
       confirm: confirm,
       name: name,
@@ -150,6 +153,7 @@ router.post("/signup", async (req, res) => {
         emailExist: true,
         passwordError: false,
         email: email,
+        place:place,
         password: password,
         confirm: confirm,
         name: name,
@@ -167,6 +171,7 @@ router.post("/signup", async (req, res) => {
               password: hashedPassword,
               name: name,
               role: role,
+              place:place,
             })
             .then((data) => {
               const jwtToken = cookieAuth(data.dataValues.id);
@@ -205,6 +210,9 @@ router.get("/:id/dashboard", async (req, res) => {
       } else {
         const greeting = getGreeting();
         const post = await eventModel.findAll({
+          where:{
+            district:findProfile.dataValues.place
+          },
           order: [["createdAt", "DESC"]],
         });
         res.render("../views/user/dashboard", {
@@ -237,6 +245,9 @@ router.get("/:id/dashboard/notification", async (req, res) => {
         res.redirect("/user/login");
       } else {
         const notification = await notificationModel.findAll({
+          where:{
+            place:findId.dataValues.place
+          },
           order: [["createdAt", "DESC"]],
         });
         res.render("../views/user/notification", {
@@ -307,7 +318,7 @@ router.get("/:id/dashboard/filter?", async (req, res) => {
             req.query.type == undefined ||
             req.query.mode == undefined ||
             req.query.fee == undefined ||
-            req.query.state == undefined
+            req.query.district == undefined
           ) {
             console.log("start");
             const filterPost = await eventModel.findAll({
@@ -320,13 +331,13 @@ router.get("/:id/dashboard/filter?", async (req, res) => {
               type: "All",
               mode: "All",
               fee: "All",
-              state: "All",
+              district: "All",
             });
           } else if (
             req.query.type == "" &&
             req.query.mode == "" &&
             req.query.fee == "" &&
-            req.query.state == ""
+            req.query.district == ""
           ) {
             const filterPost = await eventModel.findAll({
               order: [["createdAt", "DESC"]],
@@ -338,7 +349,7 @@ router.get("/:id/dashboard/filter?", async (req, res) => {
               type: req.query.type,
               mode: req.query.mode,
               fee: req.query.fee,
-              state: req.query.state,
+              district: req.query.district,
             });
           } else {
             const filterPost = await eventModel.findAll({
@@ -346,7 +357,7 @@ router.get("/:id/dashboard/filter?", async (req, res) => {
                 type: req.query.type,
                 mode: req.query.mode,
                 fee: req.query.fee,
-                state: req.query.state,
+                district: req.query.district,
               },
             });
 
@@ -356,7 +367,7 @@ router.get("/:id/dashboard/filter?", async (req, res) => {
               type: req.query.type,
               mode: req.query.mode,
               fee: req.query.fee,
-              state: req.query.state,
+              district: req.query.district,
             });
           }
         }

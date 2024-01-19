@@ -17,6 +17,10 @@ const user = sequelize.define("userlogins", {
     type: DataTypes.STRING,
     allowNull: false,
   },
+  place:{
+    type: DataTypes.STRING,
+    allowNull: false,
+  },
   username: {
     type: DataTypes.STRING,
     allowNull: false,
