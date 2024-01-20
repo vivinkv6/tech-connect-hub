@@ -106,7 +106,7 @@ router.get("/signup", async (req, res) => {
         passwordError: false,
         name: "",
         role: "",
-        place:"",
+        place: "",
         email: "",
         password: "",
         confirm: "",
@@ -118,7 +118,7 @@ router.get("/signup", async (req, res) => {
       passwordError: false,
       name: "",
       role: "",
-      place:"",
+      place: "",
       email: "",
       password: "",
       confirm: "",
@@ -135,7 +135,7 @@ router.post("/signup", async (req, res) => {
       emailExist: false,
       passwordError: true,
       email: email,
-      place:place,
+      place: place,
       password: password,
       confirm: confirm,
       name: name,
@@ -153,7 +153,7 @@ router.post("/signup", async (req, res) => {
         emailExist: true,
         passwordError: false,
         email: email,
-        place:place,
+        place: place,
         password: password,
         confirm: confirm,
         name: name,
@@ -171,7 +171,7 @@ router.post("/signup", async (req, res) => {
               password: hashedPassword,
               name: name,
               role: role,
-              place:place,
+              place: place,
             })
             .then((data) => {
               const jwtToken = cookieAuth(data.dataValues.id);
@@ -210,8 +210,8 @@ router.get("/:id/dashboard", async (req, res) => {
       } else {
         const greeting = getGreeting();
         const post = await eventModel.findAll({
-          where:{
-            district:findProfile.dataValues.place
+          where: {
+            district: findProfile.dataValues.place,
           },
           order: [["createdAt", "DESC"]],
         });
@@ -238,23 +238,16 @@ router.get("/:id/dashboard/notification", async (req, res) => {
       res.clearCookie("user");
       res.redirect(`/user/login`);
     } else {
-      const findId = await userlogin.findByPk(id);
-
-      if (!findId) {
-        res.clearCookie("user");
-        res.redirect("/user/login");
-      } else {
-        const notification = await notificationModel.findAll({
-          where:{
-            place:findId.dataValues.place
-          },
-          order: [["createdAt", "DESC"]],
-        });
-        res.render("../views/user/notification", {
-          notification: notification,
-          id: id,
-        });
-      }
+      const notification = await notificationModel.findAll({
+        where: {
+          place: findId.dataValues.place,
+        },
+        order: [["createdAt", "DESC"]],
+      });
+      res.render("../views/user/notification", {
+        notification: notification,
+        id: id,
+      });
     }
   } else {
     res.redirect("/user/login");
@@ -272,23 +265,15 @@ router.get("/:id/dashboard/post/:post", async (req, res) => {
       res.clearCookie("user");
       res.redirect(`/user/login`);
     } else {
-      const checkId = await userlogin.findByPk(id);
+      const findPost = await eventModel.findByPk(post);
 
-      if (!checkId) {
-        res.clearCookie("user");
-        res.redirect("/user/login");
+      if (!findPost) {
+        res.redirect(`/user/${id}/dashboard`);
       } else {
-        const findPost = await eventModel.findByPk(post);
-
-        if (!findPost) {
-          res.clearCookie("user");
-          res.redirect("/user/login");
-        } else {
-          res.render("../views/user/viewPost", {
-            post: findPost.dataValues,
-            id: id,
-          });
-        }
+        res.render("../views/user/viewPost", {
+          post: findPost.dataValues,
+          id: id,
+        });
       }
     }
   } else {
@@ -416,39 +401,41 @@ router.get("/:id/dashboard/profile", async (req, res) => {
 });
 
 router.post("/:id/dashboard/profile", async (req, res) => {
-  const {id}=req.params;
+  const { id } = req.params;
   console.log(req.body);
-  const {email,name,role,place}=req.body;
+  const { email, name, role, place } = req.body;
   const profile = await userlogin.findByPk(id);
   const savedPost = await eventModel.findAll({
     where: {
       id: profile.dataValues.saved,
     },
   });
-  const findEmail=await userlogin.findAll({
-    where:{
-      email:email
-    }
+  const findEmail = await userlogin.findAll({
+    where: {
+      email: email,
+    },
   });
 
-  if(findEmail.length>1){
+  if (findEmail.length > 1) {
     res.render("../views/user/profile", {
       profile: profile.dataValues,
       post: savedPost,
     });
-  }else{
-    const updateProfile=await userlogin.update(req.body,{
-      where:{
-        id:id
-      }
-    }).then(()=>{
-      res.redirect(`/user/${id}/dashboard/profile`);
-    }).catch((err)=>{
-      res.json({err:err.message})
-    })
+  } else {
+    const updateProfile = await userlogin
+      .update(req.body, {
+        where: {
+          id: id,
+        },
+      })
+      .then(() => {
+        res.redirect(`/user/${id}/dashboard/profile`);
+      })
+      .catch((err) => {
+        res.json({ err: err.message });
+      });
   }
-})
-
+});
 
 router.get("/:id/dashboard/saved/:post", async (req, res) => {
   const { id, post } = req.params;
