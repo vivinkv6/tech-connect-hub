@@ -415,6 +415,41 @@ router.get("/:id/dashboard/profile", async (req, res) => {
   }
 });
 
+router.post("/:id/dashboard/profile", async (req, res) => {
+  const {id}=req.params;
+  console.log(req.body);
+  const {email,name,role,place}=req.body;
+  const profile = await userlogin.findByPk(id);
+  const savedPost = await eventModel.findAll({
+    where: {
+      id: profile.dataValues.saved,
+    },
+  });
+  const findEmail=await userlogin.findAll({
+    where:{
+      email:email
+    }
+  });
+
+  if(findEmail.length>1){
+    res.render("../views/user/profile", {
+      profile: profile.dataValues,
+      post: savedPost,
+    });
+  }else{
+    const updateProfile=await userlogin.update(req.body,{
+      where:{
+        id:id
+      }
+    }).then(()=>{
+      res.redirect(`/user/${id}/dashboard/profile`);
+    }).catch((err)=>{
+      res.json({err:err.message})
+    })
+  }
+})
+
+
 router.get("/:id/dashboard/saved/:post", async (req, res) => {
   const { id, post } = req.params;
   if (req.cookies.user) {

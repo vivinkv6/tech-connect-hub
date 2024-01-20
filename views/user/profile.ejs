@@ -39,28 +39,81 @@
           <div class="profile-pic">
             <img src="/images/avatar2.png" alt="Profile Picture" />
           </div>
+          <h2 class="title">Your Profile</h2>
         </center>
 
-        <label for="">Name: </label>
-        <div class="username"><%= profile.name %></div>
-        <label for="">Role: </label>
-        <div class="username"><%= profile.role %></div>
-        <label for="">UserName: </label>
-        <div class="username"><%= profile.username %></div>
-        <label for="">Email: </label>
-        <div class="username"><%= profile.email %></div>
-        <label for="">Place: </label>
-        <div class="username"><%= profile.place %></div>
-        <center>
-          <button class="edit-button">Edit Profile</button>
-        </center>
+        <div class="form">
+          <form id="signupForm" action="profile" method="post">
+            <div class="form-group">
+              <label for="email-address">Name</label>
+              <input
+                type="text"
+                id="name"
+                name="name"
+                value="<%= profile.name %>"
+                required
+              />
+            </div>
+            <div class="form-group">
+              <label for="email-address">Email address</label>
+              <input
+                type="email"
+                id="email"
+                name="email"
+                value="<%= profile.email %>"
+                readonly
+                required
+                pattern="[^\s@]+@[^\s@]+\.[^\s@]+"
+              />
+            </div>
+            <div class="form-group">
+              <label for="email-address">Role</label>
+              <input
+                type="text"
+                id="role"
+                name="role"
+                value="<%= profile.role %>"
+                required
+              />
+            </div>
+            <div class="form-group">
+              <label for="email-address">Place</label><br />
+              <select
+                class="input-field"
+                id="state"
+                name="place"
+                value="<%= profile.place %>"
+                type="text"
+                placeholder="Enter Place"
+                required
+              >
+              <option value="Thiruvananthapuram" <%=profile.place==='Thiruvananthapuram' ? 'selected' : '' %>>Thiruvananthapuram</option>
+              <option value="Kollam" <%=profile.place==='Kollam' ? 'selected' : '' %>>Kollam</option>
+              <option value="Alappuzha" <%=profile.place==='Alappuzha' ? 'selected' : '' %>>Alappuzha</option>
+              <option value="Pathanamthitta" <%=profile.place==='Pathanamthitta' ? 'selected' : '' %>>Pathanamthitta</option>
+              <option value="Kottayam" <%=profile.place==='Kottayam' ? 'selected' : '' %>>Kottayam</option>
+              <option value="Idukki" <%=profile.place==='Idukki' ? 'selected' : '' %>>Idukki</option>
+              <option value="Ernakulam" <%=profile.place==='Ernakulam' ? 'selected' : '' %>>Ernakulam</option>
+              <option value="Thrissur" <%=profile.place==='Thrissur' ? 'selected' : '' %>>Thrissur</option>
+              <option value="Palakkad" <%=profile.place==='Palakkad' ? 'selected' : '' %>>Palakkad</option>
+              <option value="Malappuram" <%=profile.place==='Malappuram' ? 'selected' : '' %>>Malappuram</option>
+              <option value="Kozhikode" <%=profile.place==='Kozhikode' ? 'selected' : '' %>>Kozhikode</option>
+              <option value="Wayanad" <%=profile.place==='Wayanad' ? 'selected' : '' %>>Wayanad</option>
+              <option value=" Kannur" <%=profile.place===' Kannur' ? 'selected' : '' %>> Kannur</option>
+              <option value="Kasaragod" <%=profile.place==='Kasaragod' ? 'selected' : '' %>>Kasaragod</option>
+              </select>
+            </div>
+
+            <button class="btn" id="btn" type="submit">Update Account</button>
+          </form>
+        </div>
       </div>
       <div class="post-container">
         <div class="header">
           <h2 class="fw-bold">Saved Posts</h2>
         </div>
 
-        <div class="container" style="overflow-x: hidden;">
+        <div class="container" style="overflow-x: hidden">
           <% if (post.length==0) { %>
           <h2 class="text-center text-secondary">No Saved Post</h2>
           <% }else{ %>
