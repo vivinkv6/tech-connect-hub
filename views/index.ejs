@@ -21,6 +21,23 @@
       crossorigin="anonymous"
     />
     <link rel="stylesheet" href="/stylesheets/style.css" />
+    <!-- PWA -->
+    <link rel="manifest" href="/manifest.json" />
+    <script>
+      if ("serviceWorker" in navigator) {
+        navigator.serviceWorker
+          .register("/service-worker.js")
+          .then((registration) => {
+            console.log(
+              "Service Worker registered with scope:",
+              registration.scope
+            );
+          })
+          .catch((error) => {
+            console.error("Service Worker registration failed:", error);
+          });
+      }
+    </script>
 
     <title>TechconnectHub - Home</title>
   </head>
@@ -227,7 +244,7 @@
             aria-expanded="false"
             aria-controls="collapseTwo"
           >
-          How can I become a verified publisher
+            How can I become a verified publisher
           </button>
         </h2>
         <!-- <div id="collapseTwo" class="accordion-collapse collapse show" aria-labelledby="headingTwo" data-bs-parent="#accordionExample">
@@ -255,7 +272,7 @@
             aria-expanded="false"
             aria-controls="collapseThree"
           >
-          What kind of events can I find on TechConnect Hub?
+            What kind of events can I find on TechConnect Hub?
           </button>
         </h2>
         <!-- <div id="collapseThree" class="accordion-collapse collapse show" aria-labelledby="headingTwo" data-bs-parent="#accordionExample">
@@ -283,7 +300,7 @@
             aria-expanded="false"
             aria-controls="collapseFour"
           >
-           How does the event approval process work
+            How does the event approval process work
           </button>
         </h2>
         <!-- <div id="collapseFour" class="accordion-collapse collapse show" aria-labelledby="headingFour" data-bs-parent="#accordionExample">
