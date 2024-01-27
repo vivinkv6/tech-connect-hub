@@ -64,8 +64,7 @@ To run the application locally, follow these steps:
 ![Screenshot (24)](https://github.com/vivinkv6/tech-connect-hub/assets/102971812/9fefafaa-7f18-46f0-988f-f71dd05a8796)
 
 ## ER Diagram
-![diagram-export-27-01-2024-19_08_14](https://github.com/vivinkv6/tech-connect-hub/assets/102971812/31fa9e25-c987-4878-9fab-5de519873c7a)
-
+![diagram-export-27-01-2024-19_09_38](https://github.com/vivinkv6/tech-connect-hub/assets/102971812/56086dfe-add0-477a-87ae-360ad88d7462)
 
 
 ## License
