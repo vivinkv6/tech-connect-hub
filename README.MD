@@ -66,6 +66,7 @@ To run the application locally, follow these steps:
 ## ER Diagram
 [View on Eraser![](https://app.eraser.io/workspace/o7fHWv5o8ZyP5sxGp9Hn/preview)](https://app.eraser.io/workspace/o7fHWv5o8ZyP5sxGp9Hn)
 
+
 ## License
 
 This project is licensed under the [MIT License](link-to-license). You can find the license details in the `LICENSE` file.
