@@ -64,7 +64,8 @@ To run the application locally, follow these steps:
 ![Screenshot (24)](https://github.com/vivinkv6/tech-connect-hub/assets/102971812/9fefafaa-7f18-46f0-988f-f71dd05a8796)
 
 ## ER Diagram
-[View on Eraser![](https://app.eraser.io/workspace/o7fHWv5o8ZyP5sxGp9Hn/preview)](https://app.eraser.io/workspace/o7fHWv5o8ZyP5sxGp9Hn)
+![diagram-export-27-01-2024-19_08_14](https://github.com/vivinkv6/tech-connect-hub/assets/102971812/31fa9e25-c987-4878-9fab-5de519873c7a)
+
 
 
 ## License
