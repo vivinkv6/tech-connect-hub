@@ -289,6 +289,7 @@ router.get("/:id/dashboard/filter?", async (req, res) => {
       console.log("correct");
       const token = jwt.verify(req.cookies.user, process.env.JWT_SECRET_TOKEN);
       const findId = await userlogin.findByPk(token);
+      const greeting = getGreeting();
 
       if (!findId) {
         res.clearCookie("user");
@@ -310,13 +311,17 @@ router.get("/:id/dashboard/filter?", async (req, res) => {
               order: [["createdAt", "DESC"]],
             });
             console.log(filterPost);
+           
             res.render("../views/user/filter", {
+              profile:findId.dataValues,
+              greeting:greeting,
               post: filterPost,
               id: id,
               type: "All",
               mode: "All",
               fee: "All",
               district: "All",
+             
             });
           } else if (
             req.query.type == "" &&
@@ -329,6 +334,8 @@ router.get("/:id/dashboard/filter?", async (req, res) => {
             });
 
             res.render("../views/user/filter", {
+              profile:findId.dataValues,
+              greeting:greeting,
               post: filterPost,
               id: id,
               type: req.query.type,
@@ -347,6 +354,8 @@ router.get("/:id/dashboard/filter?", async (req, res) => {
             });
 
             res.render("../views/user/filter", {
+              profile:findId.dataValues,
+              greeting:greeting,
               post: filterPost,
               id: id,
               type: req.query.type,

@@ -9,56 +9,6 @@ body {
   background-color: #f4f4f4;
 }
 
-.nav2 {
-  display: none;
-}
-
-.head-container {
-  width: 100%;
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  align-items: center;
-  /* border-bottom: 5px solid #333333a8; */
-  background-color: #d4d4d4;
-}
-
-.head-container > nav {
-  width: 30%;
-  display: flex;
-  flex-direction: row;
-  justify-content: space-around;
-  align-items: center;
-  list-style-type: none;
-}
-header {
-  color: rgb(0, 0, 0);
-  text-align: left;
-  padding: 1em;
-}
-
-header>h1{
-  text-transform: uppercase;
-  font-family: 'Saira Stencil One', sans-serif;
-}
-/* h1>span{
-  color: #dbf72c;
-} */
-
-header>h4 {
-  font-size: 1rem;
-  font-family: "Roboto", sans-serif;
-  font-weight: 600;
-}
-
-h2 {
-  font-size: 1.5em;
-}
-
-h5 {
-  font-size: 25px;
-  font-family: "Oswald", sans-serif;
-}
 
 main {
   text-align: center;
@@ -78,13 +28,6 @@ main {
   height: auto;
 }
 
-.nav-link {
-  color: whitesmoke;
-}
-
-.nav-link:hover {
-  color: rgb(181, 181, 181);
-}
 
 img {
   width: 100%;

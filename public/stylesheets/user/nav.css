@@ -1,0 +1,91 @@
+@import url("https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Oswald:wght@600&display=swap");
+@import url('https://fonts.googleapis.com/css2?family=Saira+Stencil+One&display=swap');
+
+  
+  .nav2 {
+    display: none;
+  }
+  
+  .head-container {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    /* border-bottom: 5px solid #333333a8; */
+    background-color: #d4d4d4;
+  }
+  
+  .head-container > nav {
+    width: 30%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    align-items: center;
+    list-style-type: none;
+  }
+  header {
+    color: rgb(0, 0, 0);
+    text-align: left;
+    padding: 1em;
+  }
+  
+  header>h1{
+    text-transform: uppercase;
+    font-family: 'Saira Stencil One', sans-serif;
+  }
+  /* h1>span{
+    color: #dbf72c;
+  } */
+  
+  header>h4 {
+    font-size: 1rem;
+    font-family: "Roboto", sans-serif;
+    font-weight: 600;
+  }
+  
+  h2 {
+    font-size: 1.5em;
+  }
+  
+  h5 {
+    font-size: 25px;
+    font-family: "Oswald", sans-serif;
+  }
+
+  .nav-link {
+    color: whitesmoke;
+    
+  }
+  
+  .nav-link:hover {
+    color: rgb(181, 181, 181);
+  }
+
+  .nav-item{
+    text-align: left;
+  }
+
+  
+  @media screen and (max-width: 900px) {
+    .head-container > nav {
+      width: 40%;
+    }
+  }
+  
+  @media screen and (max-width: 500px) {
+    header > h1 {
+      font-size: 20px;
+    }
+    header>h4{
+      font-size: 10px;
+    }
+    .head-container {
+      display: none;
+    }
+    .nav2 {
+      display: flex;
+    }
+  }
+  
