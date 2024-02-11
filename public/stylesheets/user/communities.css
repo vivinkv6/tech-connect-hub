@@ -1,0 +1,75 @@
+@import url("https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Oswald:wght@600&display=swap");
+@import url('https://fonts.googleapis.com/css2?family=Saira+Stencil+One&display=swap');
+body {
+  font-family: Arial, sans-serif;
+  line-height: 1.6;
+  margin: 0;
+  padding: 0;
+  background-color: #f4f4f4;
+}
+
+
+main {
+  text-align: center;
+  padding: 2em;
+}
+
+.card {
+  box-shadow: 0px 0px 10px black;
+  text-align: left;
+  height: 300px;
+  border-radius: 20px;
+  width: 350px;
+}
+
+.techconnect-image {
+  max-width: 100%;
+  height: auto;
+}
+
+
+img {
+  width: 100%;
+  height: 350px;
+  /* max-height: 200px; */
+  /* object-fit:fill; */
+  /* border-top-right-radius: 10px;
+  border-top-left-radius: 10px; */
+}
+
+footer {
+  background-color: #333;
+  color: white;
+  text-align: center;
+  padding: 1em;
+  margin-top: 2em;
+  position: relative;
+  bottom: 0px;
+  left: 0px;
+  width: 100%;
+}
+
+@media screen and (max-width: 900px) {
+  .head-container > nav {
+    width: 40%;
+  }
+}
+
+@media screen and (max-width: 500px) {
+  header > h1 {
+    font-size: 20px;
+  }
+  header>h4{
+    font-size: 10px;
+  }
+  .head-container {
+    display: none;
+  }
+  .nav2 {
+    display: flex;
+  }
+  .card{
+    width: 300px;
+  }
+}

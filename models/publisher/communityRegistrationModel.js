@@ -3,6 +3,7 @@ const sequelizeConfig = require("../../config/sequelize.config");
 
 const publisherlogin = require("./registrationModel");
 const verfierLogin = require("../verifier/loginModel");
+const eventModel = require("./eventModel");
 
 const communityRegistration = sequelizeConfig.define("communityregistration", {
   id: {
@@ -53,6 +54,10 @@ const communityRegistration = sequelizeConfig.define("communityregistration", {
     type: DataTypes.STRING,
     allowNull: false,
     defaultValue: DataTypes.UUIDV4,
+  },
+  postId:{
+    type: DataTypes.ARRAY(DataTypes.STRING),
+    allowNull: true,
   }
 });
 
@@ -61,6 +66,8 @@ communityRegistration.associate = () => {
     foreignKey: "publisherId",
   });
   communityRegistration.belongsTo(verfierLogin,{foreignKey:"verifierId"})
+  communityRegistration.hasMany(eventModel,{foreignKey:"postId"})
+  
 };
 
 module.exports = communityRegistration;

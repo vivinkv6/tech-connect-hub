@@ -18,6 +18,14 @@
     </li>
     <li class="" style="position: relative">
       <a
+        href="/user/<%= profile.id %>/dashboard/communities"
+        class="bi bi-building-fill fs-2 text-dark"
+        style="vertical-align: middle"
+      >
+      </a>
+    </li>
+    <li class="" style="position: relative">
+      <a
         href="/user/<%= profile.id %>/dashboard/notification"
         class="bi bi-bell-fill fs-2 text-dark"
         style="vertical-align: middle"
@@ -83,6 +91,17 @@
               style="vertical-align: middle"
             ></i>
             Home</a
+          >
+        </li>
+        <li class="nav-item">
+          <a
+            class="nav-link text-dark"
+            href="/user/<%= profile.id %>/dashboard/communities"
+            ><i
+              class="bi bi-building-fill fs-2 me-2"
+              style="vertical-align: middle"
+            ></i
+            >Communities</a
           >
         </li>
         <li class="nav-item">

@@ -8,18 +8,17 @@ p {
   padding: 0;
 }
 
-a{
+a {
   text-decoration: none;
   color: white;
 }
-a:hover{
+a:hover {
   color: rgb(213, 213, 213);
 }
 
 body {
   font-family: "Arial", sans-serif;
 }
-
 
 .grid-container {
   /* display: grid;
@@ -45,12 +44,12 @@ body {
   padding: 1rem;
 }
 
-.modal-container { 
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
+.modal-container {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 }
 
 .modal-box {
@@ -95,9 +94,7 @@ body {
   width: 100%;
   height: 200px;
   object-fit: contain;
-  
 }
-
 
 .profile-details {
   padding: 1rem;
@@ -138,3 +135,67 @@ body {
   background-color: #ff5733;
   color: #fff;
 }
+
+.img {
+  height: 500px;
+  width: 60%;
+}
+
+
+.card {
+  box-shadow: 0px 0px 10px black;
+  text-align: left;
+  height: 550px;
+  border-radius: 20px;
+  width: 350px;
+}
+
+.techconnect-image {
+  max-width: 100%;
+  height: auto;
+}
+
+
+img {
+  width: 100%;
+  height: 350px;
+  /* max-height: 200px; */
+  /* object-fit:fill; */
+  /* border-top-right-radius: 10px;
+  border-top-left-radius: 10px; */
+}
+
+
+
+@media screen and (max-width: 900px) {
+  .head-container > nav {
+    width: 40%;
+  }
+}
+
+@media screen and (max-width: 500px) {
+  .img {
+    height: 200px;
+    width: 100%;
+    object-fit: contain;
+  }
+  header > h1 {
+    font-size: 20px;
+  }
+  header>h4{
+    font-size: 10px;
+  }
+  .head-container {
+    display: none;
+  }
+  .nav2 {
+    display: flex;
+  }
+  .card{
+    width: 300px;
+  }
+}
+
+
+
+

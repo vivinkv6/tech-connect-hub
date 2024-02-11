@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <!-- Google fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Rubik+Glitch&family=Russo+One&family=Saira+Stencil+One&family=Ubuntu+Condensed&family=Unica+One&display=swap"
+      rel="stylesheet"
+    />
+
+    <!-- AOS  -->
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet" />
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC"
+      crossorigin="anonymous"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.2/font/bootstrap-icons.min.css"
+    />
+    <link rel="stylesheet" href="/stylesheets/user/dashboard.css" />
+    <link rel="stylesheet" href="/stylesheets/user/nav.css" />
+
+    <title><%= profile.username %> - Dashboard</title>
+  </head>
+  <body>
+   <%- include('components/nav') %>
+    <div class="container mt-5" style="overflow-x: hidden">
+      <div class="row">
+        <% if (post.length ==0) { %>
+        <h1>No Post</h1>
+        <% }else{ %> <% for( let i = 0; i < post.length; i++ ) { %>
+        <div class="col-xl-4 col-md-6">
+          <center>
+            <div
+              class="card mb-5 rounded"
+              data-aos="fade-left"
+              data-aos-easing="linear"
+              data-aos-duration="1000"
+            >
+              <a
+                href="/user/<%= profile.id %>/dashboard/post/<%= post[i].dataValues.id %>"
+              >
+                <img
+                  src="<%= post[i].dataValues.banner %>"
+                  style="height: 350px; object-fit: fill"
+                  class="card-img-top"
+                  alt="..."
+                />
+              </a>
+              <div class="card-body">
+                <div
+                  class="mb-3"
+                  style="
+                    display: flex;
+                    justify-content: flex-start;
+                    flex-wrap: wrap;
+                    gap: 10px;
+                  "
+                >
+                  <% if (post[i].dataValues.fee == 'Free') { %>
+                  <span class="me-2 badge bg text-light bg-success"
+                    ><%= post[i].dataValues.fee%></span
+                  >
+                  <% }else{ %>
+                  <span class="me-2 badge bg text-light bg-danger"
+                    ><%= post[i].dataValues.fee%></span
+                  >
+                  <% } %> <% if (post[i].dataValues.mode == 'Online') { %>
+                  <span class="me-2 badge bg text-light bg-primary"
+                    ><%= post[i].dataValues.mode%></span
+                  >
+                  <% }else{ %>
+                  <span class="me-2 badge bg text-light bg-secondary"
+                    ><%= post[i].dataValues.mode%></span
+                  >
+                  <% } %> <% if (post[i].dataValues.type == 'Hackathons') { %>
+                  <span
+                    class="me-2 badge bg text-light bg-info"
+                    style="background-color: bisque"
+                    ><%= post[i].dataValues.type%></span
+                  >
+                  <% }else if(post[i].dataValues.type == 'Conferences'){ %>
+                  <span class="me-2 badge bg text-light bg-warning"
+                    ><%= post[i].dataValues.type%></span
+                  >
+                  <% }else if(post[i].dataValues.type == 'Meetups'){ %>
+                  <span class="me-2 badge bg text-light bg-dark"
+                    ><%= post[i].dataValues.type%></span
+                  >
+                  <% }else if(post[i].dataValues.type == 'Webinars'){ %>
+                  <span
+                    class="me-2 badge"
+                    style="background-color: rgb(255, 0, 247)"
+                    ><%= post[i].dataValues.type%></span
+                  >
+                  <% }else{ %>
+                  <span
+                    class="me-2 badge text-light"
+                    style="background-color: rgb(255, 140, 0)"
+                    ><%= post[i].dataValues.type%></span
+                  >
+                  <% } %> <% if (post[i].district === "Thiruvananthapuram") { %>
+                  <span
+                    class="badge badge-primary"
+                    style="background-color: #ff5733"
+                    >Thiruvananthapuram</span
+                  >
+                  <% } else if (post[i].district === "Kollam") { %>
+                  <span
+                    class="badge badge-primary"
+                    style="background-color: #ffc300"
+                    >Kollam</span
+                  >
+                  <% } else if (post[i].district === "Alappuzha") { %>
+                  <span
+                    class="badge badge-primary"
+                    style="background-color: #c70039"
+                    >Alappuzha</span
+                  >
+                  <% } else if (post[i].district === "Pathanamthitta") { %>
+                  <span
+                    class="badge badge-primary"
+                    style="background-color: #900c3f"
+                    >Pathanamthitta</span
+                  >
+                  <% } else if (post[i].district === "Kottayam") { %>
+                  <span
+                    class="badge badge-primary"
+                    style="background-color: #581845"
+                    >Kottayam</span
+                  >
+                  <% } else if (post[i].district === "Idukki") { %>
+                  <span
+                    class="badge badge-primary"
+                    style="background-color: #00a859"
+                    >Idukki</span
+                  >
+                  <% } else if (post[i].district === "Ernakulam") { %>
+                  <span
+                    class="badge badge-primary"
+                    style="background-color: #394240"
+                    >Ernakulam</span
+                  >
+                  <% } else if (post[i].district === "Thrissur") { %>
+                  <span
+                    class="badge badge-primary"
+                    style="background-color: #9c640c"
+                    >Thrissur</span
+                  >
+                  <% } else if (post[i].district === "Palakkad") { %>
+                  <span
+                    class="badge badge-primary"
+                    style="background-color: #00b7c2"
+                    >Palakkad</span
+                  >
+                  <% } else if (post[i].district === "Malappuram") { %>
+                  <span
+                    class="badge badge-primary"
+                    style="background-color: #5e3c58"
+                    >Malappuram</span
+                  >
+                  <% } else if (post[i].district === "Kozhikode") { %>
+                  <span
+                    class="badge badge-primary"
+                    style="background-color: #4cb7a5"
+                    >Kozhikode</span
+                  >
+                  <% } else if (post[i].district === "Wayanad") { %>
+                  <span
+                    class="badge badge-primary"
+                    style="background-color: #eea47f"
+                    >Wayanad</span
+                  >
+                  <% } else if (post[i].district === "Kannur") { %>
+                  <span
+                    class="badge badge-primary"
+                    style="background-color: #d4a5a5"
+                    >Kannur</span
+                  >
+                  <% } else if (post[i].district === "Kasaragod") { %>
+                  <span
+                    class="badge badge-primary"
+                    style="background-color: #423e6d"
+                    >Kasaragod</span
+                  >
+                  <% } else { %>
+                  <span
+                    class="badge badge-primary"
+                    style="background-color: #ffffff"
+                    >Other</span
+                  >
+                  <% } %>
+                  <span
+                    class="badge badge-primary"
+                    style="background-color: #000000"
+                    ><%=post[i].date %></span
+                  >
+                  <span
+                    class="badge badge-primary"
+                    style="background-color: #b4e063"
+                    ><%=post[i].community %></span
+                  >
+                </div>
+                <div class="card-head p-2">
+                  <h5 class="card-title fw-bold">
+                    <%= post[i].dataValues.name %>
+                  </h5>
+                </div>
+              </div>
+            </div>
+          </center>
+        </div>
+        <% } %> <% } %>
+      </div>
+    </div>
+    <footer>
+      <p>&copy; 2024 Tech Connect Hub. All rights reserved.</p>
+    </footer>
+
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script>
+      AOS.init();
+    </script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+      crossorigin="anonymous"
+    ></script>
+  </body>
+</html>

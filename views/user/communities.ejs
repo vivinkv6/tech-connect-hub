@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <!-- Google fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Rubik+Glitch&family=Russo+One&family=Saira+Stencil+One&family=Ubuntu+Condensed&family=Unica+One&display=swap"
+      rel="stylesheet"
+    />
+
+    <!-- AOS  -->
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet" />
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC"
+      crossorigin="anonymous"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.2/font/bootstrap-icons.min.css"
+    />
+    <link rel="stylesheet" href="/stylesheets/user/communities.css" />
+    <link rel="stylesheet" href="/stylesheets/user/nav.css" />
+
+    <title>communities</title>
+  </head>
+  <body>
+   <%- include('components/nav') %>
+    <div class="container mt-5" style="overflow-x: hidden">
+      <div class="row">
+        <% if (communities.length ==0) { %>
+        <h1>No Communities</h1>
+        <% }else{ %> <% for( let i = 0; i < communities.length; i++ ) { %>
+        <div class="col-xl-4 col-md-6">
+          <center>
+            <div
+              class="card mb-5 rounded"
+              data-aos="fade-left"
+              data-aos-easing="linear"
+              data-aos-duration="1000"
+            >
+              <a
+                href="/user/<%=profile.id %>/dashboard/communities/<%= communities[i].dataValues.id %>"
+              >
+                <img
+                  src="<%= communities[i].dataValues.logo %>"
+                  style="height: 200px;  object-fit: fill"
+                  class="card-img-top"
+                  alt="..."
+                />
+              </a>
+              <div class="card-body" style="border-top: 2px solid black;">
+                <div class="card-head p-2">
+                  <h5 class="card-title fw-bold">
+                    <%= communities[i].dataValues.name %>
+                  </h5>
+                </div>
+              </div>
+            </div>
+          </center>
+        </div>
+        <% } %> <% } %>
+      </div>
+    </div>
+    <footer>
+      <p>&copy; 2024 Tech Connect Hub. All rights reserved.</p>
+    </footer>
+
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script>
+      AOS.init();
+    </script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+      crossorigin="anonymous"
+    ></script>
+  </body>
+</html>

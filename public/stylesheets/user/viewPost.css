@@ -2,7 +2,6 @@
 .banner {
   width: 100%;
   max-height: 700px;
-
 }
 .detail-container {
   width: 100%;
@@ -38,4 +37,12 @@
   font-family: "Lora", serif;
   font-size: 15px;
   font-weight: 400;
+}
+
+@media screen and (max-width: 900px) {
+  .banner {
+    width: 100%;
+    max-height: 700px;
+    height: 400px;
+  }
 }

@@ -10,6 +10,7 @@ const getGreeting = require("../../utils/greetings");
 const notificationModel = require("../../models/user/notificationModel");
 const { Sequelize, where } = require("sequelize");
 const cookieAuth = require("../../utils/auth");
+const communityRegistration = require("../../models/publisher/communityRegistrationModel");
 
 //user all routes
 
@@ -227,6 +228,77 @@ router.get("/:id/dashboard", async (req, res) => {
   }
 });
 
+
+//communities dashboard
+router.get("/:id/dashboard/communities", async (req, res) => {
+  const { id } = req.params;
+
+  if (req.cookies.user) {
+    console.log("correct");
+    const token = jwt.verify(req.cookies.user, process.env.JWT_SECRET_TOKEN);
+    const findId = await userlogin.findByPk(token);
+
+    if (!findId) {
+      res.clearCookie("user");
+      res.redirect(`/user/login`);
+    } else {
+      const findProfile = await userlogin.findByPk(id);
+
+      if (!findProfile) {
+        res.clearCookie("user");
+        res.redirect("/user/login");
+      } else {
+        const greeting = getGreeting();
+        const community = await communityRegistration.findAll({});
+        res.render("../views/user/communities", {
+          greeting: greeting,
+          profile: findProfile.dataValues,
+          communities: community,
+        });
+      }
+    }
+  } else {
+    res.redirect("/user/login");
+  }
+});
+
+//each community specific events
+router.get("/:id/dashboard/communities/:id2", async (req, res) => {
+  const { id,id2 } = req.params;
+
+  if (req.cookies.user) {
+    console.log("correct");
+    const token = jwt.verify(req.cookies.user, process.env.JWT_SECRET_TOKEN);
+    const findId = await userlogin.findByPk(token);
+
+    if (!findId) {
+      res.clearCookie("user");
+      res.redirect(`/user/login`);
+    } else {
+      const findProfile = await userlogin.findByPk(id);
+
+      if (!findProfile) {
+        res.clearCookie("user");
+        res.redirect("/user/login");
+      } else {
+        const greeting = getGreeting();
+        const communityPost = await eventModel.findAll({
+          where:{
+            communityId:id2
+          }
+        });
+        res.render("../views/user/communityevents", {
+          greeting: greeting,
+          profile: findProfile.dataValues,
+          post: communityPost,
+        });
+      }
+    }
+  } else {
+    res.redirect("/user/login");
+  }
+});
+
 router.get("/:id/dashboard/notification", async (req, res) => {
   const { id } = req.params;
   if (req.cookies.user) {
@@ -266,13 +338,22 @@ router.get("/:id/dashboard/post/:post", async (req, res) => {
       res.redirect(`/user/login`);
     } else {
       const findPost = await eventModel.findByPk(post);
+      const similarPost=await eventModel.findAll({
+        where:{
+          type:findPost.dataValues.type,
+          mode:findPost.dataValues.mode,
+          community:findPost.dataValues.community
+        }
+      })
 
       if (!findPost) {
         res.redirect(`/user/${id}/dashboard`);
       } else {
         res.render("../views/user/viewPost", {
+          profile:findId.dataValues,
           post: findPost.dataValues,
           id: id,
+          similar:similarPost
         });
       }
     }

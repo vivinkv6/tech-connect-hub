@@ -17,6 +17,7 @@ const cloudinaryConfig = require("../../config/cloudinary.config");
 const multer = require("multer");
 const verfierLogin = require("../../models/verifier/loginModel");
 const cookieAuth = require("../../utils/auth");
+const communityRegistration = require("../../models/publisher/communityRegistrationModel");
 /* The line `const storage = multer.memoryStorage();` is creating an instance of the `multer`
 middleware's `MemoryStorage` class. */
 const storage = multer.memoryStorage();
@@ -426,6 +427,15 @@ router.post(
             }
           );
 
+          const findCommunity = await communityRegistration.findOne({
+            where: {
+              name: community,
+              publisherId: id,
+            },
+          });
+
+          console.log(findCommunity);
+
           const postEvent = await eventModel
             .create({
               name: name,
@@ -442,13 +452,32 @@ router.post(
               contact: contact,
               publisherId: id,
               community: community,
+              communityId: findCommunity.dataValues.id,
             })
             .then(async (data) => {
+              const allPost = await communityRegistration.findOne({
+                where: {
+                  id: findCommunity.dataValues.id,
+                },
+              });
+
+              const updateCommunity = await communityRegistration.update(
+                {
+                  postId: [...allPost.dataValues.postId, data.dataValues.id],
+                },
+                {
+                  where: {
+                    id: findCommunity.dataValues.id,
+                  },
+                }
+              );
+              console.log(updateCommunity);
+
               const sendNotification = await notificationModel
                 .create({
                   pic: fileUpload.secure_url,
                   user: findId.dataValues.name,
-                  place:data.dataValues.district,
+                  place: data.dataValues.district,
                   message: `<i>${findId.dataValues.name}</i> has uploaded new event <b>" ${name} "</b>. Check out the details for the latest updates on upcoming events and plan your schedule accordingly`,
                   eventId: data.dataValues.id,
                 })
@@ -527,6 +556,7 @@ router.post(
       district,
       guest,
       contact,
+      community,
     } = req.body;
     if (req.cookies.publisher) {
       const verify = jwt.verify(
@@ -549,8 +579,28 @@ router.post(
           } else {
             //Chcek if the image is not update
             if (!req.file) {
+              const findCommunity = await communityRegistration.findOne({
+                where: {
+                  name: community,
+                  publisherId: id1,
+                },
+              });
               findPost
-                .update(req.body)
+                .update({
+                  name: name,
+                  description: description,
+                  type: type,
+                  mode: mode,
+                  fee: fee,
+                  date: date,
+                  time: time,
+                  link: link,
+                  district: district,
+                  guest: guest,
+                  contact: contact,
+                  community: community,
+                  communityId: findCommunity.dataValues.id,
+                })
                 .then(() => {
                   res.redirect(`/publisher/${id1}/dashboard`);
                 })
@@ -567,27 +617,61 @@ router.post(
                   encoding: "base64",
                 }
               );
-              findPost
-                .update({
-                  name: name,
-                  description: description,
-                  type: type,
-                  mode: mode,
-                  date: date,
-                  time: time,
-                  link: link,
-                  fee: fee,
-                  district: district,
-                  guest: guest,
-                  contact: contact,
-                  banner: fileUpload.secure_url,
-                })
-                .then(() => {
-                  res.redirect(`/publisher/${id1}/dashboard`);
-                })
-                .catch((err) => {
-                  res.json({ err: err });
+
+              if (req.body.community == "No Community") {
+                findPost
+                  .update({
+                    name: name,
+                    description: description,
+                    type: type,
+                    mode: mode,
+                    date: date,
+                    time: time,
+                    link: link,
+                    fee: fee,
+                    district: district,
+                    guest: guest,
+                    contact: contact,
+                    banner: fileUpload.secure_url,
+                    communityId: "null",
+                  })
+                  .then(() => {
+                    res.redirect(`/publisher/${id1}/dashboard`);
+                  })
+                  .catch((err) => {
+                    res.json({ err: err });
+                  });
+              } else {
+                const findCommunty = await communityRegistration.findOne({
+                  where: {
+                    name: req.body.community,
+                    publisherId: id1,
+                  },
                 });
+
+                findPost
+                  .update({
+                    name: name,
+                    description: description,
+                    type: type,
+                    mode: mode,
+                    date: date,
+                    time: time,
+                    link: link,
+                    fee: fee,
+                    district: district,
+                    guest: guest,
+                    contact: contact,
+                    banner: fileUpload.secure_url,
+                    communityId: findCommunty.dataValues.id,
+                  })
+                  .then(() => {
+                    res.redirect(`/publisher/${id1}/dashboard`);
+                  })
+                  .catch((err) => {
+                    res.json({ err: err });
+                  });
+              }
             }
           }
         }
@@ -975,12 +1059,16 @@ router.post(
             //Chcek if the image is not update
             if (!req.file) {
               communityModel
-                .update(req.body)
+                .update(req.body, {
+                  where: {
+                    id: id2,
+                  },
+                })
                 .then(() => {
                   res.redirect(`/publisher/${id1}/dashboard/community`);
                 })
                 .catch((err) => {
-                  res.json({ err: err });
+                  res.json({ err: err.message });
                 });
             } else {
               const fileBuffer = req.file.buffer.toString("base64");
