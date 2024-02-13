@@ -16,7 +16,7 @@
   <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet" />
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
     integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous" />
-  <link rel="stylesheet" href="/stylesheets/publisher/post.css" />
+  <link rel="stylesheet" href="/stylesheets/publisher/community.css" />
 
   <title>Publisher Dashboard</title>
 </head>
@@ -24,7 +24,7 @@
 <body>
   <div class="max-width-container" data-aos="fade-in" data-aos-duration="2000" data-aos-delay="500">
     <div class="form-header">
-      <h2 class="form-title">Update Event Post</h2>
+      <h2 class="form-title">Update Community</h2>
     </div>
     <form action="/publisher/<%=id1 %>/dashboard/community/<%= post.id %>/update" method="post" enctype="multipart/form-data"
       class="card-container">
@@ -72,7 +72,7 @@
 
           <input class="input-field" id="logo-upload" name="logo" type="file" />
           <center>
-          <input type="image"  style="object-fit: contain;width: auto;height: 300px;margin-top: 10px;" src="<%= post.logo %>">
+          <input type="image" class="view-img"   src="<%= post.logo %>">
         </center>
         </div>
         <div class="form-footer">

@@ -481,7 +481,8 @@ router.post(
                   message: `<i>${findId.dataValues.name}</i> has uploaded new event <b>" ${name} "</b>. Check out the details for the latest updates on upcoming events and plan your schedule accordingly`,
                   eventId: data.dataValues.id,
                 })
-                .then(() => {
+                .then((data) => {
+                  console.log(data);
                   res.redirect(`/publisher/${id}/dashboard`);
                 })
                 .catch((err) => {
@@ -743,6 +744,12 @@ router.get("/:id1/dashboard/post/:id2/delete", async (req, res) => {
         if (!deletePost) {
           res.redirect(`/publisher/${id1}/dashboard`);
         } else {
+          const deleteNotification=await notificationModel.findOne({
+            where:{
+              eventId:deletePost.dataValues.id
+            }
+          });
+          deleteNotification.destroy();
           deletePost.destroy();
           res.redirect(`/publisher/${id1}/dashboard`);
         }

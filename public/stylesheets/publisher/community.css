@@ -4,7 +4,7 @@ body {
 }
 
 .max-width-container {
-  max-width: 600px; /* Adjust the max-width as needed */
+  max-width: 1000px; /* Adjust the max-width as needed */
   margin: auto;
   padding: 20px;
 }
@@ -28,6 +28,8 @@ body {
   font-size: 30px;
   font-weight: bold;
   color: rgb(200, 200, 200);
+  text-align: center;
+  text-transform: uppercase;
 }
 .form-description {
   color: rgb(129, 129, 129);
@@ -42,7 +44,7 @@ body {
 }
 
 label {
-  font-size: 16px;
+  font-size: 25px;
   font-weight: bold;
   margin-bottom: 5px;
 }
@@ -54,19 +56,26 @@ label {
   border-radius: 4px;
   background-color: #fff;
   padding: 8px;
-  font-size: 14px;
+  font-size: 20px;
   outline: none;
 }
 
 .textarea {
-  height: 100px;
+  height: 200px;
   width: 100%;
   border: 1px solid #ccc;
   border-radius: 4px;
   background-color: #fff;
   padding: 8px;
-  font-size: 14px;
+  font-size: 20px;
   outline: none;
+}
+
+.view-img {
+  object-fit: contain;
+  width: 500px;
+  height: 300px;
+  margin-top: 10px;
 }
 
 .form-footer {
@@ -87,4 +96,40 @@ label {
 
 .submit-button:hover {
   background-color: #2779bd;
+}
+
+@media screen and (max-width: 500px) {
+  .view-img {
+    margin: 0px;
+    width: 280px;
+  }
+  .form-title {
+    text-align: center;
+  }
+
+  .textarea {
+    height: 150px;
+  }
+
+  .textarea,
+  .input-field {
+    font-size: 15px;
+  }
+  label {
+    font-size: 18px;
+  }
+}
+
+@media screen and (max-width: 350px) {
+  .view-img {
+    margin: 0px;
+    width: 230px;
+  }
+  .textarea,
+  .input-field {
+    font-size: 15px;
+  }
+  label {
+    font-size: 18px;
+  }
 }
