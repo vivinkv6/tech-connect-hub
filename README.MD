@@ -66,7 +66,7 @@ To run the application locally, follow these steps:
 ## ER Diagram
 ![diagram-export-27-01-2024-19_09_38](https://github.com/vivinkv6/tech-connect-hub/assets/102971812/56086dfe-add0-477a-87ae-360ad88d7462)
 
-##Use Case Diagram
+## Use Case Diagram
 ![techconnecthubucd drawio](https://github.com/vivinkv6/tech-connect-hub/assets/102971812/1e499bdf-41f2-420b-baf4-ef9d2adc751d)
 
 
