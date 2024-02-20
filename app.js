@@ -3,6 +3,7 @@ var express = require("express");
 var path = require("path");
 var cookieParser = require("cookie-parser");
 var logger = require("morgan");
+const rateLimit = require('express-rate-limit');
 
 //router files
 var indexRouter = require("./routes/index");
@@ -23,6 +24,14 @@ app.set('views', '/opt/render/project/src/views');
 app.set("views", path.join(__dirname, "views"));
 app.set("view engine", "ejs");
 
+// Configure the rate limiter for all routes
+const limiter = rateLimit({
+  windowMs: 60 * 1000, // 1 minute in milliseconds
+  max: 100, // Allow 100 requests per minute
+  message: 'Too many requests, please try again later', // Customize error message
+});
+
+app.use(limiter);
 app.use(logger("dev"));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
