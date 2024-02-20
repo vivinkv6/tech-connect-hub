@@ -121,19 +121,20 @@
           <div class="row">
             <% for( let i = 0; i < post.length; i++ ) { %>
 
-            <div class="col-md-6 col-xl-4 col-lg-4">
+            <div class="col-md-6 col-xl-4 col-lg-4" >
               <div
                 class="card mb-5 rounded"
                 data-aos="fade-left"
                 data-aos-easing="linear"
                 data-aos-duration="1000"
+                style="box-shadow: 0px 0px 10px black;"
               >
                 <a
                   href="/user/<%= profile.id %>/dashboard/post/<%= post[i].dataValues.id %>"
                 >
                   <img
                     src="<%= post[i].dataValues.banner %>"
-                    style="position: relative"
+                    style="position: relative;"
                     class="card-img-top"
                     alt="..."
                   />

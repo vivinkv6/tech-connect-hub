@@ -364,6 +364,7 @@ router.get("/:id/dashboard/post/:post", async (req, res) => {
 
 router.get("/:id/dashboard/filter?", async (req, res) => {
   try {
+    console.log("Working");
     const { id } = req.params;
 
     if (req.cookies.user) {
@@ -382,10 +383,10 @@ router.get("/:id/dashboard/filter?", async (req, res) => {
           res.redirect("/user/login");
         } else {
           if (
-            req.query.type == undefined ||
-            req.query.mode == undefined ||
-            req.query.fee == undefined ||
-            req.query.district == undefined
+            req.query.type == undefined|null ||
+            req.query.mode == undefined|null ||
+            req.query.fee == undefined|null ||
+            req.query.district == undefined|null
           ) {
             console.log("start");
             const filterPost = await eventModel.findAll({
