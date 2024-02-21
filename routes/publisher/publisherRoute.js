@@ -460,8 +460,9 @@ router.post(
                   id: findCommunity.dataValues.id,
                 },
               });
+              console.log(allPost.dataValues.postId.length);
 
-              if ((allPost.dataValues.postId.length == 0) | null | undefined) {
+              if (allPost.dataValues.postId.length == 0) {
                 const updateCommunity = await communityRegistration.update(
                   {
                     postId: [data.dataValues.id],
@@ -761,7 +762,7 @@ router.get("/:id1/dashboard/post/:id2/delete", async (req, res) => {
               eventId: deletePost.dataValues.id,
             },
           });
-          deleteNotification.destroy();
+          // deleteNotification.destroy();
           deletePost.destroy();
           res.redirect(`/publisher/${id1}/dashboard`);
         }
