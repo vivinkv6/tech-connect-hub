@@ -455,12 +455,19 @@ router.post(
               communityId: findCommunity.dataValues.id,
             })
             .then(async (data) => {
+              const sendNotification = await notificationModel.create({
+                pic: fileUpload.secure_url,
+                user: findId.dataValues.name,
+                place: data.dataValues.district,
+                message: `<i>${findId.dataValues.name}</i> has uploaded new event <b>" ${name} "</b>. Check out the details for the latest updates on upcoming events and plan your schedule accordingly`,
+                eventId: data.dataValues.id,
+              });
+
               const allPost = await communityRegistration.findOne({
                 where: {
                   id: findCommunity.dataValues.id,
                 },
               });
-              console.log(allPost.dataValues.postId.length);
 
               if (allPost.dataValues.postId.length == 0) {
                 const updateCommunity = await communityRegistration.update(
@@ -473,7 +480,10 @@ router.post(
                     },
                   }
                 );
+
+                res.redirect(`/publisher/${id}/dashboard`);
               } else {
+                
                 const updateCommunity = await communityRegistration.update(
                   {
                     postId: [...allPost.dataValues.postId, data.dataValues.id],
@@ -484,20 +494,12 @@ router.post(
                     },
                   }
                 );
+
+                res.redirect(`/publisher/${id}/dashboard`);
               }
-
-              const sendNotification = await notificationModel.create({
-                pic: fileUpload.secure_url,
-                user: findId.dataValues.name,
-                place: data.dataValues.district,
-                message: `<i>${findId.dataValues.name}</i> has uploaded new event <b>" ${name} "</b>. Check out the details for the latest updates on upcoming events and plan your schedule accordingly`,
-                eventId: data.dataValues.id,
-              });
-
-              res.redirect(`/publisher/${id}/dashboard`);
             })
             .catch((err) => {
-              res.json({ err: err });
+              res.json({ err: err.message });
             });
         }
       }
