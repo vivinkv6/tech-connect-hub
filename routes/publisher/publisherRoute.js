@@ -461,17 +461,29 @@ router.post(
                 },
               });
 
-              const updateCommunity = await communityRegistration.update(
-                {
-                  postId: [...allPost.dataValues.postId, data.dataValues.id],
-                },
-                {
-                  where: {
-                    id: findCommunity.dataValues.id,
+              if ((allPost.dataValues.postId.length == 0) | null | undefined) {
+                const updateCommunity = await communityRegistration.update(
+                  {
+                    postId: [data.dataValues.id],
                   },
-                }
-              );
-              console.log(updateCommunity);
+                  {
+                    where: {
+                      id: findCommunity.dataValues.id,
+                    },
+                  }
+                );
+              } else {
+                const updateCommunity = await communityRegistration.update(
+                  {
+                    postId: [...allPost.dataValues.postId, data.dataValues.id],
+                  },
+                  {
+                    where: {
+                      id: findCommunity.dataValues.id,
+                    },
+                  }
+                );
+              }
 
               const sendNotification = await notificationModel
                 .create({
@@ -744,10 +756,10 @@ router.get("/:id1/dashboard/post/:id2/delete", async (req, res) => {
         if (!deletePost) {
           res.redirect(`/publisher/${id1}/dashboard`);
         } else {
-          const deleteNotification=await notificationModel.findOne({
-            where:{
-              eventId:deletePost.dataValues.id
-            }
+          const deleteNotification = await notificationModel.findOne({
+            where: {
+              eventId: deletePost.dataValues.id,
+            },
           });
           deleteNotification.destroy();
           deletePost.destroy();
