@@ -486,21 +486,15 @@ router.post(
                 );
               }
 
-              const sendNotification = await notificationModel
-                .create({
-                  pic: fileUpload.secure_url,
-                  user: findId.dataValues.name,
-                  place: data.dataValues.district,
-                  message: `<i>${findId.dataValues.name}</i> has uploaded new event <b>" ${name} "</b>. Check out the details for the latest updates on upcoming events and plan your schedule accordingly`,
-                  eventId: data.dataValues.id,
-                })
-                .then((data) => {
-                  console.log(data);
-                  res.redirect(`/publisher/${id}/dashboard`);
-                })
-                .catch((err) => {
-                  res.json({ err: err });
-                });
+              const sendNotification = await notificationModel.create({
+                pic: fileUpload.secure_url,
+                user: findId.dataValues.name,
+                place: data.dataValues.district,
+                message: `<i>${findId.dataValues.name}</i> has uploaded new event <b>" ${name} "</b>. Check out the details for the latest updates on upcoming events and plan your schedule accordingly`,
+                eventId: data.dataValues.id,
+              });
+
+              res.redirect(`/publisher/${id}/dashboard`);
             })
             .catch((err) => {
               res.json({ err: err });
@@ -762,7 +756,7 @@ router.get("/:id1/dashboard/post/:id2/delete", async (req, res) => {
               eventId: deletePost.dataValues.id,
             },
           });
-          // deleteNotification.destroy();
+          deleteNotification.destroy();
           deletePost.destroy();
           res.redirect(`/publisher/${id1}/dashboard`);
         }
