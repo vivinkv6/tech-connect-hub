@@ -469,7 +469,7 @@ router.post(
                 },
               });
 
-              if (allPost.dataValues.postId.length == 0) {
+              if (allPost?.dataValues?.postId == null) {
                 const updateCommunity = await communityRegistration.update(
                   {
                     postId: [data.dataValues.id],
