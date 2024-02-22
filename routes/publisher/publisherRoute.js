@@ -524,7 +524,7 @@ router.get("/:id1/dashboard/post/:id2/update", async (req, res) => {
     } else {
       const validPublisher = await publisherLogin.findByPk(id1);
       if (!validPublisher) {
-        res.redirect(`/publisher/${id1}/dasboard`);
+        res.redirect(`/publisher/${id1}/dashboard`);
       } else {
         const findPost = await eventModel.findByPk(id2);
         const community = await communityModel.findAll({
@@ -534,7 +534,7 @@ router.get("/:id1/dashboard/post/:id2/update", async (req, res) => {
         });
 
         if (!findPost) {
-          res.redirect(`/publisher/${id1}/dasboard`);
+          res.redirect(`/publisher/${id1}/dashboard`);
         } else {
           res.render("../views/publisher/updatePost", {
             post: findPost.dataValues,
@@ -581,11 +581,11 @@ router.post(
       } else {
         const findPublisher = await publisherLogin.findByPk(id1);
         if (!findPublisher) {
-          res.redirect(`/publisher/${id1}/dasboard`);
+          res.redirect(`/publisher/${id1}/dashboard`);
         } else {
           const findPost = await eventModel.findByPk(id2);
           if (!findPost) {
-            res.redirect(`/publisher/${id1}/dasboard`);
+            res.redirect(`/publisher/${id1}/dashboard`);
           } else {
             //Chcek if the image is not update
             if (!req.file) {
@@ -1026,12 +1026,12 @@ router.get("/:id1/dashboard/community/:id2/update", async (req, res) => {
     } else {
       const validPublisher = await publisherLogin.findByPk(id1);
       if (!validPublisher) {
-        res.redirect(`/publisher/${id1}/dasboard`);
+        res.redirect(`/publisher/${id1}/dashboard`);
       } else {
         const findCommunity = await communityModel.findByPk(id2);
 
         if (!findCommunity) {
-          res.redirect(`/publisher/${id1}/dasboard/community`);
+          res.redirect(`/publisher/${id1}/dashboard/community`);
         } else {
           res.render("../views/publisher/updateCommunity", {
             post: findCommunity.dataValues,
@@ -1066,11 +1066,11 @@ router.post(
       } else {
         const findPublisher = await publisherLogin.findByPk(id1);
         if (!findPublisher) {
-          res.redirect(`/publisher/${id1}/dasboard`);
+          res.redirect(`/publisher/${id1}/dashboard`);
         } else {
           const findCommunity = await communityModel.findByPk(id2);
           if (!findCommunity) {
-            res.redirect(`/publisher/${id1}/dasboard/community`);
+            res.redirect(`/publisher/${id1}/dashboard/community`);
           } else {
             //Chcek if the image is not update
             if (!req.file) {
