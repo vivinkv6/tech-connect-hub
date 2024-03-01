@@ -61,7 +61,7 @@
   height: auto;
 }
 
-img {
+.img {
   width: 100%;
   height: 350px;
   /* max-height: 200px; */
