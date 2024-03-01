@@ -250,9 +250,7 @@
 
     <div class="container mt-5" style="overflow-x: hidden">
       <div class="row">
-        <% if (similar.length ==0) { %>
-        <h1>No Similar Post</h1>
-        <% }else{ %> 
+        <% if (similar.length >0){ %> 
           <h1 class="similar-head">Similar Post</h1>
           <% for( let i = 0; i < similar.length; i++ ) { %>
          
