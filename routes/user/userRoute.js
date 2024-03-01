@@ -8,7 +8,7 @@ const eventModel = require("../../models/publisher/eventModel");
 const usernameExtractor = require("../../utils/usernameExtractor");
 const getGreeting = require("../../utils/greetings");
 const notificationModel = require("../../models/user/notificationModel");
-const { Sequelize, where } = require("sequelize");
+const { Sequelize, where,Op } = require("sequelize");
 const cookieAuth = require("../../utils/auth");
 const communityRegistration = require("../../models/publisher/communityRegistrationModel");
 
@@ -340,6 +340,9 @@ router.get("/:id/dashboard/post/:post", async (req, res) => {
       const findPost = await eventModel.findByPk(post);
       const similarPost=await eventModel.findAll({
         where:{
+         name:{
+          [Op.ne]:findPost.dataValues.name
+         },
           type:findPost.dataValues.type,
           mode:findPost.dataValues.mode,
           fee:findPost.dataValues.fee
