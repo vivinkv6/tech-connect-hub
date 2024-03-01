@@ -340,8 +340,8 @@ router.get("/:id/dashboard/post/:post", async (req, res) => {
       const findPost = await eventModel.findByPk(post);
       const similarPost=await eventModel.findAll({
         where:{
-         name:{
-          [Op.ne]:findPost.dataValues.name
+         id:{
+          [Op.ne]:findPost.dataValues.id
          },
           type:findPost.dataValues.type,
           mode:findPost.dataValues.mode,
