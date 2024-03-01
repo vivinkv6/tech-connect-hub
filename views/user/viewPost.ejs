@@ -241,6 +241,203 @@
           class="btn btn-primary fs-3 fw-bold"
           >Register Now</a
         >
+
+
+       
+      </div>
+      
+    </div>
+
+    <div class="container mt-5" style="overflow-x: hidden">
+      <div class="row">
+        <% if (similar.length ==0) { %>
+        <h1>No Similar Post</h1>
+        <% }else{ %> 
+          <h1 class="similar-head">Similar Post</h1>
+          <% for( let i = 0; i < similar.length; i++ ) { %>
+         
+        <div class="col-xl-4 col-md-6">
+          <center>
+            <div
+              class="card mb-5 rounded"
+              data-aos="fade-left"
+              data-aos-easing="linear"
+              data-aos-duration="1000"
+            >
+              <a
+                href="/user/<%= profile.id %>/dashboard/post/<%= similar[i].dataValues.id %>"
+              >
+                <img
+                  src="<%= similar[i].dataValues.banner %>"
+                  style="height: 350px; object-fit: fill"
+                  class="card-img-top"
+                  alt="..."
+                />
+              </a>
+              <div class="card-body">
+                <div
+                  class="mb-3"
+                  style="
+                    display: flex;
+                    justify-content: flex-start;
+                    flex-wrap: wrap;
+                    gap: 10px;
+                  "
+                >
+                  <% if (similar[i].dataValues.fee == 'Free') { %>
+                  <span class="me-2 badge bg text-light bg-success"
+                    ><%= similar[i].dataValues.fee%></span
+                  >
+                  <% }else{ %>
+                  <span class="me-2 badge bg text-light bg-danger"
+                    ><%= similar[i].dataValues.fee%></span
+                  >
+                  <% } %> <% if (similar[i].dataValues.mode == 'Online') { %>
+                  <span class="me-2 badge bg text-light bg-primary"
+                    ><%= similar[i].dataValues.mode%></span
+                  >
+                  <% }else{ %>
+                  <span class="me-2 badge bg text-light bg-secondary"
+                    ><%= similar[i].dataValues.mode%></span
+                  >
+                  <% } %> <% if (similar[i].dataValues.type == 'Hackathons') { %>
+                  <span
+                    class="me-2 badge bg text-light bg-info"
+                    style="background-color: bisque"
+                    ><%= similar[i].dataValues.type%></span
+                  >
+                  <% }else if(similar[i].dataValues.type == 'Conferences'){ %>
+                  <span class="me-2 badge bg text-light bg-warning"
+                    ><%= similar[i].dataValues.type%></span
+                  >
+                  <% }else if(similar[i].dataValues.type == 'Meetups'){ %>
+                  <span class="me-2 badge bg text-light bg-dark"
+                    ><%= similar[i].dataValues.type%></span
+                  >
+                  <% }else if(similar[i].dataValues.type == 'Webinars'){ %>
+                  <span
+                    class="me-2 badge"
+                    style="background-color: rgb(255, 0, 247)"
+                    ><%= similar[i].dataValues.type%></span
+                  >
+                  <% }else{ %>
+                  <span
+                    class="me-2 badge text-light"
+                    style="background-color: rgb(255, 140, 0)"
+                    ><%= similar[i].dataValues.type%></span
+                  >
+                  <% } %> <% if (similar[i].dataValues.district === "Thiruvananthapuram") { %>
+                  <span
+                    class="badge badge-primary"
+                    style="background-color: #ff5733"
+                    >Thiruvananthapuram</span
+                  >
+                  <% } else if (similar[i].dataValues.district === "Kollam") { %>
+                  <span
+                    class="badge badge-primary"
+                    style="background-color: #ffc300"
+                    >Kollam</span
+                  >
+                  <% } else if (similar[i].dataValues.district === "Alappuzha") { %>
+                  <span
+                    class="badge badge-primary"
+                    style="background-color: #c70039"
+                    >Alappuzha</span
+                  >
+                  <% } else if (similar[i].dataValues.district === "Pathanamthitta") { %>
+                  <span
+                    class="badge badge-primary"
+                    style="background-color: #900c3f"
+                    >Pathanamthitta</span
+                  >
+                  <% } else if (similar[i].dataValues.district === "Kottayam") { %>
+                  <span
+                    class="badge badge-primary"
+                    style="background-color: #581845"
+                    >Kottayam</span
+                  >
+                  <% } else if (similar[i].dataValues.district === "Idukki") { %>
+                  <span
+                    class="badge badge-primary"
+                    style="background-color: #00a859"
+                    >Idukki</span
+                  >
+                  <% } else if (similar[i].dataValues.district === "Ernakulam") { %>
+                  <span
+                    class="badge badge-primary"
+                    style="background-color: #394240"
+                    >Ernakulam</span
+                  >
+                  <% } else if (similar[i].dataValues.district === "Thrissur") { %>
+                  <span
+                    class="badge badge-primary"
+                    style="background-color: #9c640c"
+                    >Thrissur</span
+                  >
+                  <% } else if (similar[i].dataValues.district === "Palakkad") { %>
+                  <span
+                    class="badge badge-primary"
+                    style="background-color: #00b7c2"
+                    >Palakkad</span
+                  >
+                  <% } else if (similar[i].dataValues.district === "Malappuram") { %>
+                  <span
+                    class="badge badge-primary"
+                    style="background-color: #5e3c58"
+                    >Malappuram</span
+                  >
+                  <% } else if (similar[i].dataValues.district === "Kozhikode") { %>
+                  <span
+                    class="badge badge-primary"
+                    style="background-color: #4cb7a5"
+                    >Kozhikode</span
+                  >
+                  <% } else if (similar[i].dataValues.district === "Wayanad") { %>
+                  <span
+                    class="badge badge-primary"
+                    style="background-color: #eea47f"
+                    >Wayanad</span
+                  >
+                  <% } else if (similar[i].dataValues.district === "Kannur") { %>
+                  <span
+                    class="badge badge-primary"
+                    style="background-color: #d4a5a5"
+                    >Kannur</span
+                  >
+                  <% } else if (similar[i].dataValues.district === "Kasaragod") { %>
+                  <span
+                    class="badge badge-primary"
+                    style="background-color: #423e6d"
+                    >Kasaragod</span
+                  >
+                  <% } else { %>
+                  <span
+                    class="badge badge-primary"
+                    style="background-color: #ffffff"
+                    >Other</span
+                  >
+                  <% } %>
+                  <span
+                    class="badge badge-primary"
+                    style="background-color: #000000"
+                    ><%=similar[i].dataValues.date %></span
+                  >
+                  <span
+                    class="badge badge-primary"
+                    style="background-color: #b4e063"
+                    ><%=similar[i].dataValues.community %></span
+                  >
+                </div>
+                <div class="card-head p-2">
+                  <h5 class="card-title fw-bold">
+                    <%= similar[i].dataValues.name %>
+                  </h5>
+                </div>
+              </div>
+            </div>
+          </center>
+        </div>
+        <% } %> <% } %>
       </div>
     </div>
    

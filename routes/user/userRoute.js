@@ -342,7 +342,7 @@ router.get("/:id/dashboard/post/:post", async (req, res) => {
         where:{
           type:findPost.dataValues.type,
           mode:findPost.dataValues.mode,
-          community:findPost.dataValues.community
+          fee:findPost.dataValues.fee
         }
       })
 
