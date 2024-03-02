@@ -377,7 +377,7 @@ router.get("/dashboard/community/view/:id", async (req, res) => {
         if (!viewCommunity) {
           res.redirect(`/admin/dashboard/community`);
         } else {
-          res.render("admin/viewCommunity", {
+          res.render("admin/viewcommunity", {
             profile: viewCommunity.dataValues,
           });
         }
