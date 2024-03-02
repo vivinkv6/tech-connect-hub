@@ -356,6 +356,40 @@ router.get("/dashboard/community", async (req, res) => {
   }
 });
 
+
+//GET details about specific community
+router.get("/dashboard/community/view/:id", async (req, res) => {
+  const { id } = req.params;
+  if (req.cookies.admin) {
+    const verify = jwt.verify(
+      req.cookies.admin,
+      process.env.JWT_SECRET_TOKEN
+    );
+    const checkId = await adminlogin.findByPk(verify);
+
+    if (!checkId) {
+      res.clearCookie("admin");
+      res.redirect("/admin/login");
+    } else {
+     
+        const viewCommunity = await communityRegistration.findByPk(id);
+
+        if (!viewCommunity) {
+          res.redirect(`/admin/dashboard/community`);
+        } else {
+          res.render("admin/viewCommunity", {
+            profile: viewCommunity.dataValues,
+          });
+        }
+      
+    }
+  } else {
+    res.redirect("/admin/login");
+  }
+});
+
+
+
 //delete specific community
 router.get("/dashboard/community/delete/:id", async (req, res) => {
   const { id } = req.params;
@@ -463,6 +497,39 @@ router.get("/dashboard/post", async (req, res) => {
 
   // res.render("../views/admin/post",{post:postList});
 });
+
+
+//View specific post
+router.get("/dashboard/post/view/:id", async (req, res) => {
+  const { id } = req.params;
+  if (req.cookies.admin) {
+    const verify = jwt.verify(
+      req.cookies.admin,
+      process.env.JWT_SECRET_TOKEN
+    );
+    const checkId = await adminlogin.findByPk(verify);
+
+    if (!checkId) {
+      res.clearCookie("admin");
+      res.redirect("/admin/login");
+    } else {
+      
+        const viewPost = await eventModel.findByPk(id);
+
+        if (!viewPost) {
+          res.redirect(`/admin/dashboard`);
+        } else {
+          res.render("admin/viewpost", {
+            profile: viewPost.dataValues,
+          });
+        }
+    }
+  } else {
+    res.redirect("/publisher/login");
+  }
+});
+
+
 
 //delete post
 router.get("/dashboard/post/delete/:id", async (req, res) => {

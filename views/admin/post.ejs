@@ -209,20 +209,20 @@
                   <th class="text-dark">SlNo.</th>
                   <th class="text-dark">Banner</th>
                   <th class="text-dark">Event Name</th>
-                  <th class="text-dark">Description</th>
+                  <!-- <th class="text-dark">Description</th> -->
                   <th class="text-dark">Type</th>
                   <th class="text-dark">District</th>
                   <th class="text-dark">Mode</th>
                   <th class="text-dark">Fee</th>
                   <th class="text-dark">Contact</th>
-                  <th class="text-dark">Action</th>
+                  <th class="text-dark text-center">Action</th>
                 </tr>
               </thead>
 
               <tbody>
                 <% for( let i=0; i < post.length; i++ ) { %>
 
-                  <tr style="vertical-align: top;">
+                  <tr style="vertical-align: middle;">
                     <td>
                       <%= i+1 %>
                     </td>
@@ -231,12 +231,12 @@
                           src="<%= post[i].dataValues.banner %>"  height="250" width="200" style="object-fit: fill;"
                           alt="Banner" /></a>
                     </td>
-                    <td class="fs-5 fw-bolder">
+                    <td class="fs-5">
                       <%= post[i].dataValues.name %>
                     </td>
-                    <td>
-                      <%= post[i].dataValues.description.slice(0,500) %>...
-                    </td>
+                    <!-- <td>
+                      <%#= post[i].dataValues.description.slice(0,500) %>...
+                    </td> -->
                     <td>
                       <% if (post[i].dataValues.type=='Hackathons' ) { %>
                         <span class="me-2 badge bg text-light bg-info" style="background-color: bisque">
@@ -378,10 +378,23 @@
                     <td>
                       <%= post[i].dataValues.contact %>
                     </td>
-                    <td>
-                      <a href="/admin/dashboard/post/delete/<%= post[i].dataValues.id %>" class="btn btn-danger">
-                        <i class="bi bi-trash me-2"></i>Delete
+                    <td >
+
+                      <div style="display: flex; gap: 10px;">
+                      <a href="/admin/dashboard/post/view/<%= post[i].dataValues.id %>" class="btn btn-success">
+                        <div style="display: flex;">
+                        <i class="bi bi-pencil me-2"></i>View
+                      </div>
                       </a>
+                    
+                     
+                      <a href="/admin/dashboard/post/delete/<%= post[i].dataValues.id %>" class="btn btn-outline-danger">
+                        <div style="display: flex;">
+                        <i class="bi bi-trash me-2"></i>Delete
+                        </div>
+                      </a>
+                    </div>
+                    
                     </td>
                   </tr>
                   <% } %>
