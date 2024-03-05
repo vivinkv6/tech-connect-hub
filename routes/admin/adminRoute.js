@@ -13,6 +13,10 @@ const usernameExtractor = require("../../utils/usernameExtractor");
 const eventModel = require("../../models/publisher/eventModel");
 const communityRegistration = require("../../models/publisher/communityRegistrationModel");
 const cookieAuth = require("../../utils/auth");
+const path = require("path");
+
+const ExcelJS = require("exceljs");
+const { Sequelize } = require("sequelize");
 
 //user all routes
 
@@ -178,7 +182,7 @@ router.get("/dashboard", async (req, res) => {
   }
 });
 
-//delete specific user 
+//delete specific user
 router.get("/dashboard/user/delete/:id", async (req, res) => {
   const { id } = req.params;
   if (req.cookies.admin) {
@@ -281,7 +285,6 @@ router.get("/dashboard/verifier", async (req, res) => {
 
 // router.get("/dashboard/verifier/edit/:id", (req, res) => {});
 
-
 //delete specific verifier
 router.get("/dashboard/verifier/delete/:id", async (req, res) => {
   const { id } = req.params;
@@ -356,39 +359,31 @@ router.get("/dashboard/community", async (req, res) => {
   }
 });
 
-
 //GET details about specific community
 router.get("/dashboard/community/view/:id", async (req, res) => {
   const { id } = req.params;
   if (req.cookies.admin) {
-    const verify = jwt.verify(
-      req.cookies.admin,
-      process.env.JWT_SECRET_TOKEN
-    );
+    const verify = jwt.verify(req.cookies.admin, process.env.JWT_SECRET_TOKEN);
     const checkId = await adminlogin.findByPk(verify);
 
     if (!checkId) {
       res.clearCookie("admin");
       res.redirect("/admin/login");
     } else {
-     
-        const viewCommunity = await communityRegistration.findByPk(id);
+      const viewCommunity = await communityRegistration.findByPk(id);
 
-        if (!viewCommunity) {
-          res.redirect(`/admin/dashboard/community`);
-        } else {
-          res.render("admin/viewcommunity", {
-            profile: viewCommunity.dataValues,
-          });
-        }
-      
+      if (!viewCommunity) {
+        res.redirect(`/admin/dashboard/community`);
+      } else {
+        res.render("admin/viewcommunity", {
+          profile: viewCommunity.dataValues,
+        });
+      }
     }
   } else {
     res.redirect("/admin/login");
   }
 });
-
-
 
 //delete specific community
 router.get("/dashboard/community/delete/:id", async (req, res) => {
@@ -420,7 +415,6 @@ router.get("/dashboard/community/delete/:id", async (req, res) => {
     res.redirect(`/admin/login`);
   }
 });
-
 
 //GET all post details
 router.get("/dashboard/post", async (req, res) => {
@@ -498,38 +492,31 @@ router.get("/dashboard/post", async (req, res) => {
   // res.render("../views/admin/post",{post:postList});
 });
 
-
 //View specific post
 router.get("/dashboard/post/view/:id", async (req, res) => {
   const { id } = req.params;
   if (req.cookies.admin) {
-    const verify = jwt.verify(
-      req.cookies.admin,
-      process.env.JWT_SECRET_TOKEN
-    );
+    const verify = jwt.verify(req.cookies.admin, process.env.JWT_SECRET_TOKEN);
     const checkId = await adminlogin.findByPk(verify);
 
     if (!checkId) {
       res.clearCookie("admin");
       res.redirect("/admin/login");
     } else {
-      
-        const viewPost = await eventModel.findByPk(id);
+      const viewPost = await eventModel.findByPk(id);
 
-        if (!viewPost) {
-          res.redirect(`/admin/dashboard`);
-        } else {
-          res.render("admin/viewpost", {
-            profile: viewPost.dataValues,
-          });
-        }
+      if (!viewPost) {
+        res.redirect(`/admin/dashboard`);
+      } else {
+        res.render("admin/viewpost", {
+          profile: viewPost.dataValues,
+        });
+      }
     }
   } else {
     res.redirect("/publisher/login");
   }
 });
-
-
 
 //delete post
 router.get("/dashboard/post/delete/:id", async (req, res) => {
@@ -561,6 +548,320 @@ router.get("/dashboard/post/delete/:id", async (req, res) => {
     res.redirect(`/admin/login`);
   }
 });
+
+router.get("/report/user", async (req, res) => {
+  let report = [];
+  if (req.cookies.admin) {
+    const token = jwt.verify(req.cookies.admin, process.env.JWT_SECRET_TOKEN);
+    const findId = await adminlogin.findByPk(token);
+    if (!findId) {
+      res.redirect(`/admin/login`);
+    } else {
+      const fetchUsers = await userLogin.findAll({});
+
+      fetchUsers.filter((item) => {
+        const itemMonth = new Date(item.dataValues.createdAt).getMonth() + 1;
+        console.log(itemMonth);
+        console.log(new Date().getMonth() + 1);
+        if (itemMonth == new Date().getMonth() + 1) {
+          report.push(item.dataValues);
+        }
+      });
+
+      const workbook = new ExcelJS.Workbook();
+      const worksheet = workbook.addWorksheet(
+        `User${new Date().getMonth() + 1}`
+      );
+      const column = (worksheet.columns = [
+        { header: "ID", key: "id", width: 10 },
+        { header: "Name", key: "name", width: 20 },
+        { header: "Role", key: "role", width: 15 },
+        { header: "Place", key: "place", width: 15 },
+        { header: "Username", key: "username", width: 15 },
+        { header: "Email", key: "email", width: 30 },
+      ]);
+
+      report.forEach((data) => {
+        const rowData = {
+          id: data.id,
+          name: data.name,
+          role: data.role,
+          place: data.place,
+          username: data.username,
+          email: data.email,
+        };
+        worksheet.addRow(Object.values(rowData));
+      });
+
+      console.log(__dirname);
+      workbook.xlsx
+        .writeFile(path.join(__dirname, "excel", "UserReport.xlsx"))
+        .then(() => {
+          res.sendFile(
+            path.join(__dirname, "excel", "UserReport.xlsx"),
+            "UserReport.xlsx",
+            (err) => {
+              if (err) {
+                res.status(500).json({ error: "Error sending the file" });
+              } else {
+                console.log("File sent successfully");
+              }
+            }
+          );
+        })
+        .catch((err) => {
+          res.status(500).json({ error: err.message });
+        });
+
+      //  console.log(fetchUsers[0].dataValues);
+    }
+  } else {
+    res.redirect("/admin/login");
+  }
+});
+
+router.get("/report/publisher", async (req, res) => {
+  let report = [];
+  if (req.cookies.admin) {
+    const token = jwt.verify(req.cookies.admin, process.env.JWT_SECRET_TOKEN);
+    const findId = await adminlogin.findByPk(token);
+    if (!findId) {
+      res.redirect(`/admin/login`);
+    } else {
+      const fetchPublisher = await publisherLogin.findAll({});
+
+      fetchPublisher.filter((item) => {
+        const itemMonth = new Date(item.dataValues.createdAt).getMonth() + 1;
+        console.log(itemMonth);
+        console.log(new Date().getMonth() + 1);
+        if (itemMonth == new Date().getMonth() + 1) {
+          report.push(item.dataValues);
+        }
+      });
+      
+
+      const workbook = new ExcelJS.Workbook();
+      const worksheet = workbook.addWorksheet(
+        `Publisher${new Date().getMonth() + 1}`
+      );
+      const column = (worksheet.columns = [
+        { header: "ID", key: "id", width: 10 },
+        { header: "Name", key: "name", width: 20 },
+        { header: "Email", key: "email", width: 30 },
+        { header: "Role", key: "role", width: 15 },
+        { header: "Place", key: "place", width: 15 },
+        { header: "Community", key: "community", width: 15 },
+        { header: "Mobile", key: "mobile", width: 15 },
+        { header: "Socialmedia", key: "socialmedia", width: 30 },
+      ]);
+
+      report.forEach((data) => {
+        const rowData = {
+          id: data.id,
+          name: data.name,
+          email: data.email,
+          role: data.role,
+          place: data.place,
+          community: data.community,
+          mobile: data.mobile,
+          socialmedia: data.socialmedia,
+        };
+        worksheet.addRow(Object.values(rowData));
+      });
+
+      console.log(__dirname);
+      workbook.xlsx
+        .writeFile(path.join(__dirname, "excel", "PublisherReport.xlsx"))
+        .then(() => {
+          res.sendFile(
+            path.join(__dirname, "excel", "PublisherReport.xlsx"),
+            "PublisherReport.xlsx",
+            (err) => {
+              if (err) {
+                res.status(500).json({ error: "Error sending the file" });
+              } else {
+                console.log("File sent successfully");
+              }
+            }
+          );
+        })
+        .catch((err) => {
+          res.status(500).json({ error: err.message });
+        });
+
+      //  console.log(fetchUsers[0].dataValues);
+    }
+  } else {
+    res.redirect("/admin/login");
+  }
+});
+
+router.get("/report/community", async (req, res) => {
+  let report = [];
+  if (req.cookies.admin) {
+    const token = jwt.verify(req.cookies.admin, process.env.JWT_SECRET_TOKEN);
+    const findId = await adminlogin.findByPk(token);
+    if (!findId) {
+      res.redirect(`/admin/login`);
+    } else {
+      const fetchCommunity = await communityRegistration.findAll({});
+
+      fetchCommunity.filter((item) => {
+        const itemMonth = new Date(item.dataValues.createdAt).getMonth() + 1;
+        console.log(itemMonth);
+        console.log(new Date().getMonth() + 1);
+        if (itemMonth == new Date().getMonth() + 1) {
+          report.push(item.dataValues);
+        }
+      });
+
+      const workbook = new ExcelJS.Workbook();
+      const worksheet = workbook.addWorksheet(
+        `Community${new Date().getMonth() + 1}`
+      );
+      const column = (worksheet.columns = [
+        { header: "ID", key: "id", width: 10 },
+        { header: "Name", key: "name", width: 20 },
+        { header: "Description", key: "description", width: 40 },
+        { header: "Email", key: "email", width: 30 },
+        { header: "Place", key: "place", width: 15 },
+        { header: "Location", key: "location", width: 15 },
+        { header: "Social", key: "social", width: 30 },
+        { header: "Mobile", key: "mobile", width: 15 },
+        
+      ]);
+
+      report.forEach((data) => {
+        const rowData = {
+          id: data.id,
+          name: data.name,
+          description:data.description,
+          email: data.email,
+          place: data.place,
+          location: data.location,
+          social: data.social,
+          mobile: data.mobile,
+          
+        };
+        worksheet.addRow(Object.values(rowData));
+      });
+
+      console.log(__dirname);
+      workbook.xlsx
+        .writeFile(path.join(__dirname, "excel", "CommunityReport.xlsx"))
+        .then(() => {
+          res.sendFile(
+            path.join(__dirname, "excel", "CommunityReport.xlsx"),
+            "CommunityReport.xlsx",
+            (err) => {
+              if (err) {
+                res.status(500).json({ error: "Error sending the file" });
+              } else {
+                console.log("File sent successfully");
+              }
+            }
+          );
+        })
+        .catch((err) => {
+          res.status(500).json({ error: err.message });
+        });
+
+      //  console.log(fetchUsers[0].dataValues);
+    }
+  } else {
+    res.redirect("/admin/login");
+  }
+});
+
+
+router.get("/report/post", async (req, res) => {
+  let report = [];
+  if (req.cookies.admin) {
+    const token = jwt.verify(req.cookies.admin, process.env.JWT_SECRET_TOKEN);
+    const findId = await adminlogin.findByPk(token);
+    if (!findId) {
+      res.redirect(`/admin/login`);
+    } else {
+      const fetchEvent = await eventModel.findAll({});
+
+      fetchEvent.filter((item) => {
+        const itemMonth = new Date(item.dataValues.createdAt).getMonth() + 1;
+        console.log(itemMonth);
+        console.log(new Date().getMonth() + 1);
+        if (itemMonth == new Date().getMonth() + 1) {
+          report.push(item.dataValues);
+        }
+      });
+
+      const workbook = new ExcelJS.Workbook();
+      const worksheet = workbook.addWorksheet(
+        `EventPost${new Date().getMonth() + 1}`
+      );
+      const column = (worksheet.columns = [
+        { header: "ID", key: "id", width: 10 },
+        { header: "Name", key: "name", width: 20 },
+        { header: "Description", key: "description", width: 40 },
+        { header: "Type", key: "type", width: 30 },
+        { header: "Mode", key: "Mode", width: 15 },
+        { header: "Date", key: "date", width: 15 },
+        { header: "Time", key: "time", width: 15 },
+        { header: "Link", key: "link", width: 15 },
+        { header: "Fee", key: "fee", width: 15 },
+        { header: "District", key: "district", width: 15 },
+        { header: "Banner", key: "banner", width: 15 },
+        { header: "Contact", key: "contact", width: 15 },
+        { header: "Guest", key: "guest", width: 15 },
+        { header: "Community", key: "community", width: 15 },
+      ]);
+
+      report.forEach((data) => {
+        const rowData = {
+          id: data.id,
+          name: data.name,
+          description:data.description,
+          type: data.type,
+          mode: data.mode,
+          date: data.date,
+          time: data.time,
+          link: data.link,
+          fee:data.link,
+          district:data.district,
+          banner:data.banner,
+          contact:data.contact,
+          guest:data.guest,
+          community:data.community
+          
+        };
+        worksheet.addRow(Object.values(rowData));
+      });
+
+      console.log(__dirname);
+      workbook.xlsx
+        .writeFile(path.join(__dirname, "excel", "EventReport.xlsx"))
+        .then(() => {
+          res.sendFile(
+            path.join(__dirname, "excel", "EventReport.xlsx"),
+            "EventReport.xlsx",
+            (err) => {
+              if (err) {
+                res.status(500).json({ error: "Error sending the file" });
+              } else { 
+                console.log("File sent successfully");
+              }
+            }
+          );
+        })
+        .catch((err) => {
+          res.status(500).json({ error: err.message });
+        });
+
+      //  console.log(fetchUsers[0].dataValues);
+    }
+  } else {
+    res.redirect("/admin/login");
+  }
+});
+
 
 
 //admin logout

@@ -197,7 +197,9 @@
         </form>
         <!-- Table -->
         <table class="table table-bordered caption-top">
-         
+          <div style="width: 100%;display: flex;justify-content: flex-end;">
+            <a href="/admin/report/post" class="btn btn-primary">Generate Report</a>
+          </div>
           <% if (post.length==0) { %>
             <h2 class="text-center text-secondary">No Publishers</h2>
             <% } else{%>
