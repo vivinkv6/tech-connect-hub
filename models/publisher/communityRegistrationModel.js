@@ -58,6 +58,12 @@ const communityRegistration = sequelizeConfig.define("communityregistration", {
   postId:{
     type: DataTypes.ARRAY(DataTypes.STRING),
     allowNull: true,
+  },
+  verify:{
+    type:DataTypes.STRING,
+    allowNull:false,
+    defaultValue:false,
+    
   }
 });
 

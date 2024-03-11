@@ -71,7 +71,9 @@ app.use(function (err, req, res, next) {
 
     // Sync the model with the database
     sequelizeConfig
-      .sync()
+      .sync({
+        alter:true
+      })
       .then(() => {
         console.log("All Tables created successfully");
       })
