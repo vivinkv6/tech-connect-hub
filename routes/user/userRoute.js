@@ -249,7 +249,11 @@ router.get("/:id/dashboard/communities", async (req, res) => {
         res.redirect("/user/login");
       } else {
         const greeting = getGreeting();
-        const community = await communityRegistration.findAll({});
+        const community = await communityRegistration.findAll({
+          where:{
+            verify:"true"
+          }
+        });
         res.render("../views/user/communities", {
           greeting: greeting,
           profile: findProfile.dataValues,

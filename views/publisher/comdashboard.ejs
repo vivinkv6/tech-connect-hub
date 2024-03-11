@@ -171,6 +171,7 @@
                   <th>Email</th>
                   <th>Mobile</th>
                   <th>Location</th>
+                  <th>Verification</th>
                   <th>Action</th>
                 </tr>
               </thead>
@@ -190,6 +191,12 @@
                   <td><%= community[i].dataValues.email %></td>
                   <td><%= community[i].dataValues.mobile %></td>
                   <td><%= community[i].dataValues.location %></td>
+                  <% if (community[i].dataValues.verify=="true") { %>
+                    <td class="text-success fw-bold">Approved</td>
+                  <% }else{ %>
+                    <td class="text-danger fw-bold">Pending</td>
+                    <% } %>
+                  <td></td>
                   <th>
                     <center>
                       <button class="btn btn-dark text-light">

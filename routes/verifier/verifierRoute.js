@@ -11,6 +11,7 @@ const verification = require("../../models/verifier/verification");
 
 const usernameExtractor = require("../../utils/usernameExtractor");
 const cookieAuth = require("../../utils/auth");
+const { where } = require("sequelize");
 
 //user all routes
 
@@ -181,6 +182,7 @@ router.get("/:id/dashboard", async (req, res) => {
       const communityCount = await communityRegistration.count({
         where: {
           verifierId: id,
+          verify:"false"
         },
       });
 
@@ -316,8 +318,16 @@ router.get("/:verifier/dashboard/community", async (req, res) => {
       res.redirect("/verifier/login");
     } else {
       const verificationCount = await verification.count();
-      const communityDetails = await communityRegistration.findAll({});
-      const communityCount = await communityRegistration.count();
+      const communityDetails = await communityRegistration.findAll({
+        where:{
+          verify:"false"
+        }
+      });
+      const communityCount = await communityRegistration.count({
+        where:{
+          verify:"false"
+        }
+      });
       const findVerifier = await verfierLogin.findByPk(verifier);
 
       if (!findVerifier) {
@@ -366,6 +376,42 @@ router.get("/:verifier/dashboard/community/:id", async (req, res) => {
           community: community,
           id: verifier,
         });
+      }
+    }
+  } else {
+    res.redirect("/verifier/login");
+  }
+});
+
+router.get("/:verifier/dashboard/community/:id/accept", async (req, res) => {
+  const { id, verifier } = req.params;
+  if (req.cookies.verifier) {
+    const verify = jwt.verify(
+      req.cookies.verifier,
+      process.env.JWT_SECRET_TOKEN
+    );
+    const checkId = await verfierLogin.findByPk(verify);
+
+    if (!checkId) {
+      res.clearCookie("verifier");
+      res.redirect("/verifier/login");
+    } else {
+      const findVerifier = await verfierLogin.findByPk(verifier);
+
+      if (!findVerifier) {
+        res.clearCookie("verifier");
+        res.redirect("/verifier/login");
+      } else {
+       const acceptCommunity=await communityRegistration.update({
+        verify:"true",
+       },{
+        where:{
+          id:id
+        }
+       }).then((data)=>{
+        console.log(data);
+        res.redirect(`/verifier/${verifier}/dashboard/community`)
+       })
       }
     }
   } else {

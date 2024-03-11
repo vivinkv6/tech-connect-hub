@@ -364,6 +364,7 @@ router.get("/:id/dashboard/post/create", async (req, res) => {
       const community = await communityModel.findAll({
         where: {
           publisherId: checkId.dataValues.id,
+          verify:"true"
         },
       });
 
