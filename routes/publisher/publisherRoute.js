@@ -269,49 +269,54 @@ router.post("/register", upload.single("file"), async (req, res) => {
   }
 });
 
+router.use(async (req, res, next) => {
+  console.log("MiddleWare work");
+  if (req.cookies.publisher) {
+    const token = jwt.verify(
+      req.cookies.publisher,
+      process.env.JWT_SECRET_TOKEN
+    );
+    const findId = await publisherLogin.findByPk(token);
+    if (!findId) {
+      res.clearCookie("publisher");
+      res.redirect(`/publisher/login`);
+    } else {
+      next();
+    }
+    console.log("Authenticated");
+  } else {
+    res.redirect("/publisher/login");
+  }
+});
+
 //publisher dashboard
 router.get("/:id/dashboard", async (req, res) => {
   const { id } = req.params;
 
-  if (req.cookies.publisher) {
-    const verify = jwt.verify(
-      req.cookies.publisher,
-      process.env.JWT_SECRET_TOKEN
-    );
-    const checkId = await publisherLogin.findByPk(verify);
+  const dashboard = await publisherLogin.findByPk(id);
+  const community = await communityModel.count({
+    where: {
+      publisherId: id,
+    },
+  });
 
-    if (!checkId) {
-      res.clearCookie("publisher");
-      res.redirect("/publisher/login");
-    } else {
-      const dashboard = await publisherLogin.findByPk(id);
-      const community = await communityModel.count({
-        where: {
-          publisherId: id,
-        },
-      });
+  const events = await eventModel.findAll({
+    where: {
+      publisherId: id,
+    },
+    order: [["createdAt", "DESC"]],
+  });
+  console.log(events);
 
-      const events = await eventModel.findAll({
-        where: {
-          publisherId: id,
-        },
-        order: [["createdAt", "DESC"]],
-      });
-      console.log(events);
-
-      if (!dashboard) {
-        res.clearCookie("publisher");
-        res.redirect("/publisher/login");
-      } else {
-        res.render("../views/publisher/dashboard", {
-          dashboard: dashboard,
-          events: events,
-          community: community,
-        });
-      }
-    }
-  } else {
+  if (!dashboard) {
+    res.clearCookie("publisher");
     res.redirect("/publisher/login");
+  } else {
+    res.render("../views/publisher/dashboard", {
+      dashboard: dashboard,
+      events: events,
+      community: community,
+    });
   }
 });
 
@@ -319,65 +324,27 @@ router.get("/:id/dashboard", async (req, res) => {
 router.get("/:id/dashboard/profile", async (req, res) => {
   const { id } = req.params;
 
-  if (req.cookies.publisher) {
-    const verify = jwt.verify(
-      req.cookies.publisher,
-      process.env.JWT_SECRET_TOKEN
-    );
-    const checkId = await publisherLogin.findByPk(verify);
+  const profile = await publisherLogin.findByPk(id);
 
-    if (!checkId) {
-      res.clearCookie("publisher");
-      res.redirect("/publisher/login");
-    } else {
-      const profile = await publisherLogin.findByPk(id);
-
-      if (!profile) {
-        res.clearCookie("publisher");
-        res.redirect("/publisher/login");
-      } else {
-        res.render("../views/publisher/profile", {
-          profile: profile.dataValues,
-        });
-      }
-    }
-  } else {
-    res.redirect("/publisher/login");
-  }
+  res.render("../views/publisher/profile", {
+    profile: profile.dataValues,
+  });
 });
 
 //create post
 router.get("/:id/dashboard/post/create", async (req, res) => {
   const { id } = req.params;
-  if (req.cookies.publisher) {
-    const verify = jwt.verify(
-      req.cookies.publisher,
-      process.env.JWT_SECRET_TOKEN
-    );
-    const checkId = await publisherLogin.findByPk(verify);
 
-    if (!checkId) {
-      res.clearCookie("publisher");
-      res.redirect("/publisher/login");
-    } else {
-      const profile = await publisherLogin.findByPk(id);
-      const community = await communityModel.findAll({
-        where: {
-          publisherId: checkId.dataValues.id,
-          verify:"true"
-        },
-      });
+  const checkId = await publisherLogin.findByPk(id);
 
-      if (!profile) {
-        res.clearCookie("publisher");
-        res.redirect("/publisher/login");
-      } else {
-        res.render("../views/publisher/post", { id: id, community: community });
-      }
-    }
-  } else {
-    res.redirect("/publisher/login");
-  }
+  const community = await communityModel.findAll({
+    where: {
+      publisherId: checkId.dataValues.id,
+      verify: "true",
+    },
+  });
+
+  res.render("../views/publisher/post", { id: id, community: community });
 });
 
 //upload post
@@ -484,7 +451,6 @@ router.post(
 
                 res.redirect(`/publisher/${id}/dashboard`);
               } else {
-                
                 const updateCommunity = await communityRegistration.update(
                   {
                     postId: [...allPost.dataValues.postId, data.dataValues.id],
@@ -512,41 +478,27 @@ router.post(
 
 router.get("/:id1/dashboard/post/:id2/update", async (req, res) => {
   const { id1, id2 } = req.params;
-  if (req.cookies.publisher) {
-    const verify = jwt.verify(
-      req.cookies.publisher,
-      process.env.JWT_SECRET_TOKEN
-    );
-    const checkId = await publisherLogin.findByPk(verify);
 
-    if (!checkId) {
-      res.clearCookie("publisher");
-      res.redirect("/publisher/login");
-    } else {
-      const validPublisher = await publisherLogin.findByPk(id1);
-      if (!validPublisher) {
-        res.redirect(`/publisher/${id1}/dashboard`);
-      } else {
-        const findPost = await eventModel.findByPk(id2);
-        const community = await communityModel.findAll({
-          where: {
-            publisherId: id1,
-          },
-        });
-
-        if (!findPost) {
-          res.redirect(`/publisher/${id1}/dashboard`);
-        } else {
-          res.render("../views/publisher/updatePost", {
-            post: findPost.dataValues,
-            id1: id1,
-            community: community,
-          });
-        }
-      }
-    }
+  const validPublisher = await publisherLogin.findByPk(id1);
+  if (!validPublisher) {
+    res.redirect(`/publisher/${id1}/dashboard`);
   } else {
-    res.redirect("/publisher/login");
+    const findPost = await eventModel.findByPk(id2);
+    const community = await communityModel.findAll({
+      where: {
+        publisherId: id1,
+      },
+    });
+
+    if (!findPost) {
+      res.redirect(`/publisher/${id1}/dashboard`);
+    } else {
+      res.render("../views/publisher/updatePost", {
+        post: findPost.dataValues,
+        id1: id1,
+        community: community,
+      });
+    }
   }
 });
 
@@ -696,37 +648,16 @@ router.post(
 //View publisher specific post
 router.get("/:id1/dashboard/post/:id2", async (req, res) => {
   const { id1, id2 } = req.params;
-  if (req.cookies.publisher) {
-    const verify = jwt.verify(
-      req.cookies.publisher,
-      process.env.JWT_SECRET_TOKEN
-    );
-    const checkId = await publisherLogin.findByPk(verify);
 
-    if (!checkId) {
-      res.clearCookie("publisher");
-      res.redirect("/publisher/login");
-    } else {
-      const profile = await publisherLogin.findByPk(id1);
+  const viewPost = await eventModel.findByPk(id2);
 
-      if (!profile) {
-        res.clearCookie("publisher");
-        res.redirect("/publisher/login");
-      } else {
-        const viewPost = await eventModel.findByPk(id2);
-
-        if (!viewPost) {
-          res.redirect(`/publisher/${id1}/dashboard`);
-        } else {
-          res.render("../views/publisher/viewPost", {
-            id1: id1,
-            profile: viewPost.dataValues,
-          });
-        }
-      }
-    }
+  if (!viewPost) {
+    res.redirect(`/publisher/${id1}/dashboard`);
   } else {
-    res.redirect("/publisher/login");
+    res.render("../views/publisher/viewPost", {
+      id1: id1,
+      profile: viewPost.dataValues,
+    });
   }
 });
 
@@ -734,39 +665,19 @@ router.get("/:id1/dashboard/post/:id2", async (req, res) => {
 
 router.get("/:id1/dashboard/post/:id2/delete", async (req, res) => {
   const { id1, id2 } = req.params;
-  if (req.cookies.publisher) {
-    const verify = jwt.verify(
-      req.cookies.publisher,
-      process.env.JWT_SECRET_TOKEN
-    );
-    const checkId = await publisherLogin.findByPk(verify);
 
-    if (!checkId) {
-      res.clearCookie("publisher");
-      res.redirect("/publisher/login");
-    } else {
-      const publisher = await publisherLogin.findByPk(id1);
-
-      if (!publisher) {
-        res.redirect(`/publisher/${id1}/dashboard`);
-      } else {
-        const deletePost = await eventModel.findByPk(id2);
-        if (!deletePost) {
-          res.redirect(`/publisher/${id1}/dashboard`);
-        } else {
-          const deleteNotification = await notificationModel.findOne({
-            where: {
-              eventId: deletePost.dataValues.id,
-            },
-          });
-          deleteNotification.destroy();
-          deletePost.destroy();
-          res.redirect(`/publisher/${id1}/dashboard`);
-        }
-      }
-    }
+  const deletePost = await eventModel.findByPk(id2);
+  if (!deletePost) {
+    res.redirect(`/publisher/${id1}/dashboard`);
   } else {
-    res.redirect("/publisher/login");
+    const deleteNotification = await notificationModel.findOne({
+      where: {
+        eventId: deletePost.dataValues.id,
+      },
+    });
+    deleteNotification.destroy();
+    deletePost.destroy();
+    res.redirect(`/publisher/${id1}/dashboard`);
   }
 });
 
@@ -774,83 +685,44 @@ router.get("/:id1/dashboard/post/:id2/delete", async (req, res) => {
 
 router.get("/:id/dashboard/community", async (req, res) => {
   const { id } = req.params;
-  if (req.cookies.publisher) {
-    const verify = jwt.verify(
-      req.cookies.publisher,
-      process.env.JWT_SECRET_TOKEN
-    );
-    const checkId = await publisherLogin.findByPk(verify);
 
-    if (!checkId) {
-      res.clearCookie("publisher");
-      res.redirect("/publisher/login");
-    } else {
-      const checkId = await publisherLogin.findByPk(id);
-      const post = await eventModel.count({
-        where: {
-          publisherId: id,
-        },
-      });
-      //check if the ID is valid or not
-      if (!checkId) {
-        res.redirect(`/publisher/${id}/dashboard`);
-      } else {
-        const fetchCommunity = await communityModel.findAll({
-          where: {
-            publisherId: id,
-          },
-          order: [["createdAt", "DESC"]],
-        });
+  const post = await eventModel.count({
+    where: {
+      publisherId: id,
+    },
+  });
+  //check if the ID is valid or not
 
-        res.render("../views/publisher/comdashboard", {
-          community: fetchCommunity,
-          id: id,
-          post: post,
-        });
-      }
-    }
-  } else {
-    res.redirect("/publisher/login");
-  }
+  const fetchCommunity = await communityModel.findAll({
+    where: {
+      publisherId: id,
+    },
+    order: [["createdAt", "DESC"]],
+  });
+
+  res.render("../views/publisher/comdashboard", {
+    community: fetchCommunity,
+    id: id,
+    post: post,
+  });
 });
 
 //Get community form
 
-router.get("/:id/dashboard/community/create", async (req, res) => {
+router.get("/:id/dashboard/community/create", (req, res) => {
   const { id } = req.params;
-  if (req.cookies.publisher) {
-    const verify = jwt.verify(
-      req.cookies.publisher,
-      process.env.JWT_SECRET_TOKEN
-    );
-    const checkId = await publisherLogin.findByPk(verify);
 
-    if (!checkId) {
-      res.clearCookie("publisher");
-      res.redirect("/publisher/login");
-    } else {
-      const validId = await publisherLogin.findByPk(id);
-
-      if (!validId) {
-        res.clearCookie("publisher");
-        res.redirect("/publisher/login");
-      } else {
-        res.render("../views/publisher/community", {
-          id: id,
-          emailExist: false,
-          name: "",
-          email: "",
-          description: "",
-          place: "",
-          location: "",
-          social: "",
-          mobile: "",
-        });
-      }
-    }
-  } else {
-    res.redirect("/publisher/login");
-  }
+  res.render("../views/publisher/community", {
+    id: id,
+    emailExist: false,
+    name: "",
+    email: "",
+    description: "",
+    place: "",
+    location: "",
+    social: "",
+    mobile: "",
+  });
 });
 
 //upload community details
@@ -944,105 +816,47 @@ router.post(
 //GET details about specific community
 router.get("/:id1/dashboard/community/:id2", async (req, res) => {
   const { id1, id2 } = req.params;
-  if (req.cookies.publisher) {
-    const verify = jwt.verify(
-      req.cookies.publisher,
-      process.env.JWT_SECRET_TOKEN
-    );
-    const checkId = await publisherLogin.findByPk(verify);
 
-    if (!checkId) {
-      res.clearCookie("publisher");
-      res.redirect("/publisher/login");
-    } else {
-      const profile = await publisherLogin.findByPk(id1);
+  const viewCommunity = await communityModel.findByPk(id2);
 
-      if (!profile) {
-        res.clearCookie("publisher");
-        res.redirect("/publisher/login");
-      } else {
-        const viewCommunity = await communityModel.findByPk(id2);
-
-        if (!viewCommunity) {
-          res.redirect(`/publisher/${id1}/dashboard`);
-        } else {
-          res.render("../views/publisher/viewCommunity", {
-            id1: id1,
-            profile: viewCommunity.dataValues,
-          });
-        }
-      }
-    }
+  if (!viewCommunity) {
+    res.redirect(`/publisher/${id1}/dashboard`);
   } else {
-    res.redirect("/publisher/login");
+    res.render("../views/publisher/viewCommunity", {
+      id1: id1,
+      profile: viewCommunity.dataValues,
+    });
   }
 });
 
 //delete specific community
 router.get("/:id1/dashboard/community/:id2/delete", async (req, res) => {
   const { id1, id2 } = req.params;
-  if (req.cookies.publisher) {
-    const verify = jwt.verify(
-      req.cookies.publisher,
-      process.env.JWT_SECRET_TOKEN
-    );
-    const checkId = await publisherLogin.findByPk(verify);
 
-    if (!checkId) {
-      res.clearCookie("publisher");
-      res.redirect("/publisher/login");
-    } else {
-      const publisher = await publisherLogin.findByPk(id1);
+  const publisher = await publisherLogin.findByPk(id1);
 
-      if (!publisher) {
-        res.redirect(`/publisher/${id1}/dashboard/community`);
-      } else {
-        const deletePost = await communityModel.findByPk(id2);
-        if (!deletePost) {
-          res.redirect(`/publisher/${id1}/dashboard`);
-        } else {
-          deletePost.destroy();
-          res.redirect(`/publisher/${id1}/dashboard`);
-        }
-      }
-    }
+  const deletePost = await communityModel.findByPk(id2);
+  if (!deletePost) {
+    res.redirect(`/publisher/${id1}/dashboard`);
   } else {
-    res.redirect("/publisher/login");
+    deletePost.destroy();
+    res.redirect(`/publisher/${id1}/dashboard`);
   }
 });
 
 //GET update specific community details
 router.get("/:id1/dashboard/community/:id2/update", async (req, res) => {
   const { id1, id2 } = req.params;
-  if (req.cookies.publisher) {
-    const verify = jwt.verify(
-      req.cookies.publisher,
-      process.env.JWT_SECRET_TOKEN
-    );
-    const checkId = await publisherLogin.findByPk(verify);
 
-    if (!checkId) {
-      res.clearCookie("publisher");
-      res.redirect("/publisher/login");
-    } else {
-      const validPublisher = await publisherLogin.findByPk(id1);
-      if (!validPublisher) {
-        res.redirect(`/publisher/${id1}/dashboard`);
-      } else {
-        const findCommunity = await communityModel.findByPk(id2);
+  const findCommunity = await communityModel.findByPk(id2);
 
-        if (!findCommunity) {
-          res.redirect(`/publisher/${id1}/dashboard/community`);
-        } else {
-          res.render("../views/publisher/updateCommunity", {
-            post: findCommunity.dataValues,
-            id1: id1,
-          });
-        }
-      }
-    }
+  if (!findCommunity) {
+    res.redirect(`/publisher/${id1}/dashboard/community`);
   } else {
-    res.redirect("/publisher/login");
+    res.render("../views/publisher/updateCommunity", {
+      post: findCommunity.dataValues,
+      id1: id1,
+    });
   }
 });
 
@@ -1128,12 +942,8 @@ router.post(
 router.get("/:id/dashboard/logout", (req, res) => {
   const { id } = req.params;
 
-  if (!req.cookies.publisher) {
-    res.redirect("/publisher/login");
-  } else {
-    res.clearCookie("publisher");
-    res.redirect("/publisher/login");
-  }
+  res.clearCookie("publisher");
+  res.redirect("/publisher/login");
 });
 
 module.exports = router;

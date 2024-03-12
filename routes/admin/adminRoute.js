@@ -162,125 +162,85 @@ router.post("/signup", async (req, res) => {
   }
 });
 
-//GET all user details
-router.get("/dashboard", async (req, res) => {
+router.use(async (req, res, next) => {
+  console.log("MiddleWare work");
   if (req.cookies.admin) {
-    console.log("correct");
     const token = jwt.verify(req.cookies.admin, process.env.JWT_SECRET_TOKEN);
     const findId = await adminlogin.findByPk(token);
-
     if (!findId) {
+      res.clearCookie("admin");
       res.redirect(`/admin/login`);
     } else {
-      const users = await userLogin.findAll({
-        order: [["createdAt", "DESC"]],
-      });
-      res.render("../views/admin/dashboard", { users: users });
+      next();
     }
+    console.log("Authenticated");
   } else {
     res.redirect("/admin/login");
   }
+});
+
+//GET all user details
+router.get("/dashboard", async (req, res) => {
+  const users = await userLogin.findAll({
+    order: [["createdAt", "DESC"]],
+  });
+  res.render("../views/admin/dashboard", { users: users });
 });
 
 //delete specific user
 router.get("/dashboard/user/delete/:id", async (req, res) => {
   const { id } = req.params;
-  if (req.cookies.admin) {
-    console.log("correct");
-    const token = jwt.verify(req.cookies.admin, process.env.JWT_SECRET_TOKEN);
-    const findId = await adminlogin.findByPk(token);
 
-    if (!findId) {
-      res.redirect(`/admin/login`);
-    } else {
-      const findUser = await userLogin.findByPk(id);
+  const findUser = await userLogin.findByPk(id);
 
-      if (!findUser) {
-        res.redirect("/admin/dashboard");
-      } else {
-        findUser
-          .destroy()
-          .then(() => {
-            res.redirect("/admin/dashboard");
-          })
-          .catch((err) => {
-            res.json({ err: err.message });
-          });
-      }
-    }
+  if (!findUser) {
+    res.redirect("/admin/dashboard");
   } else {
-    res.redirect("/admin/login");
+    findUser
+      .destroy()
+      .then(() => {
+        res.redirect("/admin/dashboard");
+      })
+      .catch((err) => {
+        res.json({ err: err.message });
+      });
   }
 });
 
 //GET all publisher details
 router.get("/dashboard/publisher", async (req, res) => {
-  if (req.cookies.admin) {
-    console.log("correct");
-    const token = jwt.verify(req.cookies.admin, process.env.JWT_SECRET_TOKEN);
-    const findId = await adminlogin.findByPk(token);
-
-    if (!findId) {
-      res.redirect(`/admin/login`);
-    } else {
-      const publishers = await publisherLogin.findAll({
-        order: [["createdAt", "DESC"]],
-      });
-      res.render("../views/admin/publisher", { publishers: publishers });
-    }
-  } else {
-    res.redirect(`/admin/login`);
-  }
+  const publishers = await publisherLogin.findAll({
+    order: [["createdAt", "DESC"]],
+  });
+  res.render("../views/admin/publisher", { publishers: publishers });
 });
 
 //delete specific publisher
 router.get("/dashboard/publisher/delete/:id", async (req, res) => {
   const { id } = req.params;
-  if (req.cookies.admin) {
-    console.log("correct");
-    const token = jwt.verify(req.cookies.admin, process.env.JWT_SECRET_TOKEN);
-    const findId = await adminlogin.findByPk(token);
 
-    if (!findId) {
-      res.redirect(`/admin/login`);
-    } else {
-      const findPublisher = await publisherLogin.findByPk(id);
+  const findPublisher = await publisherLogin.findByPk(id);
 
-      if (!findPublisher) {
-        res.redirect("/admin/dashboard");
-      } else {
-        await findPublisher
-          .destroy()
-          .then(() => {
-            res.redirect("/admin/dashboard/publisher");
-          })
-          .catch((err) => {
-            res.json({ err: err.message });
-          });
-      }
-    }
+  if (!findPublisher) {
+    res.redirect("/admin/dashboard");
   } else {
-    res.redirect("/admin/login");
+    await findPublisher
+      .destroy()
+      .then(() => {
+        res.redirect("/admin/dashboard/publisher");
+      })
+      .catch((err) => {
+        res.json({ err: err.message });
+      });
   }
 });
 
 //GET all verifier details
 router.get("/dashboard/verifier", async (req, res) => {
-  if (req.cookies.admin) {
-    const token = jwt.verify(req.cookies.admin, process.env.JWT_SECRET_TOKEN);
-    const findId = await adminlogin.findByPk(token);
-
-    if (!findId) {
-      res.redirect(`/admin/login`);
-    } else {
-      const verifierList = await verifierLogin.findAll({
-        order: [["createdAt", "DESC"]],
-      });
-      res.render("../views/admin/verifier", { verifier: verifierList });
-    }
-  } else {
-    res.redirect(`/admin/login`);
-  }
+  const verifierList = await verifierLogin.findAll({
+    order: [["createdAt", "DESC"]],
+  });
+  res.render("../views/admin/verifier", { verifier: verifierList });
 });
 
 // router.get("/dashboard/verifier/edit/:id", (req, res) => {});
@@ -288,131 +248,74 @@ router.get("/dashboard/verifier", async (req, res) => {
 //delete specific verifier
 router.get("/dashboard/verifier/delete/:id", async (req, res) => {
   const { id } = req.params;
-  if (req.cookies.admin) {
-    console.log("correct");
-    const token = jwt.verify(req.cookies.admin, process.env.JWT_SECRET_TOKEN);
-    const findId = await adminlogin.findByPk(token);
 
-    if (!findId) {
-      res.redirect(`/admin/login`);
-    } else {
-      const checkId = await verifierLogin.findByPk(id);
-      if (!checkId) {
-        res.redirect("/admin/dashboard/verifier");
-      } else {
-        checkId
-          .destroy()
-          .then(() => {
-            res.redirect("/admin/dashboard/verifier");
-          })
-          .catch((err) => {
-            res.json({ err: err.message });
-          });
-      }
-    }
+  const checkId = await verifierLogin.findByPk(id);
+  if (!checkId) {
+    res.redirect("/admin/dashboard/verifier");
   } else {
-    res.redirect(`/admin/login`);
+    checkId
+      .destroy()
+      .then(() => {
+        res.redirect("/admin/dashboard/verifier");
+      })
+      .catch((err) => {
+        res.json({ err: err.message });
+      });
   }
 });
 
 //create new verifier account
-router.get("/dashboard/verifier/create", async (req, res) => {
-  if (req.cookies.admin) {
-    console.log("correct");
-    const token = jwt.verify(req.cookies.admin, process.env.JWT_SECRET_TOKEN);
-    const findId = await adminlogin.findByPk(token);
-
-    if (!findId) {
-      res.redirect(`/admin/login`);
-    } else {
-      res.render("../views/admin/verifierSignup", {
-        emailExist: false,
-        passwordError: false,
-        email: "",
-        password: "",
-        confirm: "",
-      });
-    }
-  } else {
-    res.redirect(`/admin/login`);
-  }
+router.get("/dashboard/verifier/create", (req, res) => {
+  res.render("../views/admin/verifierSignup", {
+    emailExist: false,
+    passwordError: false,
+    email: "",
+    password: "",
+    confirm: "",
+  });
 });
 
 //GET all community details
 router.get("/dashboard/community", async (req, res) => {
-  if (req.cookies.admin) {
-    console.log("correct");
-    const token = jwt.verify(req.cookies.admin, process.env.JWT_SECRET_TOKEN);
-    const findId = await adminlogin.findByPk(token);
+  const communityList = await communityRegistration.findAll({
+    order: [["createdAt", "DESC"]],
+  });
 
-    if (!findId) {
-      res.redirect(`/admin/login`);
-    } else {
-      const communityList = await communityRegistration.findAll({
-        order: [["createdAt", "DESC"]],
-      });
-
-      res.render("../views/admin/community", { community: communityList });
-    }
-  } else {
-    res.redirect(`/admin/login`);
-  }
+  res.render("../views/admin/community", { community: communityList });
 });
 
 //GET details about specific community
 router.get("/dashboard/community/view/:id", async (req, res) => {
   const { id } = req.params;
-  if (req.cookies.admin) {
-    const verify = jwt.verify(req.cookies.admin, process.env.JWT_SECRET_TOKEN);
-    const checkId = await adminlogin.findByPk(verify);
 
-    if (!checkId) {
-      res.clearCookie("admin");
-      res.redirect("/admin/login");
-    } else {
-      const viewCommunity = await communityRegistration.findByPk(id);
+  const viewCommunity = await communityRegistration.findByPk(id);
 
-      if (!viewCommunity) {
-        res.redirect(`/admin/dashboard/community`);
-      } else {
-        res.render("admin/viewcommunity", {
-          profile: viewCommunity.dataValues,
-        });
-      }
-    }
+  if (!viewCommunity) {
+    res.redirect(`/admin/dashboard/community`);
   } else {
-    res.redirect("/admin/login");
+    res.render("admin/viewcommunity", {
+      profile: viewCommunity.dataValues,
+    });
   }
 });
 
 //delete specific community
 router.get("/dashboard/community/delete/:id", async (req, res) => {
   const { id } = req.params;
-  if (req.cookies.admin) {
-    console.log("correct");
-    const token = jwt.verify(req.cookies.admin, process.env.JWT_SECRET_TOKEN);
-    const findId = await adminlogin.findByPk(token);
 
-    if (!findId) {
-      res.redirect(`/admin/login`);
-    } else {
-      const checkId = await communityRegistration.findByPk(id);
+  const checkId = await communityRegistration.findByPk(id);
 
-      if (!checkId) {
-        res.redirect("/admin/dashboard/community");
-      } else {
-        checkId
-          .destroy()
-          .then(() => {
-            res.redirect("/admin/dashboard/community");
-          })
-          .catch((err) => {
-            res.json({ err: err.message });
-          });
-      }
-    }
+  if (!checkId) {
+    res.redirect("/admin/dashboard/community");
   } else {
-    res.redirect(`/admin/login`);
+    checkId
+      .destroy()
+      .then(() => {
+        res.redirect("/admin/dashboard/community");
+      })
+      .catch((err) => {
+        res.json({ err: err.message });
+      });
   }
 });
 
@@ -423,67 +326,55 @@ router.get("/dashboard/post", async (req, res) => {
   // const communityCount=await communityRegistration.count();
 
   try {
-    if (req.cookies.admin) {
-      console.log("correct");
-      const token = jwt.verify(req.cookies.admin, process.env.JWT_SECRET_TOKEN);
-      const findId = await adminlogin.findByPk(token);
+    if (
+      req.query.type == undefined ||
+      req.query.mode == undefined ||
+      req.query.fee == undefined ||
+      req.query.district == undefined
+    ) {
+      const filterPost = await eventModel.findAll({
+        order: [["createdAt", "DESC"]],
+      });
 
-      if (!findId) {
-        res.redirect(`/admin/login`);
-      } else {
-        if (
-          req.query.type == undefined ||
-          req.query.mode == undefined ||
-          req.query.fee == undefined ||
-          req.query.district == undefined
-        ) {
-          const filterPost = await eventModel.findAll({
-            order: [["createdAt", "DESC"]],
-          });
+      res.render("../views/admin/post", {
+        post: filterPost,
+        type: "All",
+        mode: "All",
+        fee: "All",
+        district: "All",
+      });
+    } else if (
+      req.query.type == "" &&
+      req.query.mode == "" &&
+      req.query.fee == "" &&
+      req.query.district == ""
+    ) {
+      const filterPost = await eventModel.findAll({});
 
-          res.render("../views/admin/post", {
-            post: filterPost,
-            type: "All",
-            mode: "All",
-            fee: "All",
-            district: "All",
-          });
-        } else if (
-          req.query.type == "" &&
-          req.query.mode == "" &&
-          req.query.fee == "" &&
-          req.query.district == ""
-        ) {
-          const filterPost = await eventModel.findAll({});
-
-          res.render("../views/admin/post", {
-            post: filterPost,
-            type: req.query.type,
-            mode: req.query.mode,
-            fee: req.query.fee,
-            district: req.query.district,
-          });
-        } else {
-          const filterPost = await eventModel.findAll({
-            where: {
-              type: req.query.type,
-              mode: req.query.mode,
-              fee: req.query.fee,
-              district: req.query.district,
-            },
-          });
-
-          res.render("../views/admin/post", {
-            post: filterPost,
-            type: req.query.type,
-            mode: req.query.mode,
-            fee: req.query.fee,
-            district: req.query.district,
-          });
-        }
-      }
+      res.render("../views/admin/post", {
+        post: filterPost,
+        type: req.query.type,
+        mode: req.query.mode,
+        fee: req.query.fee,
+        district: req.query.district,
+      });
     } else {
-      res.redirect(`/admin/login`);
+      const filterPost = await eventModel.findAll({
+        where: {
+          type: req.query.type,
+          mode: req.query.mode,
+          fee: req.query.fee,
+          district: req.query.district,
+        },
+      });
+
+      res.render("../views/admin/post", {
+        post: filterPost,
+        type: req.query.type,
+        mode: req.query.mode,
+        fee: req.query.fee,
+        district: req.query.district,
+      });
     }
   } catch (err) {
     res.json({ err: err.message });
@@ -495,382 +386,311 @@ router.get("/dashboard/post", async (req, res) => {
 //View specific post
 router.get("/dashboard/post/view/:id", async (req, res) => {
   const { id } = req.params;
-  if (req.cookies.admin) {
-    const verify = jwt.verify(req.cookies.admin, process.env.JWT_SECRET_TOKEN);
-    const checkId = await adminlogin.findByPk(verify);
 
-    if (!checkId) {
-      res.clearCookie("admin");
-      res.redirect("/admin/login");
-    } else {
-      const viewPost = await eventModel.findByPk(id);
+  const viewPost = await eventModel.findByPk(id);
 
-      if (!viewPost) {
-        res.redirect(`/admin/dashboard`);
-      } else {
-        res.render("admin/viewpost", {
-          profile: viewPost.dataValues,
-        });
-      }
-    }
+  if (!viewPost) {
+    res.redirect(`/admin/dashboard`);
   } else {
-    res.redirect("/publisher/login");
+    res.render("admin/viewpost", {
+      profile: viewPost.dataValues,
+    });
   }
 });
 
 //delete post
 router.get("/dashboard/post/delete/:id", async (req, res) => {
   const { id } = req.params;
-  if (req.cookies.admin) {
-    console.log("correct");
-    const token = jwt.verify(req.cookies.admin, process.env.JWT_SECRET_TOKEN);
-    const findId = await adminlogin.findByPk(token);
 
-    if (!findId) {
-      res.redirect(`/admin/login`);
-    } else {
-      const checkId = await eventModel.findByPk(id);
+  const checkId = await eventModel.findByPk(id);
 
-      if (!checkId) {
-        res.redirect("/admin/dashboard/post");
-      } else {
-        checkId
-          .destroy()
-          .then(() => {
-            res.redirect("/admin/dashboard/post");
-          })
-          .catch((err) => {
-            res.json({ err: err.message });
-          });
-      }
-    }
+  if (!checkId) {
+    res.redirect("/admin/dashboard/post");
   } else {
-    res.redirect(`/admin/login`);
+    checkId
+      .destroy()
+      .then(() => {
+        res.redirect("/admin/dashboard/post");
+      })
+      .catch((err) => {
+        res.json({ err: err.message });
+      });
   }
 });
 
 router.get("/report/user", async (req, res) => {
   let report = [];
-  if (req.cookies.admin) {
-    const token = jwt.verify(req.cookies.admin, process.env.JWT_SECRET_TOKEN);
-    const findId = await adminlogin.findByPk(token);
-    if (!findId) {
-      res.redirect(`/admin/login`);
-    } else {
-      const fetchUsers = await userLogin.findAll({});
 
-      fetchUsers.filter((item) => {
-        const itemMonth = new Date(item.dataValues.createdAt).getMonth() + 1;
-        console.log(itemMonth);
-        console.log(new Date().getMonth() + 1);
-        if (itemMonth == new Date().getMonth() + 1) {
-          report.push(item.dataValues);
-        }
-      });
+  const fetchUsers = await userLogin.findAll({});
 
-      const workbook = new ExcelJS.Workbook();
-      const worksheet = workbook.addWorksheet(
-        `User${new Date().getMonth() + 1}`
-      );
-      const column = (worksheet.columns = [
-        { header: "ID", key: "id", width: 10 },
-        { header: "Name", key: "name", width: 20 },
-        { header: "Role", key: "role", width: 15 },
-        { header: "Place", key: "place", width: 15 },
-        { header: "Username", key: "username", width: 15 },
-        { header: "Email", key: "email", width: 30 },
-      ]);
-
-      report.forEach((data) => {
-        const rowData = {
-          id: data.id,
-          name: data.name,
-          role: data.role,
-          place: data.place,
-          username: data.username,
-          email: data.email,
-        };
-        worksheet.addRow(Object.values(rowData));
-      });
-
-      console.log(__dirname);
-      workbook.xlsx
-        .writeFile(path.join(__dirname, "excel", "UserReport.xlsx"))
-        .then(() => {
-          res.sendFile(
-            path.join(__dirname, "excel", "UserReport.xlsx"),
-            "UserReport.xlsx",
-            (err) => {
-              if (err) {
-                res.status(500).json({ error: "Error sending the file" });
-              } else {
-                console.log("File sent successfully");
-              }
-            }
-          );
-        })
-        .catch((err) => {
-          res.status(500).json({ error: err.message });
-        });
-
-      //  console.log(fetchUsers[0].dataValues);
+  fetchUsers.filter((item) => {
+    const itemMonth = new Date(item.dataValues.createdAt).getMonth() + 1;
+    console.log(itemMonth);
+    console.log(new Date().getMonth() + 1);
+    if (itemMonth == new Date().getMonth() + 1) {
+      report.push(item.dataValues);
     }
-  } else {
-    res.redirect("/admin/login");
-  }
+  });
+
+  const workbook = new ExcelJS.Workbook();
+  const worksheet = workbook.addWorksheet(`User${new Date().getMonth() + 1}`);
+  const column = (worksheet.columns = [
+    { header: "ID", key: "id", width: 10 },
+    { header: "Name", key: "name", width: 20 },
+    { header: "Role", key: "role", width: 15 },
+    { header: "Place", key: "place", width: 15 },
+    { header: "Username", key: "username", width: 15 },
+    { header: "Email", key: "email", width: 30 },
+  ]);
+
+  report.forEach((data) => {
+    const rowData = {
+      id: data.id,
+      name: data.name,
+      role: data.role,
+      place: data.place,
+      username: data.username,
+      email: data.email,
+    };
+    worksheet.addRow(Object.values(rowData));
+  });
+
+  console.log(__dirname);
+  workbook.xlsx
+    .writeFile(path.join(__dirname, "excel", "UserReport.xlsx"))
+    .then(() => {
+      res.sendFile(
+        path.join(__dirname, "excel", "UserReport.xlsx"),
+        "UserReport.xlsx",
+        (err) => {
+          if (err) {
+            res.status(500).json({ error: "Error sending the file" });
+          } else {
+            console.log("File sent successfully");
+          }
+        }
+      );
+    })
+    .catch((err) => {
+      res.status(500).json({ error: err.message });
+    });
+
+  //  console.log(fetchUsers[0].dataValues);
 });
 
 router.get("/report/publisher", async (req, res) => {
   let report = [];
-  if (req.cookies.admin) {
-    const token = jwt.verify(req.cookies.admin, process.env.JWT_SECRET_TOKEN);
-    const findId = await adminlogin.findByPk(token);
-    if (!findId) {
-      res.redirect(`/admin/login`);
-    } else {
-      const fetchPublisher = await publisherLogin.findAll({});
 
-      fetchPublisher.filter((item) => {
-        const itemMonth = new Date(item.dataValues.createdAt).getMonth() + 1;
-        console.log(itemMonth);
-        console.log(new Date().getMonth() + 1);
-        if (itemMonth == new Date().getMonth() + 1) {
-          report.push(item.dataValues);
-        }
-      });
-      
+  const fetchPublisher = await publisherLogin.findAll({});
 
-      const workbook = new ExcelJS.Workbook();
-      const worksheet = workbook.addWorksheet(
-        `Publisher${new Date().getMonth() + 1}`
-      );
-      const column = (worksheet.columns = [
-        { header: "ID", key: "id", width: 10 },
-        { header: "Name", key: "name", width: 20 },
-        { header: "Email", key: "email", width: 30 },
-        { header: "Role", key: "role", width: 15 },
-        { header: "Place", key: "place", width: 15 },
-        { header: "Community", key: "community", width: 15 },
-        { header: "Mobile", key: "mobile", width: 15 },
-        { header: "Socialmedia", key: "socialmedia", width: 30 },
-      ]);
-
-      report.forEach((data) => {
-        const rowData = {
-          id: data.id,
-          name: data.name,
-          email: data.email,
-          role: data.role,
-          place: data.place,
-          community: data.community,
-          mobile: data.mobile,
-          socialmedia: data.socialmedia,
-        };
-        worksheet.addRow(Object.values(rowData));
-      });
-
-      console.log(__dirname);
-      workbook.xlsx
-        .writeFile(path.join(__dirname, "excel", "PublisherReport.xlsx"))
-        .then(() => {
-          res.sendFile(
-            path.join(__dirname, "excel", "PublisherReport.xlsx"),
-            "PublisherReport.xlsx",
-            (err) => {
-              if (err) {
-                res.status(500).json({ error: "Error sending the file" });
-              } else {
-                console.log("File sent successfully");
-              }
-            }
-          );
-        })
-        .catch((err) => {
-          res.status(500).json({ error: err.message });
-        });
-
-      //  console.log(fetchUsers[0].dataValues);
+  fetchPublisher.filter((item) => {
+    const itemMonth = new Date(item.dataValues.createdAt).getMonth() + 1;
+    console.log(itemMonth);
+    console.log(new Date().getMonth() + 1);
+    if (itemMonth == new Date().getMonth() + 1) {
+      report.push(item.dataValues);
     }
-  } else {
-    res.redirect("/admin/login");
-  }
+  });
+
+  const workbook = new ExcelJS.Workbook();
+  const worksheet = workbook.addWorksheet(
+    `Publisher${new Date().getMonth() + 1}`
+  );
+  const column = (worksheet.columns = [
+    { header: "ID", key: "id", width: 10 },
+    { header: "Name", key: "name", width: 20 },
+    { header: "Email", key: "email", width: 30 },
+    { header: "Role", key: "role", width: 15 },
+    { header: "Place", key: "place", width: 15 },
+    { header: "Community", key: "community", width: 15 },
+    { header: "Mobile", key: "mobile", width: 15 },
+    { header: "Socialmedia", key: "socialmedia", width: 30 },
+  ]);
+
+  report.forEach((data) => {
+    const rowData = {
+      id: data.id,
+      name: data.name,
+      email: data.email,
+      role: data.role,
+      place: data.place,
+      community: data.community,
+      mobile: data.mobile,
+      socialmedia: data.socialmedia,
+    };
+    worksheet.addRow(Object.values(rowData));
+  });
+
+  console.log(__dirname);
+  workbook.xlsx
+    .writeFile(path.join(__dirname, "excel", "PublisherReport.xlsx"))
+    .then(() => {
+      res.sendFile(
+        path.join(__dirname, "excel", "PublisherReport.xlsx"),
+        "PublisherReport.xlsx",
+        (err) => {
+          if (err) {
+            res.status(500).json({ error: "Error sending the file" });
+          } else {
+            console.log("File sent successfully");
+          }
+        }
+      );
+    })
+    .catch((err) => {
+      res.status(500).json({ error: err.message });
+    });
+
+  //  console.log(fetchUsers[0].dataValues);
 });
 
 router.get("/report/community", async (req, res) => {
   let report = [];
-  if (req.cookies.admin) {
-    const token = jwt.verify(req.cookies.admin, process.env.JWT_SECRET_TOKEN);
-    const findId = await adminlogin.findByPk(token);
-    if (!findId) {
-      res.redirect(`/admin/login`);
-    } else {
-      const fetchCommunity = await communityRegistration.findAll({});
 
-      fetchCommunity.filter((item) => {
-        const itemMonth = new Date(item.dataValues.createdAt).getMonth() + 1;
-        console.log(itemMonth);
-        console.log(new Date().getMonth() + 1);
-        if (itemMonth == new Date().getMonth() + 1) {
-          report.push(item.dataValues);
-        }
-      });
+  const fetchCommunity = await communityRegistration.findAll({});
 
-      const workbook = new ExcelJS.Workbook();
-      const worksheet = workbook.addWorksheet(
-        `Community${new Date().getMonth() + 1}`
-      );
-      const column = (worksheet.columns = [
-        { header: "ID", key: "id", width: 10 },
-        { header: "Name", key: "name", width: 20 },
-        { header: "Description", key: "description", width: 40 },
-        { header: "Email", key: "email", width: 30 },
-        { header: "Place", key: "place", width: 15 },
-        { header: "Location", key: "location", width: 15 },
-        { header: "Social", key: "social", width: 30 },
-        { header: "Mobile", key: "mobile", width: 15 },
-        
-      ]);
-
-      report.forEach((data) => {
-        const rowData = {
-          id: data.id,
-          name: data.name,
-          description:data.description,
-          email: data.email,
-          place: data.place,
-          location: data.location,
-          social: data.social,
-          mobile: data.mobile,
-          
-        };
-        worksheet.addRow(Object.values(rowData));
-      });
-
-      console.log(__dirname);
-      workbook.xlsx
-        .writeFile(path.join(__dirname, "excel", "CommunityReport.xlsx"))
-        .then(() => {
-          res.sendFile(
-            path.join(__dirname, "excel", "CommunityReport.xlsx"),
-            "CommunityReport.xlsx",
-            (err) => {
-              if (err) {
-                res.status(500).json({ error: "Error sending the file" });
-              } else {
-                console.log("File sent successfully");
-              }
-            }
-          );
-        })
-        .catch((err) => {
-          res.status(500).json({ error: err.message });
-        });
-
-      //  console.log(fetchUsers[0].dataValues);
+  fetchCommunity.filter((item) => {
+    const itemMonth = new Date(item.dataValues.createdAt).getMonth() + 1;
+    console.log(itemMonth);
+    console.log(new Date().getMonth() + 1);
+    if (itemMonth == new Date().getMonth() + 1) {
+      report.push(item.dataValues);
     }
-  } else {
-    res.redirect("/admin/login");
-  }
-});
+  });
 
+  const workbook = new ExcelJS.Workbook();
+  const worksheet = workbook.addWorksheet(
+    `Community${new Date().getMonth() + 1}`
+  );
+  const column = (worksheet.columns = [
+    { header: "ID", key: "id", width: 10 },
+    { header: "Name", key: "name", width: 20 },
+    { header: "Description", key: "description", width: 40 },
+    { header: "Email", key: "email", width: 30 },
+    { header: "Place", key: "place", width: 15 },
+    { header: "Location", key: "location", width: 15 },
+    { header: "Social", key: "social", width: 30 },
+    { header: "Mobile", key: "mobile", width: 15 },
+  ]);
+
+  report.forEach((data) => {
+    const rowData = {
+      id: data.id,
+      name: data.name,
+      description: data.description,
+      email: data.email,
+      place: data.place,
+      location: data.location,
+      social: data.social,
+      mobile: data.mobile,
+    };
+    worksheet.addRow(Object.values(rowData));
+  });
+
+  console.log(__dirname);
+  workbook.xlsx
+    .writeFile(path.join(__dirname, "excel", "CommunityReport.xlsx"))
+    .then(() => {
+      res.sendFile(
+        path.join(__dirname, "excel", "CommunityReport.xlsx"),
+        "CommunityReport.xlsx",
+        (err) => {
+          if (err) {
+            res.status(500).json({ error: "Error sending the file" });
+          } else {
+            console.log("File sent successfully");
+          }
+        }
+      );
+    })
+    .catch((err) => {
+      res.status(500).json({ error: err.message });
+    });
+
+  //  console.log(fetchUsers[0].dataValues);
+});
 
 router.get("/report/post", async (req, res) => {
   let report = [];
-  if (req.cookies.admin) {
-    const token = jwt.verify(req.cookies.admin, process.env.JWT_SECRET_TOKEN);
-    const findId = await adminlogin.findByPk(token);
-    if (!findId) {
-      res.redirect(`/admin/login`);
-    } else {
-      const fetchEvent = await eventModel.findAll({});
 
-      fetchEvent.filter((item) => {
-        const itemMonth = new Date(item.dataValues.createdAt).getMonth() + 1;
-        console.log(itemMonth);
-        console.log(new Date().getMonth() + 1);
-        if (itemMonth == new Date().getMonth() + 1) {
-          report.push(item.dataValues);
-        }
-      });
+  const fetchEvent = await eventModel.findAll({});
 
-      const workbook = new ExcelJS.Workbook();
-      const worksheet = workbook.addWorksheet(
-        `EventPost${new Date().getMonth() + 1}`
-      );
-      const column = (worksheet.columns = [
-        { header: "ID", key: "id", width: 10 },
-        { header: "Name", key: "name", width: 20 },
-        { header: "Description", key: "description", width: 40 },
-        { header: "Type", key: "type", width: 30 },
-        { header: "Mode", key: "Mode", width: 15 },
-        { header: "Date", key: "date", width: 15 },
-        { header: "Time", key: "time", width: 15 },
-        { header: "Link", key: "link", width: 15 },
-        { header: "Fee", key: "fee", width: 15 },
-        { header: "District", key: "district", width: 15 },
-        { header: "Banner", key: "banner", width: 15 },
-        { header: "Contact", key: "contact", width: 15 },
-        { header: "Guest", key: "guest", width: 15 },
-        { header: "Community", key: "community", width: 15 },
-      ]);
-
-      report.forEach((data) => {
-        const rowData = {
-          id: data.id,
-          name: data.name,
-          description:data.description,
-          type: data.type,
-          mode: data.mode,
-          date: data.date,
-          time: data.time,
-          link: data.link,
-          fee:data.link,
-          district:data.district,
-          banner:data.banner,
-          contact:data.contact,
-          guest:data.guest,
-          community:data.community
-          
-        };
-        worksheet.addRow(Object.values(rowData));
-      });
-
-      console.log(__dirname);
-      workbook.xlsx
-        .writeFile(path.join(__dirname, "excel", "EventReport.xlsx"))
-        .then(() => {
-          res.sendFile(
-            path.join(__dirname, "excel", "EventReport.xlsx"),
-            "EventReport.xlsx",
-            (err) => {
-              if (err) {
-                res.status(500).json({ error: "Error sending the file" });
-              } else { 
-                console.log("File sent successfully");
-              }
-            }
-          );
-        })
-        .catch((err) => {
-          res.status(500).json({ error: err.message });
-        });
-
-      //  console.log(fetchUsers[0].dataValues);
+  fetchEvent.filter((item) => {
+    const itemMonth = new Date(item.dataValues.createdAt).getMonth() + 1;
+    console.log(itemMonth);
+    console.log(new Date().getMonth() + 1);
+    if (itemMonth == new Date().getMonth() + 1) {
+      report.push(item.dataValues);
     }
-  } else {
-    res.redirect("/admin/login");
-  }
+  });
+
+  const workbook = new ExcelJS.Workbook();
+  const worksheet = workbook.addWorksheet(
+    `EventPost${new Date().getMonth() + 1}`
+  );
+  const column = (worksheet.columns = [
+    { header: "ID", key: "id", width: 10 },
+    { header: "Name", key: "name", width: 20 },
+    { header: "Description", key: "description", width: 40 },
+    { header: "Type", key: "type", width: 30 },
+    { header: "Mode", key: "Mode", width: 15 },
+    { header: "Date", key: "date", width: 15 },
+    { header: "Time", key: "time", width: 15 },
+    { header: "Link", key: "link", width: 15 },
+    { header: "Fee", key: "fee", width: 15 },
+    { header: "District", key: "district", width: 15 },
+    { header: "Banner", key: "banner", width: 15 },
+    { header: "Contact", key: "contact", width: 15 },
+    { header: "Guest", key: "guest", width: 15 },
+    { header: "Community", key: "community", width: 15 },
+  ]);
+
+  report.forEach((data) => {
+    const rowData = {
+      id: data.id,
+      name: data.name,
+      description: data.description,
+      type: data.type,
+      mode: data.mode,
+      date: data.date,
+      time: data.time,
+      link: data.link,
+      fee: data.link,
+      district: data.district,
+      banner: data.banner,
+      contact: data.contact,
+      guest: data.guest,
+      community: data.community,
+    };
+    worksheet.addRow(Object.values(rowData));
+  });
+
+  console.log(__dirname);
+  workbook.xlsx
+    .writeFile(path.join(__dirname, "excel", "EventReport.xlsx"))
+    .then(() => {
+      res.sendFile(
+        path.join(__dirname, "excel", "EventReport.xlsx"),
+        "EventReport.xlsx",
+        (err) => {
+          if (err) {
+            res.status(500).json({ error: "Error sending the file" });
+          } else {
+            console.log("File sent successfully");
+          }
+        }
+      );
+    })
+    .catch((err) => {
+      res.status(500).json({ error: err.message });
+    });
+
+  //  console.log(fetchUsers[0].dataValues);
 });
-
-
 
 //admin logout
 router.get("/dashboard/logout", (req, res) => {
-  if (req.cookies.admin) {
-    res.clearCookie("admin");
-    res.redirect("/admin/login");
-  } else {
-    res.redirect("/admin/login");
-  }
+  res.clearCookie("admin");
+  res.redirect("/admin/login");
 });
 module.exports = router;
