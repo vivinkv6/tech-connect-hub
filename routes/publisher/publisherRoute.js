@@ -25,9 +25,8 @@ const storage = multer.memoryStorage();
 middleware and configuring it to use the `storage` object for file storage. */
 const upload = multer({ storage: storage });
 
-//publisher all routes
 
-//login routes
+//GET Publisher Dashboard - login routes
 router.get("/login", async (req, res) => {
   if (req.cookies.publisher) {
     const verify = jwt.verify(
@@ -56,6 +55,7 @@ router.get("/login", async (req, res) => {
   }
 });
 
+//POST Publisher Dashboard - login routes
 router.post("/login", async (req, res) => {
   try {
     const { email, password } = req.body;
@@ -115,7 +115,7 @@ router.post("/login", async (req, res) => {
   }
 });
 
-//signup routes
+//GET Publisher Dashboard -  signup routes
 router.get("/register", (req, res) => {
   res.render("../views/publisher/register", {
     emailExist: false,
@@ -132,6 +132,7 @@ router.get("/register", (req, res) => {
   });
 });
 
+//GET Publisher Dashboard - signup routes
 router.post("/register", upload.single("file"), async (req, res) => {
   try {
     const verifierCount = await verifiers.count();
@@ -269,6 +270,7 @@ router.post("/register", upload.single("file"), async (req, res) => {
   }
 });
 
+//GET Publisher - Authentication Middleware
 router.use(async (req, res, next) => {
   console.log("MiddleWare work");
   if (req.cookies.publisher) {
@@ -289,7 +291,7 @@ router.use(async (req, res, next) => {
   }
 });
 
-//publisher dashboard
+//GET Publisher Dashboard - get all event post list
 router.get("/:id/dashboard", async (req, res) => {
   const { id } = req.params;
 
@@ -320,7 +322,7 @@ router.get("/:id/dashboard", async (req, res) => {
   }
 });
 
-//view profile
+//GET Publisher Dashboard - view profile
 router.get("/:id/dashboard/profile", async (req, res) => {
   const { id } = req.params;
 
@@ -331,7 +333,7 @@ router.get("/:id/dashboard/profile", async (req, res) => {
   });
 });
 
-//create post
+//GET Publisher Dashboard -  create post
 router.get("/:id/dashboard/post/create", async (req, res) => {
   const { id } = req.params;
 
@@ -347,7 +349,7 @@ router.get("/:id/dashboard/post/create", async (req, res) => {
   res.render("../views/publisher/post", { id: id, community: community });
 });
 
-//upload post
+//POST Publisher Dashboard - upload event post
 router.post(
   "/:id/dashboard/post/create",
   upload.single("banner"),
@@ -476,6 +478,7 @@ router.post(
   }
 );
 
+//GET Publisher Dashboard - update specific post
 router.get("/:id1/dashboard/post/:id2/update", async (req, res) => {
   const { id1, id2 } = req.params;
 
@@ -502,6 +505,7 @@ router.get("/:id1/dashboard/post/:id2/update", async (req, res) => {
   }
 });
 
+//POST Publisher Dashboard - get all event post list
 router.post(
   "/:id1/dashboard/post/:id2/update",
   upload.single("banner"),
@@ -645,7 +649,7 @@ router.post(
   }
 );
 
-//View publisher specific post
+//GET Publisher Dashboard - View specific post
 router.get("/:id1/dashboard/post/:id2", async (req, res) => {
   const { id1, id2 } = req.params;
 
@@ -661,8 +665,7 @@ router.get("/:id1/dashboard/post/:id2", async (req, res) => {
   }
 });
 
-//Delete publisher specific post
-
+//GET Publisher Dashboard - delete specific post
 router.get("/:id1/dashboard/post/:id2/delete", async (req, res) => {
   const { id1, id2 } = req.params;
 
@@ -681,8 +684,7 @@ router.get("/:id1/dashboard/post/:id2/delete", async (req, res) => {
   }
 });
 
-//GET community Dashboard
-
+//GET Publisher Dashboard - get all community list
 router.get("/:id/dashboard/community", async (req, res) => {
   const { id } = req.params;
 
@@ -707,8 +709,7 @@ router.get("/:id/dashboard/community", async (req, res) => {
   });
 });
 
-//Get community form
-
+//GET Publisher Dashboard - community form
 router.get("/:id/dashboard/community/create", (req, res) => {
   const { id } = req.params;
 
@@ -725,7 +726,7 @@ router.get("/:id/dashboard/community/create", (req, res) => {
   });
 });
 
-//upload community details
+//POST Publisher Dashboard - upload community details
 router.post(
   "/:id/dashboard/community/create",
   upload.single("logo"),
@@ -813,7 +814,7 @@ router.post(
   }
 );
 
-//GET details about specific community
+//GET Publisher Dashboard - details about specific community
 router.get("/:id1/dashboard/community/:id2", async (req, res) => {
   const { id1, id2 } = req.params;
 
@@ -829,7 +830,7 @@ router.get("/:id1/dashboard/community/:id2", async (req, res) => {
   }
 });
 
-//delete specific community
+//GET Publisher Dashboard - delete specific community
 router.get("/:id1/dashboard/community/:id2/delete", async (req, res) => {
   const { id1, id2 } = req.params;
 
@@ -844,7 +845,7 @@ router.get("/:id1/dashboard/community/:id2/delete", async (req, res) => {
   }
 });
 
-//GET update specific community details
+//GET Publisher Dashboard - update specific community details
 router.get("/:id1/dashboard/community/:id2/update", async (req, res) => {
   const { id1, id2 } = req.params;
 
@@ -860,7 +861,7 @@ router.get("/:id1/dashboard/community/:id2/update", async (req, res) => {
   }
 });
 
-//POST update specific community details
+//POST Publisher Dashboard - update specific community details
 router.post(
   "/:id1/dashboard/community/:id2/update",
   upload.single("logo"),
@@ -938,7 +939,7 @@ router.post(
   }
 );
 
-//publisher logout
+//GET Publisher Dashboard - publisher logout
 router.get("/:id/dashboard/logout", (req, res) => {
   const { id } = req.params;
 

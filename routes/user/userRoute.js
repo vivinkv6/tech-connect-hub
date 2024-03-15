@@ -14,7 +14,7 @@ const communityRegistration = require("../../models/publisher/communityRegistrat
 
 //user all routes
 
-//login routes
+//GET user  - login routes
 router.get("/login", async (req, res) => {
   if (req.cookies.user) {
     console.log("correct");
@@ -42,6 +42,7 @@ router.get("/login", async (req, res) => {
   }
 });
 
+//POST user - login route
 router.post("/login", async (req, res) => {
   try {
     const { email, password } = req.body;
@@ -91,7 +92,7 @@ router.post("/login", async (req, res) => {
   }
 });
 
-//signup routes
+//GET user - signup routes
 router.get("/signup", async (req, res) => {
   if (req.cookies.user) {
     const token = jwt.verify(req.cookies.user, process.env.JWT_SECRET_TOKEN);
@@ -126,6 +127,7 @@ router.get("/signup", async (req, res) => {
   }
 });
 
+//POST user - Signup route
 router.post("/signup", async (req, res) => {
   const { email, password, confirm, name, role, place } = req.body;
   const username = usernameExtractor(email);
@@ -189,6 +191,7 @@ router.post("/signup", async (req, res) => {
   }
 });
 
+// User - Authentication Middleware
 router.use(async (req, res, next) => {
   console.log("MiddleWare work");
   if (req.cookies.user) {
@@ -206,7 +209,7 @@ router.use(async (req, res, next) => {
   }
 });
 
-//user dashboard
+//GET user Dashboard - Home page
 router.get("/:id/dashboard", async (req, res) => {
   const { id } = req.params;
 
@@ -226,7 +229,7 @@ router.get("/:id/dashboard", async (req, res) => {
   });
 });
 
-//communities dashboard
+//GET user Dashboard - communities dashboard
 router.get("/:id/dashboard/communities", async (req, res) => {
   const { id } = req.params;
 
@@ -245,7 +248,7 @@ router.get("/:id/dashboard/communities", async (req, res) => {
   });
 });
 
-//each community specific events
+//GET user Dashboard -  community specific events
 router.get("/:id/dashboard/communities/:id2", async (req, res) => {
   const { id, id2 } = req.params;
 
@@ -278,6 +281,7 @@ router.get("/:id/dashboard/communities/:id2", async (req, res) => {
   }
 });
 
+//GET user Dashboard - event notification
 router.get("/:id/dashboard/notification", async (req, res) => {
   const { id } = req.params;
 
@@ -295,6 +299,7 @@ router.get("/:id/dashboard/notification", async (req, res) => {
   });
 });
 
+//GET user Dashboard - event specific details
 router.get("/:id/dashboard/post/:post", async (req, res) => {
   const { id, post } = req.params;
 
@@ -329,6 +334,7 @@ router.get("/:id/dashboard/post/:post", async (req, res) => {
   }
 });
 
+//GET user Dashboard - filter event post
 router.get("/:id/dashboard/filter?", async (req, res) => {
   try {
     const { id } = req.params;
@@ -407,6 +413,7 @@ router.get("/:id/dashboard/filter?", async (req, res) => {
   }
 });
 
+//GET user Dashboard - profile
 router.get("/:id/dashboard/profile", async (req, res) => {
   const { id } = req.params;
 
@@ -426,6 +433,7 @@ router.get("/:id/dashboard/profile", async (req, res) => {
   });
 });
 
+//POST user Dashboard - update profile
 router.post("/:id/dashboard/profile", async (req, res) => {
   const { id } = req.params;
   console.log(req.body);
@@ -463,6 +471,7 @@ router.post("/:id/dashboard/profile", async (req, res) => {
   }
 });
 
+//GET user Dashboard - save post
 router.get("/:id/dashboard/saved/:post", async (req, res) => {
   const { id, post } = req.params;
 
@@ -518,6 +527,7 @@ router.get("/:id/dashboard/saved/:post", async (req, res) => {
   }
 });
 
+//GET user Dashboard - delete saved post
 router.get("/:id/dashboard/remove/:post", async (req, res) => {
   const { id, post } = req.params;
 
@@ -539,6 +549,7 @@ router.get("/:id/dashboard/remove/:post", async (req, res) => {
     });
 });
 
+//GET user Dashboard - user logout
 router.get("/:id/dashboard/logout", (req, res) => {
   const { id } = req.params;
 

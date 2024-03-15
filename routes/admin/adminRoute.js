@@ -18,9 +18,7 @@ const path = require("path");
 const ExcelJS = require("exceljs");
 const { Sequelize } = require("sequelize");
 
-//user all routes
-
-//login routes
+//GET Admin login route
 router.get("/login", async (req, res) => {
   /* This code block is checking if there is already an existing admin account in the database. */
   if (req.cookies.admin) {
@@ -49,6 +47,7 @@ router.get("/login", async (req, res) => {
   }
 });
 
+//POST Admin login route
 router.post("/login", async (req, res) => {
   try {
     const { email, password } = req.body;
@@ -162,6 +161,8 @@ router.post("/signup", async (req, res) => {
   }
 });
 
+
+//Admin Authentication Middleware
 router.use(async (req, res, next) => {
   console.log("MiddleWare work");
   if (req.cookies.admin) {
@@ -179,7 +180,7 @@ router.use(async (req, res, next) => {
   }
 });
 
-//GET all user details
+//GET Admin Dashboard -> get all users list
 router.get("/dashboard", async (req, res) => {
   const users = await userLogin.findAll({
     order: [["createdAt", "DESC"]],
@@ -187,7 +188,7 @@ router.get("/dashboard", async (req, res) => {
   res.render("../views/admin/dashboard", { users: users });
 });
 
-//delete specific user
+//GET Admin Dashboard -> delete specific user
 router.get("/dashboard/user/delete/:id", async (req, res) => {
   const { id } = req.params;
 
@@ -207,7 +208,7 @@ router.get("/dashboard/user/delete/:id", async (req, res) => {
   }
 });
 
-//GET all publisher details
+//GET Admin Dashboard -> get all publisher list
 router.get("/dashboard/publisher", async (req, res) => {
   const publishers = await publisherLogin.findAll({
     order: [["createdAt", "DESC"]],
@@ -215,7 +216,7 @@ router.get("/dashboard/publisher", async (req, res) => {
   res.render("../views/admin/publisher", { publishers: publishers });
 });
 
-//delete specific publisher
+//GET Admin Dashboard -> delete specific publisher
 router.get("/dashboard/publisher/delete/:id", async (req, res) => {
   const { id } = req.params;
 
@@ -235,7 +236,7 @@ router.get("/dashboard/publisher/delete/:id", async (req, res) => {
   }
 });
 
-//GET all verifier details
+//GET Admin Dashboard -> get all verifier list
 router.get("/dashboard/verifier", async (req, res) => {
   const verifierList = await verifierLogin.findAll({
     order: [["createdAt", "DESC"]],
@@ -243,9 +244,7 @@ router.get("/dashboard/verifier", async (req, res) => {
   res.render("../views/admin/verifier", { verifier: verifierList });
 });
 
-// router.get("/dashboard/verifier/edit/:id", (req, res) => {});
-
-//delete specific verifier
+//GET Admin Dashboard ->  delete specific verifier
 router.get("/dashboard/verifier/delete/:id", async (req, res) => {
   const { id } = req.params;
 
@@ -264,7 +263,7 @@ router.get("/dashboard/verifier/delete/:id", async (req, res) => {
   }
 });
 
-//create new verifier account
+//GET Admin Dashboard -> create new verifier account
 router.get("/dashboard/verifier/create", (req, res) => {
   res.render("../views/admin/verifierSignup", {
     emailExist: false,
@@ -275,7 +274,7 @@ router.get("/dashboard/verifier/create", (req, res) => {
   });
 });
 
-//GET all community details
+//GET Admin Dashboard -> get all community list
 router.get("/dashboard/community", async (req, res) => {
   const communityList = await communityRegistration.findAll({
     order: [["createdAt", "DESC"]],
@@ -284,7 +283,7 @@ router.get("/dashboard/community", async (req, res) => {
   res.render("../views/admin/community", { community: communityList });
 });
 
-//GET details about specific community
+//GET Admin Dashboard -> get details about specific community
 router.get("/dashboard/community/view/:id", async (req, res) => {
   const { id } = req.params;
 
@@ -299,7 +298,7 @@ router.get("/dashboard/community/view/:id", async (req, res) => {
   }
 });
 
-//delete specific community
+//GET Admin Dashboard -> delete specific community
 router.get("/dashboard/community/delete/:id", async (req, res) => {
   const { id } = req.params;
 
@@ -319,12 +318,8 @@ router.get("/dashboard/community/delete/:id", async (req, res) => {
   }
 });
 
-//GET all post details
+//GET Admin Dashboard ->  all event post list
 router.get("/dashboard/post", async (req, res) => {
-  // const postList=await eventModel.findAll({});
-  // const postCount=await eventModel.count();
-  // const communityCount=await communityRegistration.count();
-
   try {
     if (
       req.query.type == undefined ||
@@ -383,7 +378,7 @@ router.get("/dashboard/post", async (req, res) => {
   // res.render("../views/admin/post",{post:postList});
 });
 
-//View specific post
+//GET Admin Dashboard ->  View specific event post
 router.get("/dashboard/post/view/:id", async (req, res) => {
   const { id } = req.params;
 
@@ -398,7 +393,7 @@ router.get("/dashboard/post/view/:id", async (req, res) => {
   }
 });
 
-//delete post
+//GET Admin Dashboard -> delete specific post
 router.get("/dashboard/post/delete/:id", async (req, res) => {
   const { id } = req.params;
 
@@ -418,6 +413,7 @@ router.get("/dashboard/post/delete/:id", async (req, res) => {
   }
 });
 
+//GET Admin Dashboard -> Generate report of all users in current month
 router.get("/report/user", async (req, res) => {
   let report = [];
 
@@ -474,10 +470,9 @@ router.get("/report/user", async (req, res) => {
     .catch((err) => {
       res.status(500).json({ error: err.message });
     });
-
-  //  console.log(fetchUsers[0].dataValues);
 });
 
+//GET Admin Dashboard -> Generate report of all publishers in current month
 router.get("/report/publisher", async (req, res) => {
   let report = [];
 
@@ -540,9 +535,9 @@ router.get("/report/publisher", async (req, res) => {
     .catch((err) => {
       res.status(500).json({ error: err.message });
     });
-
-  //  console.log(fetchUsers[0].dataValues);
 });
+
+//GET Admin Dashboard -> Generate report of all communities in current month
 
 router.get("/report/community", async (req, res) => {
   let report = [];
@@ -606,10 +601,9 @@ router.get("/report/community", async (req, res) => {
     .catch((err) => {
       res.status(500).json({ error: err.message });
     });
-
-  //  console.log(fetchUsers[0].dataValues);
 });
 
+//GET Admin Dashboard -> Generate report of all event post in current month
 router.get("/report/post", async (req, res) => {
   let report = [];
 
@@ -684,11 +678,9 @@ router.get("/report/post", async (req, res) => {
     .catch((err) => {
       res.status(500).json({ error: err.message });
     });
-
-  //  console.log(fetchUsers[0].dataValues);
 });
 
-//admin logout
+//GET Admin Dashboard ->  admin logout
 router.get("/dashboard/logout", (req, res) => {
   res.clearCookie("admin");
   res.redirect("/admin/login");

@@ -13,9 +13,8 @@ const usernameExtractor = require("../../utils/usernameExtractor");
 const cookieAuth = require("../../utils/auth");
 const { where } = require("sequelize");
 
-//user all routes
 
-//login routes
+//GET verifier - login routes
 router.get("/login", async (req, res) => {
   if (req.cookies.verifier) {
     const verify = jwt.verify(
@@ -44,6 +43,7 @@ router.get("/login", async (req, res) => {
   }
 });
 
+//POST verifier - login routes
 router.post("/login", async (req, res) => {
   try {
     const { email, password } = req.body;
@@ -93,17 +93,7 @@ router.post("/login", async (req, res) => {
   }
 });
 
-//signup routes
-// router.get("/signup", (req, res) => {
-//   res.render("../views/verifier/signup", {
-//     emailExist: false,
-//     passwordError: false,
-//     email: "",
-//     password: "",
-//     confirm: "",
-//   });
-// });
-
+//POST verifier - signup routes
 router.post("/signup", async (req, res) => {
   const { email, password, confirm } = req.body;
   const username = usernameExtractor(email);
@@ -154,6 +144,7 @@ router.post("/signup", async (req, res) => {
   }
 });
 
+//Verifier - Authentication Middleware
 router.use(async (req, res, next) => {
   console.log("MiddleWare work");
   if (req.cookies.verifier) {
@@ -174,7 +165,7 @@ router.use(async (req, res, next) => {
   }
 });
 
-//user dashboard
+//GET verifier Dashboard - Home page or publisher list
 router.get("/:id/dashboard", async (req, res) => {
   const { id } = req.params;
 
@@ -204,6 +195,7 @@ router.get("/:id/dashboard", async (req, res) => {
   });
 });
 
+//GET verifier Dashboard - view publisher profile
 router.get("/:verifier/dashboard/profile/:id", async (req, res) => {
   const { id, verifier } = req.params;
 
@@ -216,6 +208,7 @@ router.get("/:verifier/dashboard/profile/:id", async (req, res) => {
   res.render("../views/verifier/modal", { profile: profile, id: verifier });
 });
 
+//GET verifier Dashboard - Accept publisher profile
 router.get("/:verifier/dashboard/profile/:id/accept", async (req, res) => {
   const { id, verifier } = req.params;
 
@@ -240,6 +233,7 @@ router.get("/:verifier/dashboard/profile/:id/accept", async (req, res) => {
   res.redirect(`/verifier/${verifier}/dashboard`);
 });
 
+//GET verifier Dashboard - Reject publisher profile
 router.get("/:verifier/dashboard/profile/:id/reject", async (req, res) => {
   const { id, verifier } = req.params;
 
@@ -251,6 +245,7 @@ router.get("/:verifier/dashboard/profile/:id/reject", async (req, res) => {
   res.redirect(`/verifier/${verifier}/dashboard`);
 });
 
+//GET verifier Dashboard - Community list
 router.get("/:verifier/dashboard/community", async (req, res) => {
   const { verifier } = req.params;
 
@@ -280,6 +275,7 @@ router.get("/:verifier/dashboard/community", async (req, res) => {
   }
 });
 
+//GET verifier Dashboard - View community details
 router.get("/:verifier/dashboard/community/:id", async (req, res) => {
   const { id, verifier } = req.params;
 
@@ -295,6 +291,7 @@ router.get("/:verifier/dashboard/community/:id", async (req, res) => {
   });
 });
 
+//GET verifier Dashboard - Accept community
 router.get("/:verifier/dashboard/community/:id/accept", async (req, res) => {
   const { id, verifier } = req.params;
 
@@ -315,6 +312,7 @@ router.get("/:verifier/dashboard/community/:id/accept", async (req, res) => {
     });
 });
 
+//GET verifier Dashboard - Reject community details
 router.get("/:verifier/dashboard/community/:id/reject", async (req, res) => {
   const { id, verifier } = req.params;
 
@@ -326,6 +324,7 @@ router.get("/:verifier/dashboard/community/:id/reject", async (req, res) => {
   res.redirect(`/verifier/${verifier}/dashboard/community`);
 });
 
+//GET verifier Dashboard - verifier logout
 router.get("/:verifier/dashboard/logout", (req, res) => {
   res.clearCookie("verifier");
   res.redirect("/verifier/login");
