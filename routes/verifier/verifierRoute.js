@@ -249,15 +249,21 @@ router.get("/:verifier/dashboard/profile/:id/reject", async (req, res) => {
 router.get("/:verifier/dashboard/community", async (req, res) => {
   const { verifier } = req.params;
 
-  const verificationCount = await verification.count();
+  const verificationCount = await verification.count({
+    where: {
+      verifierId: verifier,
+    },
+  });
   const communityDetails = await communityRegistration.findAll({
     where: {
       verify: "false",
+      verifierId:verifier
     },
   });
   const communityCount = await communityRegistration.count({
     where: {
       verify: "false",
+      verifierId: verifier,
     },
   });
   const findVerifier = await verfierLogin.findByPk(verifier);
