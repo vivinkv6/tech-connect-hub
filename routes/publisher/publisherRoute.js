@@ -136,6 +136,7 @@ router.get("/register", (req, res) => {
 router.post("/register", upload.single("file"), async (req, res) => {
   try {
     const verifierCount = await verifiers.count();
+    const randomVerifier = randomGenerator(verifierCount);
     const {
       name,
       email,
@@ -242,7 +243,7 @@ router.post("/register", upload.single("file"), async (req, res) => {
           if (err) {
             res.json({ err: err.message });
           } else {
-            const randomVerifier = randomGenerator(verifierCount);
+            
             const allVerifiers = await verfierLogin.findAll({});
 
             const data = await verificationModel
