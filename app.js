@@ -4,6 +4,7 @@ var path = require("path");
 var cookieParser = require("cookie-parser");
 var logger = require("morgan");
 const rateLimit = require('express-rate-limit');
+const cron = require('node-cron');
 
 //router files
 var indexRouter = require("./routes/index");
@@ -23,6 +24,8 @@ var app = express();
 app.set('views', '/opt/render/project/src/views');
 app.set("views", path.join(__dirname, "views"));
 app.set("view engine", "ejs");
+
+
 
 // Configure the rate limiter for all routes
 const limiter = rateLimit({
@@ -45,6 +48,11 @@ app.use("/user", userRouter);
 app.use("/admin",adminRouter);
 app.use("/verifier",verifierRouter);
 app.use("/publisher",publisherRouter);
+
+// Add this before the route middleware
+app.get('/msg', (req, res) => {
+  res.json({ msg: 'Welcome to Techconnect Hub' });
+});
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
@@ -85,5 +93,10 @@ app.use(function (err, req, res, next) {
   }
 })();
 
+// Add this after the database connection code
+cron.schedule('*/7 * * * *', () => {
+  console.log('Running a task every 7 minutes');
+  // Add your recurring task logic here
+});
 
 module.exports = app;
